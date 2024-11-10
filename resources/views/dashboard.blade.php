@@ -17,7 +17,7 @@
             tampilanCCTV.forEach(view => view.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
-        
+
         function toggleCCTV(id) {
             const tampilanCCTV = document.querySelectorAll('.cctv-view');
             tampilanCCTV.forEach(view => view.classList.remove('active'));
@@ -36,6 +36,30 @@
         <h1>Dashboard CCTV DIY</h1>
         <p>Memantau kondisi lalu lintas di berbagai titik kota secara real-time</p>
     </header>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Pilih Wilayah</h4>
+        </div>
+        <div class="card-body">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Pilih Wilayah
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    @foreach($namaWilayah as $wilayah)
+                        <a class="dropdown-item" href="#" onclick="toggleDaerah('daerah-{{ $wilayah->id }}')">{{ $wilayah->nama }}</a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @foreach($namaWilayah as $wilayah)
+        <div id="daerah-{{ $wilayah->id }}" class="daerah-list" style="display: none;">
+            <h5>{{ $wilayah->nama }}</h5>
+        </div>
+    @endforeach
 
 @endsection
 @push('dashboard')
