@@ -24,14 +24,17 @@
                 <tbody>
                     @foreach($cctv as $cctv)
                         <tr>
-                            <td>
+                            <td class="align-middle">
                                 <p class="text-sm font-weight-bold mb-0">{{ $cctv->namaWilayah }}</p>
                             </td>
-                            <td>
+                            <td class="align-middle">
                                 <p class="text-sm font-weight-bold mb-0">{{ $cctv->namaTitik }}</p>
                             </td>
-                            <td class="text-center">
+                            <td class="align-middle text-center">
                                 <p class="text-sm font-weight-bold mb-0">{{ $cctv->nomorKamera }}</p>
+                            </td>
+                            <td class="align-middle">
+                                <a href="{{ route('cctv.edit', $cctv->id) }}" class="btn btn-sm btn-primary">Edit</a>
                             </td>
                         </tr>
                     @endforeach

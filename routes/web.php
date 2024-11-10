@@ -70,6 +70,13 @@ Route::group(['middleware' => 'auth'], function () {
 	})->name('sign-up');
 
     Route::get('/cctv', [cctvController::class, 'index'])->name('cctv.index');
+    Route::get('/cctv/create', [cctvController::class, 'create'])->name('cctv.create');
+    Route::post('/cctv', [cctvController::class, 'store'])->name('cctv.store');
+    Route::get('/cctv/{cctv}', [cctvController::class, 'show'])->name('cctv.show');
+    Route::get('editCctv/{cctv}', [cctvController::class, 'edit'])->name('cctv.edit');
+    Route::put('/cctv/{cctv}', [cctvController::class, 'update'])->name('cctv.update');
+    Route::delete('/cctv/{cctv}', [cctvController::class, 'destroy'])->name('cctv.destroy');
+
 
 });
 
