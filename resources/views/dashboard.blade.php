@@ -5,62 +5,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard CCTV</title>
-    <script>
-        function toggleDaerah(id) {
-            const daerahList = document.getElementById(id);
-            daerahList.style.display = (daerahList.style.display === "none" || daerahList.style.display === "") ? "block" : "none";
+    <title>Dashboard CCTV DIY</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
         }
-
-        function tampilkanCCTV(id) {
-            const tampilanCCTV = document.querySelectorAll('.cctv-view');
-            tampilanCCTV.forEach(view => view.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+        header {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
         }
-
-        function toggleCCTV(id) {
-            const tampilanCCTV = document.querySelectorAll('.cctv-view');
-            tampilanCCTV.forEach(view => view.classList.remove('active'));
-
-            const cctv = document.getElementById(id);
-            if (cctv.style.display === "none" || cctv.style.display === "") {
-                cctv.style.display = "block";
-            } else {
-                cctv.style.display = "none";
-            }
+        #dashboard {
+            display: flex;
+            height: 100vh;
         }
-    </script>
-  </head>
+        #sidebar {
+            background-color: #2c3e50;
+            color: white;
+            width: 250px;
+            padding: 20px;
+        }
+        #sidebar h2 {
+            font-size: 1.5rem;
+            margin: 0 0 1rem;
+            display: flex;
+            align-items: center;
+        }
+        #sidebar h2 i {
+            margin-right: 10px;
+        }
+        .city {
+            font-size: 1rem;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .city i {
+            margin-right: 10px;
+        }
+        .cctv-view {
+            padding: 20px;
+            flex: 1;
+            display: none;
+        }
+        .cctv-view.active {
+            display: block;
+        }
+    </style>
+</head>
 
     <header>
         <h1>Dashboard CCTV DIY</h1>
         <p>Memantau kondisi lalu lintas di berbagai titik kota secara real-time</p>
     </header>
-
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Pilih Wilayah</h4>
-        </div>
-        <div class="card-body">
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Pilih Wilayah
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    @foreach($namaWilayah as $wilayah)
-                        <a class="dropdown-item" href="#" onclick="toggleDaerah('daerah-{{ $wilayah->id }}')">{{ $wilayah->nama }}</a>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @foreach($namaWilayah as $wilayah)
-        <div id="daerah-{{ $wilayah->id }}" class="daerah-list" style="display: none;">
-            <h5>{{ $wilayah->nama }}</h5>
-        </div>
-    @endforeach
-
 @endsection
 @push('dashboard')
   <script>
