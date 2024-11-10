@@ -29,4 +29,20 @@ class cctvController extends Controller
         $cctv->save();
         return redirect()->route('cctv.index');
     }
+
+    public function create()
+    {
+        return view('cctv.create');
+    }
+
+    public function store(Request $request)
+    {
+        $cctv = new cctv;
+        $cctv->namaWilayah = $request->namaWilayah;
+        $cctv->namaTitik = $request->namaTitik;
+        $cctv->nomorKamera = $request->nomorKamera;
+        $cctv->link = $request->link;
+        $cctv->save();
+        return redirect()->route('cctv.index');
+    }
 }
