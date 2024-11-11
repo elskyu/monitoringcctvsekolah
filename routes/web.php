@@ -10,6 +10,7 @@ use App\Http\Controllers\cctvController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VideoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('editCctv/{cctv}', [cctvController::class, 'edit'])->name('cctv.edit');
     Route::put('/cctv/{cctv}', [cctvController::class, 'update'])->name('cctv.update');
     Route::delete('/cctv/{cctv}', [cctvController::class, 'destroy'])->name('cctv.destroy');
+
+	Route::get('/cctv', [cctvController::class, 'index'])->name('cctv.index');
+
+	Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
+Route::get('/videos/create', [VideoController::class, 'create'])->name('videos.create');
+Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
 
 
 });
