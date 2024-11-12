@@ -41,20 +41,43 @@
         $cctvs = DB::table('cctvs')->get();
     @endphp
 
-    <div class="video-container">
-        @foreach($cctvs as $cctv)
-            <div class="video-item m-1">
-                <h5 class="text-center">{{ $cctv->namaWilayah }}</h5>
-                <div class="iframe-container">
-                    <iframe src="{{ $cctv->link }}" frameborder="0" allowfullscreen></iframe>
-                    <div class="iframe-overlay" onclick="this.style.display='none';">
-                        <svg class="btn-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80">
-                            <path fill="white" d="M8 5v14l11-7z"/>
-                        </svg>
-                    </div>
+    <div class="container">
+        @php
+            $groupedCctvs = $cctvs->groupBy('namaWilayah');
+        @endphp
+
+        @foreach($groupedCctvs as $wilayah => $cctvGroup)
+            <div class="wilayah-group mb-4">
+                <h3 class="text-dark mb-3">{{ $wilayah }}</h3>
+                <div class="row">
+                    @foreach($cctvGroup as $cctv)
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center mb-3">{{ $cctv->namaTitik }}</h5>
+                                    <div class="iframe-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                                        <iframe
+                                            src="{{ $cctv->link }}"
+                                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                                            frameborder="0"
+                                            allowfullscreen>
+                                        </iframe>
+                                        <div class="iframe-overlay"
+                                             onclick="this.style.display='none';"
+                                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                            <svg class="btn-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80">
+                                                <path fill="white" d="M8 5v14l11-7z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         @endforeach
+    </div>
     </div>
 @endsection
 @push('dashboard')
