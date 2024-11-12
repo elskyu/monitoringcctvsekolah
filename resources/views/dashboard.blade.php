@@ -37,17 +37,25 @@
         <p>Memantau kondisi lalu lintas di berbagai titik kota secara real-time</p>
     </header>
 
-    <div class="video-item m-1">
-                <h5 class="text-center">Simpang Kolombo 1</h5>
+    @php
+        $cctvs = DB::table('cctvs')->get();
+    @endphp
+
+    <div class="video-container">
+        @foreach($cctvs as $cctv)
+            <div class="video-item m-1">
+                <h5 class="text-center">{{ $cctv->namaWilayah }}</h5>
                 <div class="iframe-container">
-                    <iframe data-src="http://103.255.15.227:5080/CCTVSLEMAN/play.html?id=SimpangKolombo1" frameborder="0" allowfullscreen></iframe>
-                    <div class="iframe-overlay">
+                    <iframe src="{{ $cctv->link }}" frameborder="0" allowfullscreen></iframe>
+                    <div class="iframe-overlay" onclick="this.style.display='none';">
                         <svg class="btn-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80">
                             <path fill="white" d="M8 5v14l11-7z"/>
                         </svg>
                     </div>
                 </div>
             </div>
+        @endforeach
+    </div>
 @endsection
 @push('dashboard')
   <script>
