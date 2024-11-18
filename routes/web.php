@@ -23,10 +23,7 @@ use App\Http\Controllers\VideoController;
 |
 */
 
-
 Route::group(['middleware' => 'auth'], function () {
-
-    Route::get('/', [HomeController::class, 'home']);
 	Route::get('dashboard', function () {
 		return view('dashboard');
 	})->name('dashboard');
@@ -88,6 +85,7 @@ Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
 });
 
 
+Route::get('/', [HomeController::class, 'home'])->name('welcome');
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
