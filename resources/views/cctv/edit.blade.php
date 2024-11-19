@@ -14,10 +14,10 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user-name" class="form-control-label">{{ __('Nama Wilayah') }}</label>
-                                <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="{{ auth()->user()->name }}" type="text" placeholder="Name" id="user-name" name="name">
-                                        @error('name')
+                                <label for="region-name" class="form-control-label">{{ __('Nama Wilayah') }}</label>
+                                <div class="@error('region.name')border border-danger rounded-3 @enderror">
+                                    <input class="form-control" value="{{ old('region_name') }}" type="text" placeholder="Nama Wilayah" id="region-name" name="region_name">
+                                        @error('region_name')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
                                 </div>
@@ -25,10 +25,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user-name" class="form-control-label">{{ __('Nama Titik') }}</label>
-                                <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="{{ auth()->user()->name }}" type="text" placeholder="Name" id="user-name" name="name">
-                                        @error('name')
+                                <label for="point-name" class="form-control-label">{{ __('Nama Titik') }}</label>
+                                <div class="@error('point.name')border border-danger rounded-3 @enderror">
+                                    <input class="form-control" value="{{ old('point_name') }}" type="text" placeholder="Nama Titik" id="point-name" name="point_name">
+                                        @error('point_name')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
                                 </div>
@@ -36,10 +36,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user-name" class="form-control-label">{{ __('Nomor CCTV') }}</label>
-                                <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="{{ auth()->user()->name }}" type="text" placeholder="Name" id="user-name" name="name">
-                                        @error('name')
+                                <label for="cctv-number" class="form-control-label">{{ __('Nomor CCTV') }}</label>
+                                <div class="@error('cctv.number')border border-danger rounded-3 @enderror">
+                                    <input class="form-control" value="{{ old('cctv_number') }}" type="text" placeholder="Nomor CCTV" id="cctv-number" name="cctv_number">
+                                        @error('cctv_number')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
                                 </div>
@@ -47,10 +47,10 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user-name" class="form-control-label">{{ __('Link') }}</label>
-                                <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="{{ auth()->user()->name }}" type="text" placeholder="Name" id="user-name" name="name">
-                                        @error('name')
+                                <label for="cctv-link" class="form-control-label">{{ __('Link') }}</label>
+                                <div class="@error('cctv.link')border border-danger rounded-3 @enderror">
+                                    <input class="form-control" value="{{ old('cctv_link') }}" type="text" placeholder="Link" id="cctv-link" name="cctv_link">
+                                        @error('cctv_link')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
                                 </div>

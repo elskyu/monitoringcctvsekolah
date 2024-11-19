@@ -12,7 +12,9 @@
 
     function toggleCCTV(id, checkbox) {
       const cctv = document.getElementById(id);
+      const wilayah = cctv.closest('.wilayah-group').querySelector('.wilayah-name');
       cctv.style.display = checkbox.checked ? "block" : "none";
+      wilayah.style.display = checkbox.checked ? "block" : "none";
     }
 
     function showVideo(overlay) {
@@ -76,7 +78,7 @@
     <div class="col-md-9">
       @foreach($groupedCctvs as $wilayah => $cctvGroup)
         <div class="wilayah-group mb-4">
-          <h3 class="text-dark mb-3">{{ $wilayah }}</h3>
+          <h3 class="wilayah-name" style="display: none;">{{ $wilayah }}</h3>
           <div class="row">
             @foreach($cctvGroup as $cctv)
               <div class="col-md-6 col-lg-4 mb-4 cctv-view" id="{{ Str::slug($cctv->namaTitik) }}" style="display: none;">
@@ -110,73 +112,67 @@
 </div>
 
 @push('dashboard')
-<script>
-  window.onload = function() {
-    var ctx = document.getElementById("chart-bars").getContext("2d");
 
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-          label: "Sales",
-          tension: 0.4,
-          borderWidth: 0,
-          borderRadius: 4,
-          borderSkipped: false,
-          backgroundColor: "#fff",
-          data: [450, 200, 100, 220, 500, 100, 400, 230, 500],
-          maxBarThickness: 6
-        }, ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-            },
-            ticks: {
-              suggestedMin: 0,
-              suggestedMax: 500,
-              beginAtZero: true,
-              padding: 15,
-              font: {
-                size: 14,
-                family: "Open Sans",
-                style: 'normal',
-                lineHeight: 2
-              },
-              color: "#fff"
-            },
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false
-            },
-            ticks: {
-              display: false
-            },
-          },
-        },
-      },
-    });
+<style>
+  body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
   }
-</script>
+
+  header h1 {
+    font-size: 45px;
+    color: #0a0a0b;
+  }
+
+  header p {
+    font-size: 15px;
+    color: #6c757d;
+  }
+
+  .list-group-item {
+    cursor: pointer;
+  }
+
+  .list-group-item:hover {
+    background-color: #f1f1f1;
+  }
+
+  .form-check-label {
+    margin-left: 5px;
+  }
+
+  .card {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-title {
+    font-size: 12px;
+    color: #050505;
+  }
+
+  .iframe-container {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .iframe-overlay {
+    border-radius: 8px;
+  }
+
+  .btn-play {
+    fill: #fff;
+  }
+
+  .btn-primary {
+    background-color: #ff00b3;
+    border-color: #007bff;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+  }
+</style>
 @endpush
