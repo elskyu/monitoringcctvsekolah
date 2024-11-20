@@ -42,7 +42,7 @@
   <p>Memantau kondisi lalu lintas di berbagai titik kota secara real-time</p>
 </header>
 
-<div style="text-align: center; margin-bottom: 20px; display: flex; justify-content: flex-end; padding-right: 20px;">
+<div style="text-align: center; margin-bottom: -10px; display: flex; justify-content: flex-end; padding-right: 20px;">
   <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
 </div>
 
@@ -50,10 +50,10 @@
   $cctvs = DB::table('cctvs')->get();
 @endphp
 
-<div class="container">
+<div class="container" style="padding: 0;">
   <div class="row">
-    <div class="col-md-3">
-      <div class="list-group">
+    <div class="col-md-3" style="text-align: left; margin-left: -50; padding-left: 0;">
+      <div class="list-group" style="padding-left: 0;">
         @php
           $groupedCctvs = $cctvs->groupBy('namaWilayah');
         @endphp
