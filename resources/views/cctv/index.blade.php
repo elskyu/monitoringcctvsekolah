@@ -40,7 +40,11 @@
                                 <a href="{{ route('cctv.edit', $cctv->id) }}" class="btn btn-sm btn-primary">Edit</a>
                             </td>
                             <td class="align-middle">
-                              <a href="{{ route('cctv.edit', $cctv->id) }}" class="btn btn-sm btn-primary">Delete</a>
+                              <form action="{{ route('cctv.delete', $cctv->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this CCTV?')">Delete</button>
+                              </form>
                           </td>
                         </tr>
                     @endforeach

@@ -45,4 +45,11 @@ class cctvController extends Controller
         $cctv->save();
         return redirect()->route('cctv.index');
     }
+
+    public function delete($id)
+    {
+        $cctv = cctv::find($id);
+        $cctv->delete();
+        return redirect()->route('cctv.index');
+    }
 }
