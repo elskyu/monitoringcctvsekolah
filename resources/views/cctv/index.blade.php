@@ -39,6 +39,9 @@
                             <td class="align-middle">
                                 <a href="{{ route('cctv.edit', $cctv->id) }}" class="btn btn-sm btn-primary">Edit</a>
                             </td>
+                            <td class="align-middle">
+                              <a href="{{ route('cctv.edit', $cctv->id) }}" class="btn btn-sm btn-primary">Delete</a>
+                          </td>
                         </tr>
                     @endforeach
                 </tbody>
