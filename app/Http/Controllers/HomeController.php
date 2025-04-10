@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CCTV;
+use App\Models\cctv;
 use App\Http\Controllers\cctvController;
 use Illuminate\Http\Request;
 

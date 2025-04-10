@@ -24,7 +24,6 @@ class cctvController extends Controller
         $cctv = cctv::find($id);
         $cctv->namaWilayah = $request->namaWilayah;
         $cctv->namaTitik = $request->namaTitik;
-        $cctv->nomorKamera = $request->nomorKamera;
         $cctv->link = $request->link;
         $cctv->save();
         return redirect()->route('cctv.index');
@@ -40,7 +39,6 @@ class cctvController extends Controller
         $cctv = new cctv;
         $cctv->namaWilayah = $request->namaWilayah;
         $cctv->namaTitik = $request->namaTitik;
-        $cctv->nomorKamera = $request->nomorKamera;
         $cctv->link = $request->link;
         $cctv->save();
         return redirect()->route('cctv.index');

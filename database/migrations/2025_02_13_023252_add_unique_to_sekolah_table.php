@@ -10,21 +10,20 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('cctvs', function (Blueprint $table) {
-            $table->id();
-            $table->string('namaWilayah');
-            $table->string('namaTitik');
-            // $table->integer('nomorKamera');
-            $table->string('link');
-            $table->timestamps();
+        Schema::table('sekolah', function (Blueprint $table) {
+            $table->unique('namaTitik');
+            $table->unique('link');
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        //
+        Schema::table('sekolah', function (Blueprint $table) {
+            //
+        });
     }
 };

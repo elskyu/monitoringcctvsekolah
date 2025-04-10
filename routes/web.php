@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetController;
+use App\Http\Controllers\sekolahController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\cctvController;
 use Illuminate\Http\Request;
@@ -24,78 +25,88 @@ use App\Http\Controllers\VideoController;
 */
 
 Route::group(['middleware' => 'auth'], function () {
-	Route::get('dashboard', function () {
-		return view('dashboard');
-	})->name('dashboard');
+    Route::get('dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-	Route::get('billing', function () {
-		return view('billing');
-	})->name('billing');
+    Route::get('billing', function () {
+        return view('billing');
+    })->name('billing');
 
-	Route::get('profile', function () {
-		return view('profile');
-	})->name('profile');
+    Route::get('profile', function () {
+        return view('profile');
+    })->name('profile');
 
-	Route::get('rtl', function () {
-		return view('rtl');
-	})->name('rtl');
+    Route::get('rtl', function () {
+        return view('rtl');
+    })->name('rtl');
 
-	Route::get('user-management', function () {
-		return view('laravel-examples/user-management');
-	})->name('user-management');
+    Route::get('user-management', function () {
+        return view('laravel-examples/user-management');
+    })->name('user-management');
 
-	Route::get('tables', function () {
-		return view('tables');
-	})->name('tables');
+    Route::get('tables', function () {
+        return view('tables');
+    })->name('tables');
 
     Route::get('virtual-reality', function () {
-		return view('virtual-reality');
-	})->name('virtual-reality');
+        return view('virtual-reality');
+    })->name('virtual-reality');
 
     Route::get('static-sign-in', function () {
-		return view('static-sign-in');
-	})->name('sign-in');
+        return view('static-sign-in');
+    })->name('sign-in');
 
     Route::get('static-sign-up', function () {
-		return view('static-sign-up');
-	})->name('sign-up');
+        return view('static-sign-up');
+    })->name('sign-up');
 
     Route::get('/logout', [SessionsController::class, 'destroy']);
-	Route::get('/user-profile', [InfoUserController::class, 'create']);
-	Route::post('/user-profile', [InfoUserController::class, 'store']);
+    Route::get('/user-profile', [InfoUserController::class, 'create']);
+    Route::post('/user-profile', [InfoUserController::class, 'store']);
     Route::get('/login', function () {
-		return view('dashboard');
-	})->name('sign-up');
-
-    Route::get('/cctv', [cctvController::class, 'index'])->name('cctv.index');
-    Route::get('/cctv/create', [cctvController::class, 'create'])->name('cctv.create');
-    Route::post('/cctv', [cctvController::class, 'store'])->name('cctv.store');
-    Route::get('/cctv/{cctv}', [cctvController::class, 'show'])->name('cctv.show');
-    Route::get('editCctv/{cctv}', [cctvController::class, 'edit'])->name('cctv.edit');
-    Route::post('/cctv/{cctv}', [cctvController::class, 'update'])->name('cctv.update');
-    Route::delete('/cctv/{cctv}', [cctvController::class, 'delete'])->name('cctv.delete');
-
-	Route::get('/cctv', [cctvController::class, 'index'])->name('cctv.index');
-
-	Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
-Route::get('/videos/create', [VideoController::class, 'create'])->name('videos.create');
-Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
+        return view('dashboard');
+    })->name('sign-up');
+    Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
+    Route::get('/videos/create', [VideoController::class, 'create'])->name('videos.create');
+    Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
 
 
 });
 
+Route::get('/diy', [HomeController::class, 'home'])->name('welcome');
 
-Route::get('/', [HomeController::class, 'home'])->name('welcome');
+// Route CCTV
+Route::get('/cctv', [cctvController::class, 'index'])->name('cctv.index');
+Route::get('/cctv/create', [cctvController::class, 'create'])->name('cctv.create');
+Route::post('/cctv', [cctvController::class, 'store'])->name('cctv.store');
+Route::get('/cctv/{cctv}', [cctvController::class, 'show'])->name('cctv.show');
+Route::get('editCctv/{cctv}', [cctvController::class, 'edit'])->name('cctv.edit');
+Route::post('/cctv/{cctv}', [cctvController::class, 'update'])->name('cctv.update');
+Route::delete('/cctv/{cctv}', [cctvController::class, 'delete'])->name('cctv.delete');
+
+// Route sekolah
+Route::get('/', [sekolahController::class, 'dashboard'])->name('sekolah.sekolah');
+Route::get('/index', [sekolahController::class, 'index'])->name('sekolah.index');
+Route::get('/create', [sekolahController::class, 'create'])->name('sekolah.create');
+Route::post('/sekolah', [sekolahController::class, 'store'])->name('sekolah.store');
+Route::get('editSekolah/{sekolah}', [sekolahController::class, 'edit'])->name('sekolah.edit');
+Route::post('/sekolah/{sekolah}', [sekolahController::class, 'update'])->name('sekolah.update');
+Route::delete('/sekolah/{sekolah}', [sekolahController::class, 'delete'])->name('sekolah.delete');
+Route::get('/sekolah/check-duplicate', [SekolahController::class, 'checkDuplicate'])->name('sekolah.checkDuplicate');
+Route::get('/sekolah/getWilayah', [SekolahController::class, 'getWilayah'])->name('sekolah.getWilayah');
+
+
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
     Route::post('/register', [RegisterController::class, 'store']);
     Route::get('/login', [SessionsController::class, 'create']);
     Route::post('/session', [SessionsController::class, 'store']);
-	Route::get('/login/forgot-password', [ResetController::class, 'create']);
-	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
-	Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
-	Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
+    Route::get('/login/forgot-password', [ResetController::class, 'create']);
+    Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
+    Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
+    Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
 
 });
 
