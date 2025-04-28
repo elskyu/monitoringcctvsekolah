@@ -84,7 +84,7 @@
     @section('content')
         <div class="pb-0 d-flex justify-content-end">
             <button class="floating-button btn" style="background-color: rgba(255, 0, 183, 0.63); color: white;"
-                data-bs-toggle="modal" data-bs-target="#addPanoramaModal">
+                data-bs-toggle="modal" data-bs-target="#addEditPanoramaModal" onclick="resetForm()">
                 Tambah CCTV Panorama
             </button>
         </div>
@@ -115,20 +115,20 @@
                                                     <td class="text-center align-middle">
                                                         <div class="d-flex justify-content-center gap-2">
                                                             <!-- Form Edit -->
-                                                            <form action="{{ route('sekolah.edit', $item->id) }}"
-                                                                method="GET">
-                                                                <button type="submit"
-                                                                    class="btn btn-sm btn-primary">Edit</button>
-                                                            </form>
+                                                            <button class="btn btn-sm btn-primary"
+                                                                onclick="editPanorama({{ $item->id }}, '{{ $item->namaWilayah }}', '{{ $item->namaTitik }}', '{{ $item->link }}')"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#addEditPanoramaModal">
+                                                                Edit
+                                                            </button>
 
                                                             <!-- Form Delete -->
-                                                            <form action="{{ route('sekolah.delete', $item->id) }}"
-                                                                method="POST"
-                                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus CCTV ini?');">
+                                                            <form action="{{ route('panorama.delete', $item->id) }}"
+                                                                method="POST" id="deleteForm{{ $item->id }}">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit"
-                                                                    class="btn btn-sm btn-danger">Delete</button>
+                                                                <button type="button" class="btn btn-sm btn-danger"
+                                                                    onclick="confirmDelete({{ $item->id }})">Delete</button>
                                                             </form>
                                                         </div>
                                                     </td>
@@ -146,17 +146,17 @@
     @endsection
 
     <div class="background-image" style="background-image: url('{{ asset('images/pattern.jpg') }}');"></div>
-    <!-- Modal for Add Panorama -->
-    <div class="modal fade" id="addPanoramaModal" tabindex="-1" aria-labelledby="addPanoramaModalLabel"
+    <!-- Modal for Add/Edit Panorama -->
+    <div class="modal fade" id="addEditPanoramaModal" tabindex="-1" aria-labelledby="addEditPanoramaModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addPanoramaModalLabel">Tambah CCTV Panorama</h5>
+                    <h5 class="modal-title" id="addEditPanoramaModalLabel">Tambah CCTV Panorama</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addPanoramaForm" action="{{ route('panorama.store') }}" method="POST">
+                    <form id="addEditPanoramaForm" action="{{ route('panorama.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="namaWilayah" class="form-label">Nama Wilayah</label>
@@ -176,5 +176,59 @@
             </div>
         </div>
     </div>
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(id) {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Data ini akan dihapus secara permanen.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Jika konfirmasi di klik, submit form delete
+                document.getElementById('deleteForm' + id).submit();
+            }
+        });
+    }
+        // Cek jika ada session success atau error
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: '{{ session('success') }}',
+            });
+        @endif
 
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+            });
+        @endif
+    </script>
+
+    <script>
+        // Reset Form saat menambah data baru
+        function resetForm() {
+            document.getElementById('addEditPanoramaForm').reset();
+            document.getElementById('addEditPanoramaForm').action = "{{ route('panorama.store') }}";
+            document.getElementById('addEditPanoramaModalLabel').textContent = "Tambah CCTV Panorama";
+        }
+
+        // Mengisi form untuk Edit
+        function editPanorama(id, namaWilayah, namaTitik, link) {
+            document.getElementById('namaWilayah').value = namaWilayah;
+            document.getElementById('namaTitik').value = namaTitik;
+            document.getElementById('link').value = link;
+            document.getElementById('addEditPanoramaForm').action = '/panorama/' + id;
+            document.getElementById('addEditPanoramaModalLabel').textContent = "Edit CCTV Panorama";
+        }
+    </script>
 </body>
