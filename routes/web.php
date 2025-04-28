@@ -100,7 +100,10 @@ Route::get('/sekolah/getWilayah', [SekolahController::class, 'getWilayah'])->nam
 //Route Panorama
 Route::get('/cctv-panorama', [Panoramacontroller::class, 'dashboard'])->name('sekolah.sekolah');
 Route::get('/index2', [Panoramacontroller::class, 'index'])->name('panorama.index');
-Route::post('/store-panorama', [PanoramaController::class, 'store'])->name('panorama.store');
+Route::post('/store-panorama', [Panoramacontroller::class, 'store'])->name('panorama.store');
+Route::post('/panorama/{id}', [Panoramacontroller::class, 'update'])->name('panorama.update');
+Route::delete('/panorama/{id}', [Panoramacontroller::class, 'delete'])->name('panorama.delete');
+
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [SessionsController::class, 'create']);

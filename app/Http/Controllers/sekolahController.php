@@ -54,7 +54,7 @@ class sekolahController extends Controller
 
     public function delete($id)
     {
-        $sekolah = sekolah::find($id);
+        $sekolah = sekolah::find($id);  
         $sekolah->delete();
         return redirect()->route('sekolah.index');
     }
