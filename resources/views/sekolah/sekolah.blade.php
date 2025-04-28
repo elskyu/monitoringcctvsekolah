@@ -14,8 +14,14 @@
     <title>Dashboard CCTV</title>
     <script>
         function toggleDaerah(id) {
-            const daerahList = document.getElementById(id);
-            daerahList.style.display = (daerahList.style.display === "none" || daerahList.style.display === "") ? "block" : "none";
+            const subMenu = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id); // ID harus match
+
+            const isVisible = subMenu.style.display === 'block';
+
+            subMenu.style.display = isVisible ? 'none' : 'block';
+            icon.classList.toggle('fa-angle-right');
+            icon.classList.toggle('fa-angle-down');
         }
 
         function toggleCCTV(id, checkbox) {
@@ -25,43 +31,80 @@
             if (checkbox.checked) {
                 cctvContainer.style.display = "block";
                 iframe.src = iframe.getAttribute("data-src");
-                addCCTVToHash(id); // Tambahkan CCTV ke URL hash
             } else {
                 cctvContainer.style.display = "none";
                 iframe.src = "";
-                removeCCTVFromHash(id); // Hapus CCTV dari URL hash
             }
+
+            // Simpan status ke localStorage
+            localStorage.setItem(checkbox.id, checkbox.checked);
         }
 
-        function addCCTVToHash(id) {
-            const currentHash = window.location.hash.replace('#', '');
-            const cctvList = currentHash ? decodeHash(currentHash).split(',') : [];
-            if (!cctvList.includes(id)) {
-                cctvList.push(id);
-                window.location.hash = encodeHash(cctvList.join(',')); // Update URL hash dengan hash yang di-encode
+        function toggleIcon(event, namaSekolah) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            const icon = event.target;
+            const cctvToShow = document.querySelectorAll(`.cctv-view[data-sekolah="${namaSekolah}"]`);
+            const checkboxes = document.querySelectorAll(`input[data-sekolah="${namaSekolah}"]`); // Pilih semua checkbox
+
+            let activeSchools = JSON.parse(localStorage.getItem("activeSchools")) || [];
+
+            if (icon.classList.contains('fa-eye')) {
+                // Tampilkan CCTV
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+
+                cctvToShow.forEach(cctv => {
+                    cctv.style.display = "block";
+                    const iframe = cctv.querySelector("iframe");
+                    if (iframe) {
+                        iframe.src = iframe.getAttribute("data-src");
+                    }
+                });
+
+                // Tambahkan sekolah ke daftar aktif jika belum ada
+                if (!activeSchools.includes(namaSekolah)) {
+                    activeSchools.push(namaSekolah);
+                }
+
+                // Centang semua checkbox yang terkait
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                    toggleCCTV(checkbox.id.replace('checkbox-', ''), checkbox);
+                });
+
+            } else {
+                // Sembunyikan CCTV
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+
+                cctvToShow.forEach(cctv => {
+                    cctv.style.display = "none";
+                });
+
+                // Hapus sekolah dari daftar aktif
+                activeSchools = activeSchools.filter(school => school !== namaSekolah);
+
+                // Hapus centang checkbox yang sesuai
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                    toggleCCTV(checkbox.id.replace('checkbox-', ''), checkbox);
+                });
             }
-        }
 
-        function removeCCTVFromHash(id) {
-            const currentHash = window.location.hash.replace('#', '');
-            const cctvList = currentHash ? decodeHash(currentHash).split(',') : [];
-            const updatedList = cctvList.filter(cctv => cctv !== id);
-            window.location.hash = encodeHash(updatedList.join(',')); // Update URL hash dengan hash yang di-encode
-        }
-
-        function encodeHash(hash) {
-            return btoa(hash); // Encode ke Base64
-        }
-
-        function decodeHash(encodedHash) {
-            return atob(encodedHash); // Decode dari Base64
+            // Simpan atau hapus daftar sekolah aktif dari localStorage
+            if (activeSchools.length === 0) {
+                localStorage.removeItem("activeSchools");
+            } else {
+                localStorage.setItem("activeSchools", JSON.stringify(activeSchools));
+            }
         }
 
         window.onload = function () {
-            const hash = window.location.hash.replace('#', '');
-
-            if (hash) {
-                const cctvList = decodeHash(hash).split(','); // Decode hash dari Base64
+            const stored = localStorage.getItem("activeCCTVs");
+            if (stored) {
+                const cctvList = JSON.parse(stored);
                 cctvList.forEach(id => {
                     const checkbox = document.querySelector(`#checkbox-${id}`);
                     if (checkbox) {
@@ -112,12 +155,75 @@
             }
         });
 
+        // Mencegah label memicu fungsi toggleCCTV
+        document.querySelectorAll('.form-check-label').forEach(label => {
+            label.addEventListener('click', function (event) {
+                event.preventDefault();
+                const checkbox = document.querySelector('#' + label.getAttribute('for'));
+                checkbox.checked = !checkbox.checked;
 
+                const id = checkbox.id.replace('checkbox-', '');
+                toggleCCTV(id, checkbox);
+            });
+        });
+
+        // Fungsi untuk menyembunyikan semua CCTV
+        function hideAllCCTV() {
+            // Hentikan semua streaming dan sembunyikan CCTV
+            document.querySelectorAll('.cctv-view').forEach(element => {
+                const iframe = element.querySelector('iframe');
+                if (iframe) iframe.src = "";
+                element.style.display = 'none';
+            });
+
+            // Reset UI
+            document.querySelectorAll('.icon-toggle.fa-eye-slash').forEach(icon => {
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            });
+
+            // Reset semua checkbox dan hapus statusnya dari localStorage
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+                localStorage.removeItem(checkbox.id); // Hapus status per checkbox
+            });
+
+            // Reset dropdown
+            const dropdown = document.getElementById("school-dropdown");
+            if (dropdown) dropdown.value = "";
+
+            // Hapus SEMUA data terkait CCTV dari localStorage
+            localStorage.removeItem("activeSchools");
+            localStorage.removeItem("activeCCTVs");
+            localStorage.removeItem("selectedSchool");
+
+            // Hapus hash URL
+            window.location.hash = "";
+        }
+
+        function removeCCTVFromHash(id) {
+            const currentHash = window.location.hash.replace('#', '');
+            const cctvList = currentHash ? decodeHash(currentHash).split(',') : [];
+            const updatedList = cctvList.filter(cctv => cctv !== id);
+            window.location.hash = encodeHash(updatedList.join(',')); // Update URL hash dengan hash yang di-encode
+        }
+
+        // Ambil pilihan terakhir dari localStorage saat halaman dimuat
         document.addEventListener("DOMContentLoaded", function () {
-            // Ambil daftar CCTV yang aktif dari URL hash
-            const activeCCTVs = getActiveCCTVsFromHash();
+            loadActiveSchoolsFromLocalStorage();
+            updateStatistics();
 
-            // Loop melalui semua checkbox dan centang yang sesuai
+            // 1. Pulihkan status checkbox dari localStorage
+            document.querySelectorAll('input[type="checkbox"][id^="checkbox-"]').forEach(checkbox => {
+                const savedState = localStorage.getItem(checkbox.id);
+                if (savedState !== null) {
+                    checkbox.checked = savedState === 'true';
+                    const containerId = checkbox.id.replace('checkbox-', '');
+                    toggleCCTV(containerId, checkbox);
+                }
+            });
+
+            // 2. Ambil daftar CCTV dari hash (prioritas lebih tinggi dari localStorage)
+            const activeCCTVs = getActiveCCTVsFromHash();
             activeCCTVs.forEach(id => {
                 const checkbox = document.getElementById(`checkbox-${id}`);
                 if (checkbox) {
@@ -125,82 +231,8 @@
                     toggleCCTV(id, checkbox);
                 }
             });
-        });
 
-        function getActiveCCTVsFromHash() {
-            // Ambil hash dari URL (misalnya: #cctv1,cctv2)
-            const hash = window.location.hash.substring(1);
-            return hash.split(',').filter(Boolean); // Filter untuk menghapus string kosong
-        }
-
-        function addCCTVToHash(id) {
-            let activeCCTVs = getActiveCCTVsFromHash();
-            if (!activeCCTVs.includes(id)) {
-                activeCCTVs.push(id);
-                window.location.hash = activeCCTVs.join(',');
-            }
-        }
-
-        function removeCCTVFromHash(id) {
-            let activeCCTVs = getActiveCCTVsFromHash();
-            activeCCTVs = activeCCTVs.filter(cctvId => cctvId !== id);
-            window.location.hash = activeCCTVs.join(',');
-        }
-
-        // Mencegah label memicu fungsi toggleCCTV
-        document.querySelectorAll('.form-check-label').forEach(label => {
-            label.addEventListener('click', function (event) {
-                event.preventDefault();
-                const checkbox = document.querySelector('#' + label.getAttribute('for'));
-                checkbox.checked = !checkbox.checked;
-                toggleCCTV(checkbox.id.replace('checkbox-', ''), checkbox);
-            });
-        });
-
-        function hideAllCCTV() {
-            // Ambil semua elemen CCTV yang sedang ditampilkan
-            const cctvElements = document.querySelectorAll('.cctv-view');
-
-            // Loop melalui setiap elemen CCTV dan sembunyikan
-            cctvElements.forEach(element => {
-                const iframe = element.querySelector("iframe");
-                if (iframe) {
-                    iframe.src = ""; // Hentikan streaming iframe
-                }
-                element.style.display = 'none'; // Sembunyikan elemen CCTV
-            });
-
-            // Reset semua ikon mata yang aktif
-            const activeIcons = document.querySelectorAll('.icon-toggle.fa-eye-slash');
-            activeIcons.forEach(icon => {
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye'); // Kembalikan ikon ke keadaan mata terbuka
-            });
-
-            // Uncheck semua checkbox yang aktif
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    checkbox.checked = false;
-                    const id = checkbox.id.replace('checkbox-', '');
-                    removeCCTVFromHash(id); // Hapus CCTV dari URL hash
-                }
-            });
-
-            // Reset dropdown ke default (Pilih Sekolah)
-            const dropdown = document.getElementById("school-dropdown");
-            if (dropdown) {
-                dropdown.value = ""; // Set kembali ke default
-            }
-
-            // Hapus state sekolah dari localStorage
-            localStorage.removeItem("activeSchools");
-            // Update URL hash untuk menghapus semua CCTV
-            window.location.hash = "";
-        }
-
-        // Ambil pilihan terakhir dari localStorage saat halaman dimuat
-        document.addEventListener("DOMContentLoaded", function () {
+            // 3. Restore dropdown sekolah
             const selectedSchool = localStorage.getItem("selectedSchool");
             if (selectedSchool) {
                 document.getElementById("school-dropdown").value = selectedSchool;
@@ -208,90 +240,35 @@
             }
         });
 
-        function toggleIcon(event, namaSekolah) {
-            event.stopPropagation();
-            event.preventDefault();
-
-            const icon = event.target;
-            const cctvToShow = document.querySelectorAll(`.cctv-view[data-sekolah="${namaSekolah}"]`);
-            let activeSchools = JSON.parse(localStorage.getItem("activeSchools")) || [];
-
-            if (icon.classList.contains('fa-eye')) {
-                // Tampilkan CCTV
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-
-                cctvToShow.forEach(cctv => {
-                    cctv.style.display = "block";
-                    const iframe = cctv.querySelector("iframe");
-                    if (iframe) {
-                        iframe.src = iframe.getAttribute("data-src");
-                    }
-                });
-
-                // Tambahkan sekolah ke daftar aktif jika belum ada
-                if (!activeSchools.includes(namaSekolah)) {
-                    activeSchools.push(namaSekolah);
-                }
-
-                // Centang checkbox yang sesuai
-                const checkbox = document.querySelector(`#checkbox-${namaSekolah}`);
-                if (checkbox) {
-                    checkbox.checked = true; // Menggunakan properti `checked`
-                }
-            } else {
-                // Sembunyikan CCTV
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-
-                cctvToShow.forEach(cctv => {
-                    cctv.style.display = "none";
-                });
-
-                // Hapus sekolah dari daftar aktif
-                activeSchools = activeSchools.filter(school => school !== namaSekolah);
-
-                // Hapus centang checkbox yang sesuai
-                const checkbox = document.querySelector(`#checkbox-${namaSekolah}`);
-                if (checkbox) {
-                    checkbox.checked = false; // Menggunakan properti `checked`
-                }
-            }
-
-            // Simpan atau hapus daftar sekolah aktif dari localStorage
-            if (activeSchools.length === 0) {
-                localStorage.removeItem("activeSchools");
-            } else {
-                localStorage.setItem("activeSchools", JSON.stringify(activeSchools));
-            }
-        }
 
         function loadActiveSchoolsFromLocalStorage() {
             const activeSchools = JSON.parse(localStorage.getItem("activeSchools")) || [];
+            setTimeout(() => {
+                activeSchools.forEach(namaSekolah => {
+                    const cctvToShow = document.querySelectorAll(
+                        `.cctv-view[data-sekolah="${namaSekolah}"]`);
 
-            activeSchools.forEach(namaSekolah => {
-                const cctvToShow = document.querySelectorAll(`.cctv-view[data-sekolah="${namaSekolah}"]`);
+                    cctvToShow.forEach(cctv => {
+                        cctv.style.display = "block";
+                        const iframe = cctv.querySelector("iframe");
+                        if (iframe) {
+                            iframe.src = iframe.getAttribute("data-src");
+                        }
+                    });
 
-                cctvToShow.forEach(cctv => {
-                    cctv.style.display = "block";
-                    const iframe = cctv.querySelector("iframe");
-                    if (iframe) {
-                        iframe.src = iframe.getAttribute("data-src");
+                    const icon = document.querySelector(`.icon-toggle[onclick*="${namaSekolah}"]`);
+                    if (icon) {
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
                     }
+
+                    const checkboxes = document.querySelectorAll(`input[data-sekolah="${namaSekolah}"]`);
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = true;
+                        toggleCCTV(checkbox.id.replace('checkbox-', ''), checkbox);
+                    });
                 });
-
-                const icon = document.querySelector(`.icon-toggle[onclick*="${namaSekolah}"]`);
-                if (icon) {
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                }
-
-                // Centang checkbox yang sesuai
-                const checkbox = document.querySelector(`#checkbox-${namaSekolah}`);
-                if (checkbox) {
-                    checkbox.checked = true; // Menggunakan properti `checked`
-                }
-            });
+            }, 300); // Delay 300ms untuk memastikan semua checkbox udah ada
         }
 
         // Fungsi untuk menghitung dan menampilkan statistik
@@ -313,13 +290,6 @@
             document.getElementById('schoolCount').textContent = schools.size;
             document.getElementById('regionCount').textContent = regionCount;
         }
-
-        // Panggil fungsi saat halaman dimuat dan setiap ada perubahan
-        document.addEventListener("DOMContentLoaded", loadActiveSchoolsFromLocalStorage);
-        document.addEventListener("DOMContentLoaded", updateStatistics);
-        window.addEventListener('load', updateStatistics);
-        window.addEventListener('hashchange', updateStatistics);
-        window.addEventListener('load', loadActiveSchoolsFromLocalStorage);
     </script>
 
     <style>
@@ -863,32 +833,34 @@
 
                     <!-- Menu navigasi -->
                     <div class="menu">
-                        @foreach($groupedCctvs as $wilayah => $sekolahGroup)
+                        @foreach ($groupedCctvs as $wilayah => $sekolahGroup)
                             <div class="item" style="font-size: 12px">
                                 <a href="javascript:void(0);" class="sub-btn"
                                     onclick="toggleDaerah('{{ Str::slug($wilayah) }}')">
                                     <i></i> {{ $wilayah }}
-                                    <i class="fas fa-angle-right dropdown" style="margin-top: 4px;"></i>
+                                    <i id="icon-{{ Str::slug($wilayah) }}" class="fas fa-angle-right dropdown"
+                                        style="margin-top: 4px;"></i>
                                 </a>
                                 <div id="{{ Str::slug($wilayah) }}" class="sub-menu">
-                                    @foreach($sekolahGroup as $namaSekolah => $cctvGroup)
+                                    @foreach ($sekolahGroup as $namaSekolah => $cctvGroup)
                                         <div class="item">
                                             <a href="javascript:void(0);" class="sub-btn"
                                                 onclick="toggleDaerah('{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}')">
                                                 <i class="fas fa-eye icon-toggle" style="margin-right: 8px; margin-top: 4px;"
                                                     onclick="event.stopPropagation(); toggleIcon(event, '{{ Str::slug($namaSekolah) }}')"></i>
                                                 {{ $namaSekolah }}
-                                                <i class="fas fa-angle-right dropdown"
-                                                    style="font-size: 12px; margin-top: 4px;"></i>
+                                                <i id="icon-{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}"
+                                                    class="fas fa-angle-right dropdown" style="margin-top: 4px;"></i>
                                             </a>
                                             <div id="{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}"
                                                 class="sub-menu">
-                                                @foreach($cctvGroup as $sekolah)
+                                                @foreach ($cctvGroup as $sekolah)
                                                     <label class="form-check d-flex align-items-center gap-2"
                                                         style="cursor: pointer;">
                                                         <input
                                                             style="margin-left: -5px; width: 10px; height: 10px; cursor: pointer;"
-                                                            type="checkbox" id="checkbox-{{ Str::slug($namaSekolah) }}"
+                                                            type="checkbox" id="checkbox-{{ Str::slug($sekolah->namaTitik) }}"
+                                                            data-sekolah="{{ Str::slug($namaSekolah) }}"
                                                             onclick="event.stopPropagation(); toggleCCTV('{{ Str::slug($sekolah->namaTitik) }}', this)">
                                                         <span style="font-size: 12px;" class="form-check-label mb-0">
                                                             {{ $sekolah->namaTitik }}
@@ -940,17 +912,20 @@
                 </div>
 
                 <div class="row g-3">
-                    @foreach($groupedCctvs as $wilayah => $sekolahGroup)
-                                @foreach($sekolahGroup as $namaSekolah => $cctvGroup)
-                                            @foreach($cctvGroup as $cctv)
+                    @foreach ($groupedCctvs as $wilayah => $sekolahGroup)
+                                @foreach ($sekolahGroup as $namaSekolah => $cctvGroup)
+                                            @foreach ($cctvGroup as $cctv)
                                                         @php
                                                             // Memeriksa jumlah kata dalam namaTitik
                                                             $kata = explode(' ', $cctv->namaTitik);
                                                             if (count($kata) > 3) {
                                                                 // Jika lebih dari 3 kata, singkat dengan mengambil huruf depan setiap kata
-                                                                $singkatan = implode('', array_map(function ($word) {
-                                                                    return strtoupper(substr($word, 0, 1));
-                                                                }, $kata));
+                                                                $singkatan = implode(
+                                                                    '',
+                                                                    array_map(function ($word) {
+                                                                        return strtoupper(substr($word, 0, 1));
+                                                                    }, $kata),
+                                                                );
                                                             } else {
                                                                 // Jika 3 kata atau kurang, tampilkan namaTitik secara utuh
                                                                 $singkatan = $cctv->namaTitik;
