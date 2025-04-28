@@ -101,17 +101,11 @@ Route::get('/sekolah/getWilayah', [SekolahController::class, 'getWilayah'])->nam
 Route::get('/cctv-panorama', [Panoramacontroller::class, 'dashboard'])->name('sekolah.sekolah');
 
 Route::group(['middleware' => 'guest'], function () {
-    Route::get('/register', [RegisterController::class, 'create']);
-    Route::post('/register', [RegisterController::class, 'store']);
     Route::get('/login', [SessionsController::class, 'create']);
-    Route::post('/session', [SessionsController::class, 'store']);
+    Route::post('/session', [SessionsController::class, 'store'])->name('login');
     Route::get('/login/forgot-password', [ResetController::class, 'create']);
     Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
     Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
     Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
-
 });
 
-Route::get('/login', function () {
-    return view('session/login-session');
-})->name('login');
