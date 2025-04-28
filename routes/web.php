@@ -6,6 +6,7 @@ use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetController;
 use App\Http\Controllers\sekolahController;
+use App\Http\Controllers\Panoramacontroller;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\cctvController;
 use Illuminate\Http\Request;
@@ -96,7 +97,8 @@ Route::delete('/sekolah/{sekolah}', [sekolahController::class, 'delete'])->name(
 Route::get('/sekolah/check-duplicate', [SekolahController::class, 'checkDuplicate'])->name('sekolah.checkDuplicate');
 Route::get('/sekolah/getWilayah', [SekolahController::class, 'getWilayah'])->name('sekolah.getWilayah');
 
-
+//Route Panorama
+Route::get('/cctv-panorama', [Panoramacontroller::class, 'dashboard'])->name('sekolah.sekolah');
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'create']);
