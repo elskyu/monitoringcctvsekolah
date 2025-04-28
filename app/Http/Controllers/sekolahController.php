@@ -72,6 +72,4 @@ class sekolahController extends Controller
         $sekolah = sekolah::select('namaWilayah')->distinct()->get(); // Ambil hanya kolom namaWilayah
         return response()->json($sekolah);
     }
-
-
 }
