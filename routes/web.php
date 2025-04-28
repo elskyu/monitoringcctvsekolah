@@ -99,6 +99,8 @@ Route::get('/sekolah/getWilayah', [SekolahController::class, 'getWilayah'])->nam
 
 //Route Panorama
 Route::get('/cctv-panorama', [Panoramacontroller::class, 'dashboard'])->name('sekolah.sekolah');
+Route::get('/index2', [Panoramacontroller::class, 'index'])->name('panorama.index');
+Route::post('/store-panorama', [PanoramaController::class, 'store'])->name('panorama.store');
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [SessionsController::class, 'create']);
