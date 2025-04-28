@@ -1,66 +1,80 @@
 @extends('layouts.user_type.guest')
 
 @section('content')
+    <main class="main-content mt-0">
+        <section class="min-vh-100 d-flex align-items-center justify-content-center"
+            style="background: url('{{ asset('assets/img/robt.jpg') }}') no-repeat center center; background-size: cover;">
 
-<main class="main-content mt-0">
-  <section>
-    <!-- Flexbox parent container -->
-    <div class="page-header min-vh-100 d-flex align-items-center justify-content-center" style="background-image: url('{{ asset('assets/img/robt.jpg') }}'); background-size: cover; background-position: center;">
-      <div class="container">
-        <div class="row justify-content-center">
-          <!-- Card for login -->
-          <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
-            <div class="card card-plain">
-              <div class="card-header pb-0 text-center bg-transparent">
-                <h3 class="font-weight-bolder text-info text-gradient">Welcome back</h3>
-              </div>
-              <div class="card-body">
-                <form role="form" method="POST" action="/session">
-                  @csrf
-                  <label>Email</label>
-                  <div class="mb-3">
-                    <input type="email" class="form-control" name="email" id="email"
-                      placeholder="Email" value="admin@softui.com" aria-label="Email"
-                      aria-describedby="email-addon">
-                    @error('email')
-                    <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                    @enderror
-                  </div>
-                  <label>Password</label>
-                  <div class="mb-3">
-                    <input type="password" class="form-control" name="password" id="password"
-                      placeholder="Password" value="secret" aria-label="Password"
-                      aria-describedby="password-addon">
-                    @error('password')
-                    <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                    @enderror
-                  </div>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
-                    <label class="form-check-label" for="rememberMe">Remember me</label>
-                  </div>
-                  <div class="text-center">
-                    <button type="submit"
-                      class="btn bg-gradient-info w-100 mt-4 mb-0">Sign in</button>
-                  </div>
-                </form>
-              </div>
-              <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                <small class="text-muted">Forgot your password? Reset your password
-                  <a href="/login/forgot-password" class="text-info text-gradient font-weight-bold">here</a>
-                </small>
-                <p class="mb-4 text-sm mx-auto">
-                  Don't have an account?
-                  <a href="register" class="text-info text-gradient font-weight-bold">Sign up</a>
-                </p>
-              </div>
+            <div class="container">
+                <div class="row justify-content-center">
+
+                    <div class="col-xl-4 col-lg-5 col-md-6">
+                        <div class="card card-plain shadow-lg border-0">
+
+                            <div class="card-header text-center bg-transparent pb-0">
+                                <h3 class="text-gradient text-info font-weight-bold">Selamat Datang</h3>
+                                <p class="mb-0">Silahkan login terlebih dahulu</p>
+                            </div>
+
+                            <div class="card-body">
+                                {{-- Pesan sukses --}}
+                                @if (session('success'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        {{ session('success') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+
+                                {{-- Pesan error umum --}}
+                                @if (session('error'))
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        {{ session('error') }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+
+                                {{-- Error validasi --}}
+                                @if ($errors->any())
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <ul class="mb-0">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                @endif
+
+                                <form method="POST" action="{{ route('login') }}" role="form">
+                                    @csrf
+
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" id="email" name="email"
+                                            class="form-control @error('email') is-invalid @enderror"
+                                            placeholder="Email" value="{{ old('email') }}" required autofocus>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" id="password" name="password"
+                                            class="form-control @error('password') is-invalid @enderror"
+                                            placeholder="Password" required>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn bg-gradient-info w-100">Sign In</button>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
             </div>
-          </div>
-          <!-- End of card -->
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
 
+        </section>
+    </main>
 @endsection
