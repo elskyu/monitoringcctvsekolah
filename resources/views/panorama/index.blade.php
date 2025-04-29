@@ -180,22 +180,24 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function confirmDelete(id) {
-        Swal.fire({
-            title: 'Apakah Anda yakin?',
-            text: "Data ini akan dihapus secara permanen.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Jika konfirmasi di klik, submit form delete
-                document.getElementById('deleteForm' + id).submit();
-            }
-        });
-    }
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data ini akan dihapus secara permanen.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika konfirmasi di klik, submit form delete
+                    document.getElementById('deleteForm' + id).submit();
+                }
+            });
+        }
+
+
         // Cek jika ada session success atau error
         @if (session('success'))
             Swal.fire({
@@ -210,6 +212,17 @@
                 icon: 'error',
                 title: 'Gagal',
                 text: '{{ session('error') }}',
+            });
+        @endif
+
+        @if (session('validation_error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                html: `{!! implode('<br>', $errors->all()) !!}`,
+            }).then(() => {
+                var myModal = new bootstrap.Modal(document.getElementById('addEditPanoramaModal'));
+                myModal.show();
             });
         @endif
     </script>
