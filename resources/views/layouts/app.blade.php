@@ -66,6 +66,8 @@
   @stack('rtl')
   @stack('dashboard')
 
+
+
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -84,6 +86,6 @@
 
   <script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" ></script>
   
-
+  @stack('scriptsku')
 </body>
 </html>

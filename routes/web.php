@@ -5,8 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoUserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetController;
-use App\Http\Controllers\sekolahController;
-use App\Http\Controllers\Panoramacontroller;
+use App\Http\Controllers\SekolahController;
+use App\Http\Controllers\PanoramaController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\cctvController;
 use Illuminate\Http\Request;
@@ -34,9 +34,9 @@ Route::group(['middleware' => 'auth'], function () {
         return view('user-management');
     })->name('user-management');
 
-    Route::get('menu-sekolah', function () {
-        return view('menu-sekolah');
-    })->name('menu-sekolah');
+    Route::get('menu-sekolah', [SekolahController::class, 'index'])->name('menu-sekolah');
+
+    Route::get('/index',  [SekolahController::class, 'index'])->name('sekolah.index');
 
     Route::get('menu-panorama', function () {
         return view('menu-panorama');
@@ -95,22 +95,24 @@ Route::post('/cctv/{cctv}', [cctvController::class, 'update'])->name('cctv.updat
 Route::delete('/cctv/{cctv}', [cctvController::class, 'delete'])->name('cctv.delete');
 
 // Route sekolah
-Route::get('/', [sekolahController::class, 'dashboard'])->name('sekolah.sekolah');
-Route::get('/index', [sekolahController::class, 'index'])->name('sekolah.index');
-Route::get('/create', [sekolahController::class, 'create'])->name('sekolah.create');
-Route::post('/sekolah', [sekolahController::class, 'store'])->name('sekolah.store');
-Route::get('editSekolah/{sekolah}', [sekolahController::class, 'edit'])->name('sekolah.edit');
-Route::post('/sekolah/{sekolah}', [sekolahController::class, 'update'])->name('sekolah.update');
-Route::delete('/sekolah/{sekolah}', [sekolahController::class, 'delete'])->name('sekolah.delete');
+Route::get('/', [SekolahController::class, 'dashboard'])->name('sekolah.sekolah');
+Route::get('/index',  [SekolahController::class, 'index'])->name('sekolah.index');
+Route::get('/create', [SekolahController::class, 'create'])->name('sekolah.create');
+Route::post('/sekolah', [SekolahController::class, 'store'])->name('sekolah.store');
+Route::get('editSekolah/{sekolah}', [SekolahController::class, 'edit'])->name('sekolah.edit');
+Route::post('/sekolah/{sekolah}', [SekolahController::class, 'update'])->name('sekolah.update');
+Route::delete('/sekolah/{sekolah}', [SekolahController::class, 'delete'])->name('sekolah.delete');
 Route::get('/sekolah/check-duplicate', [SekolahController::class, 'checkDuplicate'])->name('sekolah.checkDuplicate');
 Route::get('/sekolah/getWilayah', [SekolahController::class, 'getWilayah'])->name('sekolah.getWilayah');
+Route::get('/sekolah/search', [SekolahController::class, 'search'])->name('sekolah.search');
+
 
 //Route Panorama
-Route::get('/cctv-panorama', [Panoramacontroller::class, 'dashboard'])->name('sekolah.sekolah');
-Route::get('/index2', [Panoramacontroller::class, 'index'])->name('panorama.index');
-Route::post('/store-panorama', [Panoramacontroller::class, 'store'])->name('panorama.store');
-Route::post('/panorama/{id}', [Panoramacontroller::class, 'update'])->name('panorama.update');
-Route::delete('/panorama/{id}', [Panoramacontroller::class, 'delete'])->name('panorama.delete');
+Route::get('/cctv-panorama', [PanoramaController::class, 'dashboard'])->name('sekolah.sekolah');
+Route::get('/index2', [PanoramaController::class, 'index'])->name('panorama.index');
+Route::post('/store-panorama', [PanoramaController::class, 'store'])->name('panorama.store');
+Route::post('/panorama/{id}', [PanoramaController::class, 'update'])->name('panorama.update');
+Route::delete('/panorama/{id}', [PanoramaController::class, 'delete'])->name('panorama.delete');
 
 
 Route::group(['middleware' => 'guest'], function () {
