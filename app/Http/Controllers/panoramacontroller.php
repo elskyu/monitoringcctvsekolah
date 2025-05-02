@@ -6,7 +6,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class Panoramacontroller extends Controller
+class PanoramaController extends Controller
 {
     public function dashboard()
     {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\sekolah;
 
-class sekolahController extends Controller
+class SekolahController extends Controller
 {
     public function dashboard()
     {
@@ -15,8 +15,8 @@ class sekolahController extends Controller
 
     public function index()
     {
-        $sekolah = sekolah::all();
-        return view('sekolah.index', compact('sekolah'));
+        $sekolah = sekolah::paginate(10);
+        return view('sekolah.menu-sekolah', compact('sekolah'));
     }
 
     public function create()
