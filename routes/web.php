@@ -30,6 +30,18 @@ Route::group(['middleware' => 'auth'], function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::get('user-management', function () {
+        return view('user-management');
+    })->name('user-management');
+
+    Route::get('menu-sekolah', function () {
+        return view('menu-sekolah');
+    })->name('menu-sekolah');
+
+    Route::get('menu-panorama', function () {
+        return view('menu-panorama');
+    })->name('menu-panorama');
+
     Route::get('billing', function () {
         return view('billing');
     })->name('billing');
@@ -41,10 +53,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('rtl', function () {
         return view('rtl');
     })->name('rtl');
-
-    Route::get('user-management', function () {
-        return view('laravel-examples/user-management');
-    })->name('user-management');
 
     Route::get('tables', function () {
         return view('tables');
