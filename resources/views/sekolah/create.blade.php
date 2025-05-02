@@ -136,7 +136,7 @@
                 <div class="form-group">
                     <label for="link">Link</label>
                     <input type="text" class="form-control" id="link" name="link">
-                    <p class="warning" id="warningLink">⚠ Link sudah digunakan!</p>
+                    <!-- <p class="warning" id="warningLink">⚠ Link sudah digunakan!</p> -->
                 </div>
                 <button type="submit" class="btn" id="submitBtn">TAMBAH</button>
             </form>
@@ -144,7 +144,7 @@
     </div>
     <div class="background-image" style="background-image: url('{{ asset('images/pattern.jpg') }}');"></div>
 
-    <script>
+    <!-- <script>
         $(document).ready(function () {
             // Fungsi untuk memeriksa duplikasi link
             function checkDuplicateLink(value) {
@@ -177,7 +177,7 @@
                 checkDuplicateLink($(this).val());
             });
         });
-    </script>
+    </script> -->
 </body>
 
 </html>
