@@ -12,8 +12,16 @@
                     <input type="hidden" id="idSekolah">
                     <div class="mb-3">
                         <label for="namaWilayah" class="form-label">Nama Wilayah</label>
-                        <input type="text" class="form-control" id="namaWilayah" name="namaWilayah" required>
+                        <select class="form-control" id="namaWilayah" name="namaWilayah" required>
+                            <option value="" disabled selected>Pilih Wilayah</option>
+                            <option value="KOTA JOGJA">KOTA JOGJA</option>
+                            <option value="KABUPATEN SLEMAN">KABUPATEN SLEMAN</option>
+                            <option value="KABUPATEN BANTUL">KABUPATEN BANTUL</option>
+                            <option value="KABUPATEN KP">KABUPATEN KP</option>
+                            <option value="KABUPATEN GK">KABUPATEN GK</option>
+                        </select>
                     </div>
+                    
                     <div class="mb-3">
                         <label for="namaSekolah" class="form-label">Nama Sekolah</label>
                         <input type="text" class="form-control" id="namaSekolah" name="namaSekolah" required>
