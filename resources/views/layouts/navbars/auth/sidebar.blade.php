@@ -89,6 +89,20 @@
                     <span class="nav-link-text ms-1">CCTV Sekolah</span>
                 </a>
             </li>
+
+            <li class="nav-item pb-2 mt-3">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="nav-link border-0 bg-transparent d-flex align-items-center {{ Route::currentRouteName() == 'logout' ? 'active' : '' }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-button-power text-danger"></i>
+                        </div>
+                        <span class="nav-link-text ms-1 text-danger">Logout</span>
+                    </button>
+                </form>
+            </li>
+            
         </ul>
     </div>
 </aside>
