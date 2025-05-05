@@ -70,7 +70,6 @@ Route::group(['middleware' => 'auth'], function () {
         return view('static-sign-up');
     })->name('sign-up');
 
-    Route::get('/logout', [SessionsController::class, 'destroy']);
     Route::get('/user-profile', [InfoUserController::class, 'create']);
     Route::post('/user-profile', [InfoUserController::class, 'store']);
     Route::get('/login', function () {
@@ -80,7 +79,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/videos/create', [VideoController::class, 'create'])->name('videos.create');
     Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
 
-
+    Route::post('/logout', [SessionsController::class, 'destroy'])->name('logout');
 });
 
 Route::get('/diy', [HomeController::class, 'home'])->name('welcome');
