@@ -24,38 +24,63 @@ function loadSekolahData() {
     });
 }
 
+function groupSekolahData(data) {
+  const grouped = {};
+
+  data.forEach(item => {
+    const key = `${item.namaWilayah}||${item.namaSekolah}`;
+    if (!grouped[key]) {
+      grouped[key] = {
+        namaWilayah: item.namaWilayah,
+        namaSekolah: item.namaSekolah,
+        titik: []
+      };
+    }
+    grouped[key].titik.push(item);
+  });
+
+  return Object.values(grouped);
+}
+
 // 2. Render tabel berdasarkan filteredData & paging
 function renderTable() {
   const tbody = document.getElementById('sekolah-tbody');
   tbody.innerHTML = '';
 
-  // paging
-  const start = (currentPage - 1) * itemsPerPage;
-  const pageData = filteredData.slice(start, start + itemsPerPage);
+  const groupedData = groupSekolahData(filteredData);
 
-  pageData.forEach(item => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="text-center">${item.namaWilayah}</td>
-      <td class="text-center">${item.namaSekolah}</td>
-      <td class="text-center">${item.namaTitik}</td>
-      <td class="text-center">
-        <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(item)})'>Edit</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteSekolah(${item.id})">Delete</button>
-      </td>
-    `;
-    tbody.appendChild(tr);
+  // paging (berdasarkan group, bukan item per titik)
+  const start = (currentPage - 1) * itemsPerPage;
+  const pageData = groupedData.slice(start, start + itemsPerPage);
+
+  pageData.forEach(group => {
+    const rowspan = group.titik.length;
+    group.titik.forEach((item, index) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        ${index === 0 ? `<td class="text-center" rowspan="${rowspan}">${group.namaWilayah}</td>` : ''}
+        ${index === 0 ? `<td class="text-center" rowspan="${rowspan}">${group.namaSekolah}</td>` : ''}
+        <td class="text-center">${item.namaTitik}</td>
+        <td class="text-center">
+          <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(item)})'>Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteSekolah(${item.id})">Delete</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
   });
 
-  renderPagination();
+  renderPagination(groupedData.length);
 }
 
+
 // 3. Render tombol pagination
-function renderPagination() {
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+function renderPagination(totalItems = null) {
+  const totalPages = Math.ceil((totalItems ?? filteredData.length) / itemsPerPage);
   document.querySelector('button[onclick="prevPage()"]').disabled = currentPage === 1;
   document.querySelector('button[onclick="nextPage()"]').disabled = currentPage === totalPages;
 }
+
 
 // 4. Prev / Next
 function prevPage() {

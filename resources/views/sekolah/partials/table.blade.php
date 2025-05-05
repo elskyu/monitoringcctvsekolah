@@ -3,13 +3,13 @@
         <tr>
             <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                Nama Wilayah</th>
+                Kabupaten / Kota</th>
             <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                 Nama Sekolah</th>
             <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                Titik Wilayah</th>
+                Titik Lokasi</th>
             <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                 Action</th>
