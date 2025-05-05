@@ -14,7 +14,7 @@ function loadUsersData() {
         return Swal.fire('Error', json.message, 'error');
       }
       UsersData = json.data;
-      filteredData = usersData;    // awalnya filter = semua data
+      filteredData = UsersData;    // awalnya filter = semua data
       currentPage = 1;
       renderTable();
     })
@@ -34,11 +34,22 @@ function renderTable() {
   const pageData = filteredData.slice(start, start + itemsPerPage);
 
   pageData.forEach(item => {
+        // Format created_at untuk menampilkan tanggal dan jam saja
+        const createdAt = new Date(item.created_at);
+        const formattedDate = createdAt.toLocaleString('id-ID', {
+          weekday: 'short', // opsional, menampilkan hari (Sen, Sel, dst)
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false // jika ingin format 24 jam
+        });
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="text-center">${item.name}</td>
       <td class="text-center">${item.email}</td>
-      <td class="text-center">${item.created_at}</td>
+      <td class="text-center">${formattedDate}</td>
       <td class="text-center">
         <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(item)})'>Edit</button>
         <button class="btn btn-sm btn-danger" onclick="deleteUsers(${item.id})">Delete</button>
@@ -75,7 +86,7 @@ function nextPage() {
 // 5. Search lokal
 function searchUsers() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
-  filteredData = usersData.filter(item =>
+  filteredData = UsersData.filter(item =>
     item.name.toLowerCase().includes(q) ||
     item.email.toLowerCase().includes(q) ||
     item.created_at.toLowerCase().includes(q)
@@ -124,7 +135,7 @@ function deleteUsers(id) {
 // 7. Open modal edit/ add (contoh)
 function openAddModal() {
   $('#modalForm')[0].reset();
-  $('#modalForm').attr('action', '/api/cctvusers');
+  $('#modalForm').attr('action', '/api/users');
   $('#modalForm').attr('method', 'POST');
   $('#UsersModalLabel').text('Tambah CCTV users');
   $('#saveBtn').text('Save');
@@ -142,25 +153,24 @@ function openEditModal(item) {
   $('#modalForm').attr('method', 'PUT');
   $('#UsersModalLabel').text('Edit users');
   $('#saveBtn').text('Update');
-  new bootstrap.Modal($('#cctvusersModal')).show();
+  new bootstrap.Modal($('#UsersModal')).show();
 }
 
 // 8. Inisialisasi ketika dokumen siap
 document.addEventListener('DOMContentLoaded', loadUsersData);
 
 // Add dan Edit
-document.getElementById('cctvForm').addEventListener('submit', function (e) {
+document.getElementById('usersForm').addEventListener('submit', function (e) {
     e.preventDefault();
   
-    const id = document.getElementById('idusers').value;
+    const id = document.getElementById('idUsers').value;
     const method = id ? 'PUT' : 'POST';
-    const url = id ? `/api/cctvusers/${id}` : '/api/cctvusers';
+    const url = id ? `/api/users/${id}` : '/api/users';
   
     const data = {
-      namaWilayah: document.getElementById('namaWilayah').value,
-      namausers: document.getElementById('namausers').value,
-      namaTitik: document.getElementById('namaTitik').value,
-      link: document.getElementById('link').value,
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
     };
   
     fetch(url, {
@@ -176,9 +186,9 @@ document.getElementById('cctvForm').addEventListener('submit', function (e) {
       .then(res => {
         if (res.success) {
           Swal.fire('Berhasil', res.message, 'success');
-          document.getElementById('cctvForm').reset();
-          document.getElementById('idusers').value = '';
-          bootstrap.Modal.getInstance(document.getElementById('cctvusersModal')).hide();
+          document.getElementById('usersForm').reset();
+          document.getElementById('idUsers').value = '';
+          bootstrap.Modal.getInstance(document.getElementById('UsersModal')).hide();
           loadUsersData();
         } else {
           let errorText = '';

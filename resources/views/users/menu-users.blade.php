@@ -15,7 +15,7 @@
                                     placeholder="Search..." onkeyup="searchUsers()"
                                     style="height: 2.1rem; padding: 5px;">
                                 <a href="javascript:;" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#cctvusersModal" onclick="openAddModal()">Add</a>
+                                    data-bs-target="#UsersModal" onclick="openAddModal()">Add</a>
                             </div>
                         </div>
 

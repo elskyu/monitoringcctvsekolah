@@ -31,10 +31,10 @@ Route::group(['middleware' => 'auth'], function () {
     })->name('dashboard');
 
     Route::get('user-management', function () {
-        return view('user-management');
+        return view('users.menu-users');
     })->name('user-management');
 
-    Route::get('menu-sekolah', [SekolahController::class, 'index'])->name('menu-sekolah');
+    Route::get('cctv-sekolah', [SekolahController::class, 'index'])->name('menu-sekolah');
 
     Route::get('/index',  [SekolahController::class, 'index'])->name('sekolah.index');
 
