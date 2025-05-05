@@ -50,6 +50,7 @@
 
             let activeSchools = JSON.parse(localStorage.getItem("activeSchools")) || [];
 
+            // Toggle visibility berdasarkan status ikon
             if (icon.classList.contains('fa-eye')) {
                 // Tampilkan CCTV untuk sekolah yang dipilih
                 icon.classList.remove('fa-eye');
@@ -68,14 +69,15 @@
                     activeSchools.push(namaSekolah);
                 }
 
-                // Centang semua checkbox yang terkait
+                // Centang semua checkbox yang terkait dengan sekolah yang dipilih dan tampilkan CCTV-nya
                 checkboxes.forEach(checkbox => {
                     checkbox.checked = true;
-                    toggleCCTV(checkbox.id.replace('checkbox-', ''), checkbox);
+                    const cctvId = checkbox.id.replace('checkbox-', '');
+                    toggleCCTV(cctvId, checkbox);
                 });
 
             } else {
-                // Sembunyikan CCTV
+                // Sembunyikan CCTV untuk sekolah yang dipilih
                 icon.classList.remove('fa-eye-slash');
                 icon.classList.add('fa-eye');
 
@@ -86,10 +88,11 @@
                 // Hapus sekolah dari daftar aktif
                 activeSchools = activeSchools.filter(school => school !== namaSekolah);
 
-                // Hapus centang checkbox yang sesuai
+                // Hapus centang pada semua checkbox yang terkait dengan sekolah yang dipilih dan sembunyikan CCTV-nya
                 checkboxes.forEach(checkbox => {
                     checkbox.checked = false;
-                    toggleCCTV(checkbox.id.replace('checkbox-', ''), checkbox);
+                    const cctvId = checkbox.id.replace('checkbox-', '');
+                    toggleCCTV(cctvId, checkbox);
                 });
             }
 
@@ -100,7 +103,6 @@
                 localStorage.setItem("activeSchools", JSON.stringify(activeSchools));
             }
         }
-
 
         window.onload = function () {
             const stored = localStorage.getItem("activeCCTVs");
@@ -369,9 +371,9 @@
                                                         style="cursor: pointer;">
                                                         <input type="checkbox"
                                                             style="margin-left: -5px; width: 10px; height: 10px; cursor: pointer;"
-                                                            id="checkbox-{{ Str::slug($namaSekolah) }}-{{ Str::slug($sekolah->namaTitik) }}"
+                                                            id="checkbox-{{ Str::slug($namaSekolah . '-' . $sekolah->namaTitik) }}"
                                                             data-sekolah="{{ Str::slug($namaSekolah) }}"
-                                                            onclick="event.stopPropagation(); toggleCCTV('{{ Str::slug($namaSekolah) }}-{{ Str::slug($sekolah->namaTitik) }}', this)">
+                                                            onclick="event.stopPropagation(); toggleCCTV('{{ Str::slug($namaSekolah . '-' . $sekolah->namaTitik) }}', this)">
                                                         <span style="font-size: 12px;" class="form-check-label mb-0">
                                                             {{ $sekolah->namaTitik }}
                                                         </span>
@@ -441,8 +443,9 @@
                                         $singkatan = $cctv->namaTitik;
                                     }
                                 @endphp
-                                <div class="col-md-3 col-sm-6 col-xs-12 cctv-view" id="{{ Str::slug($cctv->namaTitik) }}"
-                                    data-sekolah="{{ Str::slug($cctv->namaSekolah) }}" style="display: none;">
+                                <div class="col-md-3 col-sm-6 col-xs-12 cctv-view"
+                                    id="{{ Str::slug($namaSekolah . '-' . $cctv->namaTitik) }}"
+                                    data-sekolah="{{ Str::slug($namaSekolah) }}" style="display: none;">
 
                                     <div class="card" style="margin-bottom: 5px; padding: 10px; width: 100%; max-height: 285px;">
                                         <a style="font-size: 12pt; font-weight: bold;" class="card-title text-center mb-1">
