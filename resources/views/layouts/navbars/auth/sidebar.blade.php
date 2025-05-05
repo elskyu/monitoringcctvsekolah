@@ -1,5 +1,5 @@
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs  ps bg-white fixed-start" id="sidenav-main"
-    style="height: 150vh; left: 0px;">
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs ps bg-white fixed-start" id="sidenav-main"
+    style="left: 0px; height: 100vh; overflow-y: none;">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
@@ -8,8 +8,8 @@
         </a>
     </div>
     <hr class="horizontal dark mt-0">
-    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
-        <ul class="navbar-nav">
+    <div class="collapse navbar-collapse w-auto h-100" id="sidenav-collapse-main">
+        <ul class="navbar-nav h-100">
             <li class="nav-item pb-2">
                 <a class="nav-link {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}"
                     href="{{ route('dashboard') }}">
@@ -93,7 +93,8 @@
             <li class="nav-item pb-2 mt-3">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="nav-link border-0 bg-transparent d-flex align-items-center {{ Route::currentRouteName() == 'logout' ? 'active' : '' }}">
+                    <button type="submit"
+                        class="nav-link border-0 bg-transparent d-flex align-items-center {{ Route::currentRouteName() == 'logout' ? 'active' : '' }}">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-button-power text-danger"></i>
@@ -102,7 +103,7 @@
                     </button>
                 </form>
             </li>
-            
+
         </ul>
     </div>
 </aside>
