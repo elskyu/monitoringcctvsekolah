@@ -5,21 +5,21 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\GlobalResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\sekolah;
+use App\Models\Panorama;
 use Illuminate\Support\Facades\Validator;
 
-class ApiSekolahController extends Controller
+class ApiPanoramaController extends Controller
 {
     public function index()
     {
         try {
-            $sekolah = Sekolah::all();
+            $panorama = Panorama::all();
 
-            if ($sekolah->isEmpty()) {
-                return new GlobalResource(false, 'Data Sekolah tidak ditemukan', null);
+            if ($panorama->isEmpty()) {
+                return new GlobalResource(false, 'Data Panorama tidak ditemukan', null);
             }
 
-            return new GlobalResource(true, 'List Data CCTV Sekolah', $sekolah);
+            return new GlobalResource(true, 'List Data CCTV Panorama', $panorama);
         } catch (\Exception $e) {
             return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
         }
@@ -30,7 +30,6 @@ class ApiSekolahController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'namaWilayah' => 'required|string|max:255',
-                'namaSekolah' => 'required|string|max:255',
                 'namaTitik' => 'required|string|max:255',
                 'link' => 'required|url',
             ]);
@@ -39,9 +38,9 @@ class ApiSekolahController extends Controller
                 return new GlobalResource(false, 'Validasi gagal', $validator->errors());
             }
 
-            $sekolah = sekolah::create($request->all());
+            $panorama = Panorama::create($request->all());
 
-            return new GlobalResource(true, 'Data sekolah berhasil ditambahkan', $sekolah);
+            return new GlobalResource(true, 'Data Panorama berhasil ditambahkan', $panorama);
         } catch (\Exception $e) {
             return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
         }
@@ -53,13 +52,13 @@ class ApiSekolahController extends Controller
     public function show(string $id)
     {
         try {
-            $data = sekolah::find($id);
+            $data = Panorama::find($id);
 
             if (!$data) {
-                return new GlobalResource(false, 'Data sekolah tidak ditemukan', null);
+                return new GlobalResource(false, 'Data Panorama tidak ditemukan', null);
             }
 
-            return new GlobalResource(true, 'Detail Data Sekolah', $data);
+            return new GlobalResource(true, 'Detail Data Panorama', $data);
         } catch (\Exception $e) {
             return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
         }
@@ -71,15 +70,14 @@ class ApiSekolahController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $data = sekolah::find($id);
+            $data = Panorama::find($id);
 
             if (!$data) {
-                return new GlobalResource(false, 'Data sekolah tidak ditemukan', null);
+                return new GlobalResource(false, 'Data Panorama tidak ditemukan', null);
             }
 
             $validator = Validator::make($request->all(), [
                 'namaWilayah' => 'required|string|max:255',
-                'namaSekolah' => 'required|string|max:255',
                 'namaTitik' => 'required|string|max:255',
                 'link' => 'required|url',
             ]);
@@ -90,7 +88,7 @@ class ApiSekolahController extends Controller
 
             $data->update($request->all());
 
-            return new GlobalResource(true, 'Data sekolah berhasil diupdate', $data);
+            return new GlobalResource(true, 'Data Panorama berhasil diupdate', $data);
         } catch (\Exception $e) {
             return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
         }
@@ -102,15 +100,15 @@ class ApiSekolahController extends Controller
     public function destroy(string $id)
     {
         try {
-            $data = sekolah::find($id);
+            $data = Panorama::find($id);
 
             if (!$data) {
-                return new GlobalResource(false, 'Data sekolah tidak ditemukan', null);
+                return new GlobalResource(false, 'Data Panorama tidak ditemukan', null);
             }
 
             $data->delete();
 
-            return new GlobalResource(true, 'Data sekolah berhasil dihapus', null);
+            return new GlobalResource(true, 'Data Panorama berhasil dihapus', null);
         } catch (\Exception $e) {
             return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
         }

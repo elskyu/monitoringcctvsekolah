@@ -8,7 +8,7 @@
         </a>
     </div>
     <hr class="horizontal dark mt-0">
-    <div class="collapse navbar-collapse w-auto h-100" id="sidenav-collapse-main">
+    <div class="navbar-collapse w-auto h-100" id="sidenav-collapse-main">
         <ul class="navbar-nav h-100">
             <li class="nav-item pb-2">
                 <a class="nav-link {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}"
@@ -103,7 +103,6 @@
                     </button>
                 </form>
             </li>
-
         </ul>
     </div>
 </aside>
