@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApiSekolahController;
+use App\Http\Controllers\Api\ApiUsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,3 +11,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::apiResource('cctvsekolah', ApiSekolahController::class);
+
+Route::apiResource('users', ApiUsersController::class);
