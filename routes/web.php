@@ -36,8 +36,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('cctv-sekolah', [SekolahController::class, 'index'])->name('menu-sekolah');
 
-    Route::get('/index',  [SekolahController::class, 'index'])->name('sekolah.index');
-
     Route::get('menu-panorama', function () {
         return view('menu-panorama');
     })->name('menu-panorama');
@@ -115,7 +113,7 @@ Route::delete('/panorama/{id}', [PanoramaController::class, 'delete'])->name('pa
 
 
 Route::group(['middleware' => 'guest'], function () {
-    Route::get('/login', [SessionsController::class, 'create']);
+    Route::get('/login', [SessionsController::class, 'create'])->name('view-login');
     Route::post('/session', [SessionsController::class, 'store'])->name('login');
     Route::get('/login/forgot-password', [ResetController::class, 'create']);
     Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
