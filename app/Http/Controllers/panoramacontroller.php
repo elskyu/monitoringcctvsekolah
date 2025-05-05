@@ -1,4 +1,5 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Panorama;
@@ -10,76 +11,45 @@ class PanoramaController extends Controller
 {
     public function dashboard()
     {
-        $panorama = panorama::all();
+        $panorama = Panorama::all();
         return view('panorama.panorama', compact('panorama'));
     }
 
     public function index()
     {
-        $panorama = panorama::all();
-        return view('panorama.index', compact('panorama'));
+        $panorama = panorama::paginate(10);
+        return view('panorama.menu-panorama', compact('panorama'));
+    }
+
+    public function create()
+    {
+        return view('panorama.create');
     }
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'namaWilayah' => 'required',
-            'namaTitik' => 'required',
-            'link' => [
-                'required',
-                'url',
-                Rule::unique('panorama', 'link'), // pastikan 'panoramas' adalah nama tabelmu
-            ],
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput()->with('validation_error', true);
-        }
-
-        $panorama = new Panorama();
+        $panorama = new Panorama;
         $panorama->namaWilayah = $request->namaWilayah;
         $panorama->namaTitik = $request->namaTitik;
         $panorama->link = $request->link;
+        $panorama->save();
+        return redirect()->route('panorama.index');
+    }
 
-        if ($panorama->save()) {
-            return redirect()->route('panorama.index')->with('success', 'CCTV Panorama berhasil ditambahkan.');
-        } else {
-            return redirect()->route('panorama.index')->with('error', 'Gagal menambahkan CCTV Panorama.');
-        }
+    public function edit($id)
+    {
+        $panorama = Panorama::find($id);
+        return view('panorama.edit', compact('panorama'));
     }
 
     public function update(Request $request, $id)
     {
-        // Validasi input
-        $validator = Validator::make($request->all(), [
-            'namaWilayah' => 'required',
-            'namaTitik' => 'required',
-            'link' => [
-                'required',
-                'url',
-                Rule::unique('panorama', 'link')->ignore($id), // Ignore ID yang lagi diedit
-            ],
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput()->with('validation_error', true);
-        }
-
-        // Cari data panorama
         $panorama = Panorama::find($id);
-        if ($panorama) {
-            $panorama->namaWilayah = $request->namaWilayah;
-            $panorama->namaTitik = $request->namaTitik;
-            $panorama->link = $request->link;
-
-            if ($panorama->save()) {
-                return redirect()->route('panorama.index')->with('success', 'CCTV Panorama berhasil diperbarui.');
-            } else {
-                return redirect()->route('panorama.index')->with('error', 'Gagal memperbarui CCTV Panorama.');
-            }
-        } else {
-            return redirect()->route('panorama.index')->with('error', 'Data tidak ditemukan.');
-        }
+        $panorama->namaWilayah = $request->namaWilayah;
+        $panorama->namaTitik = $request->namaTitik;
+        $panorama->link = $request->link;
+        $panorama->save();
+        return redirect()->route('panorama.index');
     }
 
     public function delete($id)
@@ -87,6 +57,12 @@ class PanoramaController extends Controller
         $panorama = Panorama::find($id);
         $panorama->delete();
         return redirect()->route('panorama.index')->with('success', 'CCTV Panorama berhasil Dihapus.');
+    }
+
+    public function getWilayah()
+    {
+        $panorama = Panorama::select('namaWilayah')->distinct()->get(); // Ambil hanya kolom namaWilayah
+        return response()->json($panorama);
     }
 }
 
