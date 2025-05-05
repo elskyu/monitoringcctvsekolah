@@ -140,7 +140,9 @@ function openAddModal() {
   $('#UsersModalLabel').text('Tambah CCTV users');
   $('#saveBtn').text('Save');
   new bootstrap.Modal($('#UsersModal')).show();
+
 }
+
 function openEditModal(item) {
     $('#idUsers').val(item.id);
     $('#name').val(item.name);
@@ -188,7 +190,17 @@ document.getElementById('usersForm').addEventListener('submit', function (e) {
           Swal.fire('Berhasil', res.message, 'success');
           document.getElementById('usersForm').reset();
           document.getElementById('idUsers').value = '';
-          bootstrap.Modal.getInstance(document.getElementById('UsersModal')).hide();
+
+          const modalElement = document.getElementById('UsersModal');
+          const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+          
+          // Fix overlay modal backdrop
+          document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+          document.body.classList.remove('modal-open');
+          document.body.style.overflow = '';
+          document.body.style.paddingRight = '';
+          modalInstance.hide();
+
           loadUsersData();
         } else {
           let errorText = '';
