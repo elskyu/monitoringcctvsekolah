@@ -145,12 +145,12 @@ function deleteSekolah(id) {
 
 // 7. Open modal edit/ add (contoh)
 function openAddModal() {
-  $('#modalForm')[0].reset();
-  $('#modalForm').attr('action', '/api/cctvpanorama');
-  $('#modalForm').attr('method', 'POST');
-  $('#cctvsekolahModalLabel').text('Tambah CCTV Sekolah');
+  $('#panoramaForm')[0].reset();
+  $('#panoramaForm').attr('action', '/api/cctvpanorama');
+  $('#panoramaForm').attr('method', 'POST');
+  $('#panoramaModalLabel').text('Tambah CCTV Panorama');
   $('#saveBtn').text('Save');
-  new bootstrap.Modal($('#cctvsekolahModal')).show();
+  new bootstrap.Modal($('#panoramaModal')).show();
 }
 function openEditModal(item) {
     $('#idSekolah').val(item.id);
@@ -158,18 +158,18 @@ function openEditModal(item) {
     $('#namaTitik').val(item.namaTitik);
     $('#link').val(item.link);
 
-  $('#modalForm').attr('action', `/api/cctvpanorama/${item.id}`);
-  $('#modalForm').attr('method', 'PUT');
-  $('#cctvsekolahModalLabel').text('Edit CCTV Sekolah');
+  $('#panoramaForm').attr('action', `/api/cctvpanorama/${item.id}`);
+  $('#panoramaForm').attr('method', 'PUT');
+  $('#panoramaModalLabel').text('Edit CCTV Panorama');
   $('#saveBtn').text('Update');
-  new bootstrap.Modal($('#cctvsekolahModal')).show();
+  new bootstrap.Modal($('#panoramaModal')).show();
 }
 
 // 8. Inisialisasi ketika dokumen siap
 document.addEventListener('DOMContentLoaded', loadpanoramaData);
 
 // Add dan Edit
-document.getElementById('cctvForm').addEventListener('submit', function (e) {
+document.getElementById('panoramaForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const id = document.getElementById('idSekolah').value;
@@ -195,10 +195,10 @@ document.getElementById('cctvForm').addEventListener('submit', function (e) {
       .then(res => {
         if (res.success) {
           Swal.fire('Berhasil', res.message, 'success');
-          document.getElementById('cctvForm').reset();
+          document.getElementById('panoramaForm').reset();
           document.getElementById('idSekolah').value = '';
 
-          const modalElement = document.getElementById('cctvsekolahModal');
+          const modalElement = document.getElementById('panoramaModal');
           const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
 
           // Fix overlay modal backdrop

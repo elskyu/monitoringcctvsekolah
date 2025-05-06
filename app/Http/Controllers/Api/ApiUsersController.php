@@ -18,17 +18,16 @@ class ApiUsersController extends Controller
     {
         try {
             $users = User::all();
-    
+
             if ($users->isEmpty()) {
-                return new GlobalResource(false, 'Data Users tidak ditemukan', null);
+                return new GlobalResource(false, 'Belum ada data pengguna yang tersedia.', null);
             }
-    
-            return new GlobalResource(true, 'List Data Users', $users);
+
+            return new GlobalResource(true, 'Data pengguna berhasil dimuat.', $users);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            return new GlobalResource(false, 'Terjadi kesalahan saat memuat data pengguna.', null);
         }
     }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -42,49 +41,43 @@ class ApiUsersController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return new GlobalResource(false, 'Validasi gagal', $validator->errors());
+                return new GlobalResource(false, 'Data yang Anda masukkan tidak valid.', $validator->errors());
             }
 
-            $users = User::create([
+            $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
 
-            return new GlobalResource(true, 'Data Users berhasil ditambahkan', $users);
+            return new GlobalResource(true, 'Pengguna baru berhasil ditambahkan.', $user);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            return new GlobalResource(false, 'Terjadi kesalahan saat menambahkan pengguna.', null);
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         try {
-            $users = User::find($id);
+            $user = User::find($id);
 
-            if (!$users) {
-                return new GlobalResource(false, 'Data Users tidak ditemukan', null);
+            if (!$user) {
+                return new GlobalResource(false, 'Data pengguna tidak ditemukan.', null);
             }
 
-            return new GlobalResource(true, 'Detail Data Users', $users);
+            return new GlobalResource(true, 'Detail data pengguna berhasil dimuat.', $user);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            return new GlobalResource(false, 'Terjadi kesalahan saat memuat data pengguna.', null);
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         try {
             $user = User::find($id);
 
             if (!$user) {
-                return new GlobalResource(false, 'Data Users tidak ditemukan', null);
+                return new GlobalResource(false, 'Data pengguna tidak ditemukan.', null);
             }
 
             $validator = Validator::make($request->all(), [
@@ -93,13 +86,11 @@ class ApiUsersController extends Controller
                 'password' => 'nullable|min:8',
             ]);
 
-            
-
             if ($validator->fails()) {
-                return new GlobalResource(false, 'Validasi gagal', $validator->errors());
+                return new GlobalResource(false, 'Data yang Anda masukkan tidak valid.', $validator->errors());
             }
 
-            $data = $request->only(['name', 'email', 'phone']);
+            $data = $request->only(['name', 'email']);
 
             if ($request->filled('password')) {
                 $data['password'] = Hash::make($request->password);
@@ -107,29 +98,30 @@ class ApiUsersController extends Controller
 
             $user->update($data);
 
-            return new GlobalResource(true, 'Data Users berhasil diupdate', $user);
+            return new GlobalResource(true, 'Data pengguna berhasil diperbarui.', $user);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                return new GlobalResource(false, 'Email sudah digunakan. Silakan gunakan email lain.', null);
+            }
+
+            return new GlobalResource(false, 'Terjadi kesalahan saat memperbarui data pengguna.', null);
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         try {
-            $users = User::find($id);
+            $user = User::find($id);
 
-            if (!$users) {
-                return new GlobalResource(false, 'Data Users tidak ditemukan', null);
+            if (!$user) {
+                return new GlobalResource(false, 'Data pengguna tidak ditemukan.', null);
             }
 
-            $users->delete();
+            $user->delete();
 
-            return new GlobalResource(true, 'Data Users berhasil dihapus', null);
+            return new GlobalResource(true, 'Data pengguna berhasil dihapus.', null);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            return new GlobalResource(false, 'Terjadi kesalahan saat menghapus data pengguna.', null);
         }
     }
 }

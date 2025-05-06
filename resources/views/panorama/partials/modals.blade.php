@@ -1,18 +1,25 @@
 <!-- Modal Add/Edit -->
-<div class="modal fade" id="cctvsekolahModal" tabindex="-1" aria-labelledby="cctvsekolahModalLabel" aria-hidden="true">
+<div class="modal fade" id="panoramaModal" tabindex="-1" aria-labelledby="panoramaModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="cctvsekolahModalLabel">Tambah CCTV Sekolah</h5>
+                <h5 class="modal-title" id="panoramaModalLabel">Tambah CCTV Sekolah</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="cctvForm" method="POST">
+                <form id="panoramaForm" method="POST">
                     @csrf
                     <input type="hidden" id="idSekolah">
                     <div class="mb-3">
                         <label for="namaWilayah" class="form-label">Nama Wilayah</label>
-                        <input type="text" class="form-control" id="namaWilayah" name="namaWilayah" required>
+                        <select class="form-control" id="namaWilayah" name="namaWilayah" required>
+                            <option value="" disabled selected>Pilih Wilayah</option>
+                            <option value="KOTA JOGJA">KOTA JOGJA</option>
+                            <option value="KABUPATEN SLEMAN">KABUPATEN SLEMAN</option>
+                            <option value="KABUPATEN BANTUL">KABUPATEN BANTUL</option>
+                            <option value="KABUPATEN KP">KABUPATEN KP</option>
+                            <option value="KABUPATEN GK">KABUPATEN GK</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="namaTitik" class="form-label">Titik Wilayah</label>

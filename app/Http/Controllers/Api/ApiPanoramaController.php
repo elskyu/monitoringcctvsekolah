@@ -16,12 +16,12 @@ class ApiPanoramaController extends Controller
             $panorama = Panorama::all();
 
             if ($panorama->isEmpty()) {
-                return new GlobalResource(false, 'Data Panorama tidak ditemukan', null);
+                return new GlobalResource(false, 'Belum ada data CCTV Panorama yang tersedia.', null);
             }
 
-            return new GlobalResource(true, 'List Data CCTV Panorama', $panorama);
+            return new GlobalResource(true, 'Daftar data CCTV Panorama berhasil dimuat.', $panorama);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            return new GlobalResource(false, 'Terjadi kesalahan saat memuat data. Silakan coba beberapa saat lagi.', null);
         }
     }
 
@@ -35,14 +35,23 @@ class ApiPanoramaController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return new GlobalResource(false, 'Validasi gagal', $validator->errors());
+                return new GlobalResource(false, 'Validasi gagal. Silakan periksa input Anda.', $validator->errors());
             }
 
             $panorama = Panorama::create($request->all());
 
             return new GlobalResource(true, 'Data Panorama berhasil ditambahkan', $panorama);
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->errorInfo[1] == 1062) {
+                // Duplikat entri
+                return new GlobalResource(false, 'Link CCTV sudah terdaftar. Gunakan link yang berbeda.', null);
+            }
+
+            // Error query lainnya
+            return new GlobalResource(false, 'Terjadi kesalahan pada database. Silakan coba lagi.', null);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            // Error umum
+            return new GlobalResource(false, 'Terjadi kesalahan. Silakan coba lagi.', null);
         }
     }
 
@@ -73,7 +82,7 @@ class ApiPanoramaController extends Controller
             $data = Panorama::find($id);
 
             if (!$data) {
-                return new GlobalResource(false, 'Data Panorama tidak ditemukan', null);
+                return new GlobalResource(false, 'Data Panorama tidak ditemukan.', null);
             }
 
             $validator = Validator::make($request->all(), [
@@ -83,14 +92,20 @@ class ApiPanoramaController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return new GlobalResource(false, 'Validasi gagal', $validator->errors());
+                return new GlobalResource(false, 'Validasi gagal. Silakan periksa kembali input Anda.', $validator->errors());
             }
 
             $data->update($request->all());
 
-            return new GlobalResource(true, 'Data Panorama berhasil diupdate', $data);
+            return new GlobalResource(true, 'Data Panorama berhasil diperbarui.', $data);
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->errorInfo[1] == 1062) {
+                return new GlobalResource(false, 'Link CCTV sudah digunakan. Harap gunakan link yang berbeda.', null);
+            }
+
+            return new GlobalResource(false, 'Terjadi kesalahan saat memperbarui data. Silakan coba lagi.', null);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            return new GlobalResource(false, 'Terjadi kesalahan tak terduga. Silakan coba beberapa saat lagi.', null);
         }
     }
 
@@ -103,14 +118,14 @@ class ApiPanoramaController extends Controller
             $data = Panorama::find($id);
 
             if (!$data) {
-                return new GlobalResource(false, 'Data Panorama tidak ditemukan', null);
+                return new GlobalResource(false, 'Data Panorama tidak ditemukan.', null);
             }
 
             $data->delete();
 
-            return new GlobalResource(true, 'Data Panorama berhasil dihapus', null);
+            return new GlobalResource(true, 'Data Panorama berhasil dihapus.', null);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            return new GlobalResource(false, 'Terjadi kesalahan saat menghapus data. Silakan coba lagi.', null);
         }
     }
 }

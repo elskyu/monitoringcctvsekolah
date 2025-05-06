@@ -148,9 +148,9 @@ function deleteSekolah(id) {
 
 // 7. Open modal edit/ add (contoh)
 function openAddModal() {
-  $('#modalForm')[0].reset();
-  $('#modalForm').attr('action', '/api/cctvsekolah');
-  $('#modalForm').attr('method', 'POST');
+  $('#cctvForm')[0].reset();
+  $('#cctvForm').attr('action', '/api/cctvsekolah');
+  $('#cctvForm').attr('method', 'POST');
   $('#cctvsekolahModalLabel').text('Tambah CCTV Sekolah');
   $('#saveBtn').text('Save');
   new bootstrap.Modal($('#cctvsekolahModal')).show();
@@ -162,8 +162,8 @@ function openEditModal(item) {
     $('#namaTitik').val(item.namaTitik);
     $('#link').val(item.link);
 
-  $('#modalForm').attr('action', `/api/cctvsekolah/${item.id}`);
-  $('#modalForm').attr('method', 'PUT');
+  $('#cctvForm').attr('action', `/api/cctvsekolah/${item.id}`);
+  $('#cctvForm').attr('method', 'PUT');
   $('#cctvsekolahModalLabel').text('Edit CCTV Sekolah');
   $('#saveBtn').text('Update');
   new bootstrap.Modal($('#cctvsekolahModal')).show();
