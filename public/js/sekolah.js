@@ -3,7 +3,7 @@
 let sekolahData = [];
 let filteredData = [];
 let currentPage = 1;
-const itemsPerPage = 10;
+const itemsPerPage = 5;
 
 // 1. Ambil data dari API
 function loadSekolahData() {
@@ -212,7 +212,7 @@ document.getElementById('cctvForm').addEventListener('submit', function (e) {
           document.body.style.overflow = '';
           document.body.style.paddingRight = '';
           modalInstance.hide();
-          
+
           loadSekolahData();
         } else {
           let errorText = '';
