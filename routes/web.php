@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('cctv-sekolah', [SekolahController::class, 'index'])->name('menu-sekolah');
 
-    Route::get('cctv-panorama', [PanoramaController::class, 'index'])->name('menu-panorama');
+    Route::get('menu-cctv-panorama', [PanoramaController::class, 'index'])->name('menu-panorama');
 
     // Route::get('menu-panorama', function () {
     //     return view('menu-panorama');
@@ -107,7 +107,7 @@ Route::get('/sekolah/search', [SekolahController::class, 'search'])->name('sekol
 
 
 //Route Panorama
-Route::get('/view-panorama', [PanoramaController::class, 'dashboard'])->name('panorama.panorama');
+Route::get('/cctvpanorama', [PanoramaController::class, 'dashboard'])->name('panorama.panorama');
 Route::get('/index2', [PanoramaController::class, 'index'])->name('panorama.index');
 Route::post('/store-panorama', [PanoramaController::class, 'store'])->name('panorama.store');
 Route::post('/panorama/{id}', [PanoramaController::class, 'update'])->name('panorama.update');
