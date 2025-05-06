@@ -5,23 +5,21 @@
         <div class="container-fluid py-4">
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 col-md-12 col-lg-12">
                     <div class="card mb-4">
                         {{-- Header --}}
-                        <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                            <h6>CCTV Sekolah</h6>
-                            <div class="d-flex">
-                                <input type="text" id="searchInput" class="form-control form-control-sm me-2"
-                                    placeholder="Search..." onkeyup="searchcctvsekolah()"
-                                    style="height: 2.1rem; padding: 5px;">
-                                <a href="javascript:;" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                        <div class="card-header pb-0 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
+                            <h6 class="mb-2 mb-sm-0">CCTV Sekolah</h6>
+                            <div class="d-flex flex-column flex-sm-row">
+                                <input type="text" id="searchInput" class="form-control form-control-sm me-sm-2 mb-2 mb-sm-0"
+                                    placeholder="Search..." onkeyup="searchcctvsekolah()" style="height: 2.1rem; padding: 5px;">
+                                <a href="javascript:;" class="btn btn-secondary btn-sm w-100 w-sm-auto" data-bs-toggle="modal"
                                     data-bs-target="#cctvsekolahModal" onclick="openAddModal()">Add</a>
                             </div>
-                        </div>
-
+                        </div>                        
                         <!-- Table & Pagination -->
                         <div class="card-body px-0 pt-0 pb-2">
-                            <div class="table-responsive p-0">
+                            <div class="table-responsive-sm">
                                 {{-- Tables --}}
                                 @include('sekolah.partials.table')
                             </div>

@@ -3,7 +3,7 @@
 let panoramaData = [];
 let filteredData = [];
 let currentPage = 1;
-const itemsPerPage = 10;
+const itemsPerPage = 5;
 
 // 1. Ambil data dari API
 function loadpanoramaData() {
@@ -28,11 +28,10 @@ function grouppanoramaData(data) {
   const grouped = {};
 
   data.forEach(item => {
-    const key = `${item.namaWilayah}||${item.namaTitik}`;
+    const key = `${item.namaWilayah}`;
     if (!grouped[key]) {
       grouped[key] = {
         namaWilayah: item.namaWilayah,
-        namaTitik: item.namaTitik,
         titik: []
       };
     }
@@ -59,7 +58,7 @@ function renderTable() {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         ${index === 0 ? `<td class="text-center" rowspan="${rowspan}">${group.namaWilayah}</td>` : ''}
-        ${index === 0 ? `<td class="text-center" rowspan="${rowspan}">${group.namaTitik}</td>` : ''}
+        <td class="text-center">${item.namaTitik}</td>
         <td class="text-center">
           <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(item)})'>Edit</button>
           <button class="btn btn-sm btn-danger" onclick="deleteSekolah(${item.id})">Delete</button>
