@@ -16,12 +16,12 @@ class ApiSekolahController extends Controller
             $sekolah = Sekolah::all();
 
             if ($sekolah->isEmpty()) {
-                return new GlobalResource(false, 'Data Sekolah tidak ditemukan', null);
+                return new GlobalResource(false, 'Belum ada data cctv sekolah yang tersedia.', null);
             }
 
-            return new GlobalResource(true, 'List Data CCTV Sekolah', $sekolah);
+            return new GlobalResource(true, 'Data cctv sekolah berhasil dimuat.', $sekolah);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            return new GlobalResource(false, 'Terjadi kesalahan saat mengambil data cctv sekolah. Silakan coba lagi nanti.', null);
         }
     }
 
@@ -36,32 +36,34 @@ class ApiSekolahController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return new GlobalResource(false, 'Validasi gagal', $validator->errors());
+                return new GlobalResource(false, 'Data yang Anda masukkan tidak valid.', $validator->errors());
             }
 
-            $sekolah = sekolah::create($request->all());
+            $sekolah = Sekolah::create($request->all());
 
-            return new GlobalResource(true, 'Data sekolah berhasil ditambahkan', $sekolah);
+            return new GlobalResource(true, 'Data cctv sekolah berhasil ditambahkan.', $sekolah);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            // Menangani error duplikat (misal karena constraint unik)
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                return new GlobalResource(false, 'Link CCTV sudah digunakan. Silakan gunakan link yang berbeda.', null);
+            }
+
+            return new GlobalResource(false, 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.', null);
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         try {
-            $data = sekolah::find($id);
+            $data = Sekolah::find($id);
 
             if (!$data) {
-                return new GlobalResource(false, 'Data sekolah tidak ditemukan', null);
+                return new GlobalResource(false, 'Data cctv sekolah tidak ditemukan.', null);
             }
 
-            return new GlobalResource(true, 'Detail Data Sekolah', $data);
+            return new GlobalResource(true, 'Detail data cctv sekolah berhasil dimuat.', $data);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            return new GlobalResource(false, 'Terjadi kesalahan saat memuat data cctv sekolah.', null);
         }
     }
 
@@ -71,10 +73,10 @@ class ApiSekolahController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $data = sekolah::find($id);
+            $data = Sekolah::find($id);
 
             if (!$data) {
-                return new GlobalResource(false, 'Data sekolah tidak ditemukan', null);
+                return new GlobalResource(false, 'Data sekolah tidak ditemukan.', null);
             }
 
             $validator = Validator::make($request->all(), [
@@ -85,14 +87,18 @@ class ApiSekolahController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return new GlobalResource(false, 'Validasi gagal', $validator->errors());
+                return new GlobalResource(false, 'Data yang Anda masukkan tidak valid.', $validator->errors());
             }
 
             $data->update($request->all());
 
-            return new GlobalResource(true, 'Data sekolah berhasil diupdate', $data);
+            return new GlobalResource(true, 'Data cctv sekolah berhasil diperbarui.', $data);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                return new GlobalResource(false, 'Link CCTV sudah digunakan. Silakan gunakan link yang berbeda.', null);
+            }
+
+            return new GlobalResource(false, 'Terjadi kesalahan saat memperbarui data cctv sekolah.', null);
         }
     }
 
@@ -102,17 +108,17 @@ class ApiSekolahController extends Controller
     public function destroy(string $id)
     {
         try {
-            $data = sekolah::find($id);
+            $data = Sekolah::find($id);
 
             if (!$data) {
-                return new GlobalResource(false, 'Data sekolah tidak ditemukan', null);
+                return new GlobalResource(false, 'Data cctv sekolah tidak ditemukan.', null);
             }
 
             $data->delete();
 
-            return new GlobalResource(true, 'Data sekolah berhasil dihapus', null);
+            return new GlobalResource(true, 'Data cctv sekolah berhasil dihapus.', null);
         } catch (\Exception $e) {
-            return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
+            return new GlobalResource(false, 'Terjadi kesalahan saat menghapus data cctv sekolah.', null);
         }
     }
 }
