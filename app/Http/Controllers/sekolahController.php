@@ -4,10 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\sekolah;
+use App\Models\Panorama;
+use App\Models\User;
 
 class SekolahController extends Controller
 {
     public function dashboard()
+    {
+        $sekolah = sekolah::all();
+
+        $sekolahCount = sekolah::count();
+        $panoramaCount = Panorama::count();
+        $userCount = User::count();
+
+        return view('admin.dashboard', compact('sekolahCount', 'panoramaCount', 'userCount'));
+    }
+
+    public function cctvsekolah()
     {
         $sekolah = sekolah::all();
         return view('sekolah.sekolah', compact('sekolah'));
@@ -54,7 +67,7 @@ class SekolahController extends Controller
 
     public function delete($id)
     {
-        $sekolah = sekolah::find($id);  
+        $sekolah = sekolah::find($id);
         $sekolah->delete();
         return redirect()->route('sekolah.index');
     }

@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Menambahkan meta description -->
+    <meta name="description" content="Website cctv sekolah yogyakarta">
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
 
     <title>Dashboard CCTV</title>
     <script>
@@ -225,17 +229,7 @@
                 }
             });
 
-            // 2. Ambil daftar CCTV dari hash (prioritas lebih tinggi dari localStorage)
-            const activeCCTVs = getActiveCCTVsFromHash();
-            activeCCTVs.forEach(id => {
-                const checkbox = document.getElementById(`checkbox-${id}`);
-                if (checkbox) {
-                    checkbox.checked = true;
-                    toggleCCTV(id, checkbox);
-                }
-            });
-
-            // 3. Restore dropdown sekolah
+            // 2. Restore dropdown sekolah
             const selectedSchool = localStorage.getItem("selectedSchool");
             if (selectedSchool) {
                 document.getElementById("school-dropdown").value = selectedSchool;
@@ -333,7 +327,7 @@
                 <div class="side-bar">
 
                     <button class="btn-sidebar2" onclick="toggleSidebar()"
-                        style="position: fixed; top: 10px; left: 10px; z-index: 1001;">
+                        style="position: fixed; top: 10px; left: 10px; z-index: 1001;" aria-label="Toggle Sidebar">
                         <i class="fas fa-bars"></i>
                     </button>
 
@@ -391,7 +385,8 @@
 
             <!-- Kolom Kanan -->
             <div id="pagecard" class="col-md-12">
-                <button class="btn-sidebar" onclick="toggleSidebar()" style="top: 47px; left: 35px; z-index: 1001;">
+                <button class="btn-sidebar" onclick="toggleSidebar()" style="top: 47px; left: 35px; z-index: 1001;"
+                    aria-label="Toggle Sidebar">
                     <i class="fas fa-bars"></i>
                 </button>
 
@@ -455,7 +450,8 @@
                                             {{ $singkatan }}
                                         </a>
                                         <div class="iframe-container" style="margin: -10px 10px 10px 10px;">
-                                            <iframe data-src="{{ $cctv->link }}" frameborder="0" allowfullscreen></iframe>
+                                            <iframe data-src="{{ $cctv->link }}" frameborder="0" allowfullscreen
+                                                title="CCTV Live Stream"></iframe>
                                         </div>
                                     </div>
                                 </div>

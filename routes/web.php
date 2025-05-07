@@ -26,9 +26,7 @@ use App\Http\Controllers\VideoController;
 */
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [sekolahController::class, 'dashboard'])->name('dashboard');
 
     Route::get('user-management', function () {
         return view('users.menu-users');
@@ -94,7 +92,7 @@ Route::post('/cctv/{cctv}', [cctvController::class, 'update'])->name('cctv.updat
 Route::delete('/cctv/{cctv}', [cctvController::class, 'delete'])->name('cctv.delete');
 
 // Route sekolah
-Route::get('/', [SekolahController::class, 'dashboard'])->name('sekolah.sekolah');
+Route::get('/', [SekolahController::class, 'cctvsekolah'])->name('sekolah.sekolah');
 Route::get('/index', [SekolahController::class, 'index'])->name('sekolah.index');
 Route::get('/create', [SekolahController::class, 'create'])->name('sekolah.create');
 Route::post('/sekolah', [SekolahController::class, 'store'])->name('sekolah.store');
