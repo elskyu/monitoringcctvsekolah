@@ -36,9 +36,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('menu-cctv-panorama', [PanoramaController::class, 'index'])->name('menu-panorama');
 
-    // Route::get('menu-panorama', function () {
-    //     return view('menu-panorama');
-    // })->name('menu-panorama');
 
     Route::get('billing', function () {
         return view('billing');

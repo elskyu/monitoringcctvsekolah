@@ -38,7 +38,7 @@
 </head>
 
 <body
-    class="g-sidenav-show bg-gray-100 {{ (\Request::is('rtl') ? 'rtl' : (Request::is('virtual-reality') ? 'virtual-reality' : '')) }}">
+    class="g-sidenav-show bg-gray-100 {{ \Request::is('rtl') ? 'rtl' : (Request::is('virtual-reality') ? 'virtual-reality' : '') }}">
 
     @auth
         @yield('auth')
@@ -48,7 +48,7 @@
         @yield('guest')
     @endguest
 
-    @if(session()->has('success'))
+    @if (session()->has('success'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
             class="position-fixed bg-success rounded text-white text-sm py-2 px-4"
             style="top: 1rem; right: 1rem; z-index: 9999;">
@@ -72,7 +72,9 @@
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
-            var options = { damping: '0.5' }
+            var options = {
+                damping: '0.5'
+            }
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
     </script>
@@ -88,6 +90,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     @stack('scriptsku')
+
+    @if (session('message'))
+        <script>
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '{{ session('message') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    @endif
+
 </body>
 
 </html>

@@ -91,8 +91,11 @@
             </div>
 
         </div>
+
+
+
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 const apiKey = '66db882578a46f03c27c30a952240556';
                 const lat = -7.797068;
                 const lon = 110.370529;
@@ -119,7 +122,8 @@
                 };
 
                 fetch(
-                    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`)
+                        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+                        )
                     .then(response => response.json())
                     .then(data => {
                         const temperature = Math.round(data.main.temp);
@@ -137,4 +141,4 @@
                     });
             });
         </script>
-@endsection
+    @endsection
