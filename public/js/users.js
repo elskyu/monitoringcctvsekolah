@@ -1,5 +1,3 @@
-// public/js/users.js
-
 let UsersData = [];
 let filteredData = [];
 let currentPage = 1;
@@ -10,6 +8,8 @@ function loadUsersData() {
   fetch('/api/users', { headers: { 'Accept': 'application/json' } })
     .then(res => res.json())
     .then(json => {
+      console.log("Data dari API:", json);
+      
       if (!json.success) {
         return Swal.fire('Error', json.message, 'error');
       }
