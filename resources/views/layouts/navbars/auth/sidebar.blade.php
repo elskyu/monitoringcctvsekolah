@@ -64,14 +64,16 @@
             <li class="nav-item mt-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Data</h6>
             </li>
+
             <!-- CCTV Panorama -->
             <li class="nav-item pb-2">
                 <a class="nav-link {{ Route::currentRouteName() == 'menu-panorama' ? 'active' : '' }}"
                     href="{{ route('menu-panorama') }}">
                     <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center {{ Route::currentRouteName() == 'cctv.panorama' ? 'bg-gradient-primary text-white' : '' }}">
-                        <i
-                            class="ni ni-camera-compact {{ Route::currentRouteName() == 'cctv.panorama' ? 'text-white' : 'text-dark' }}"></i>
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center {{ Route::currentRouteName() == 'menu-panorama' ? 'bg-gradient-primary text-white' : '' }}">
+                        <!-- CCTV Panorama Icon (Gunung) -->
+                        <i class="fas fa-mountain {{ Route::currentRouteName() == 'menu-panorama' ? 'text-white' : 'text-dark' }}"
+                            style="font-size: 0.7rem;"></i>
                     </div>
                     <span class="nav-link-text ms-1">CCTV Panorama</span>
                 </a>
@@ -82,22 +84,25 @@
                 <a class="nav-link {{ Route::currentRouteName() == 'menu-sekolah' ? 'active' : '' }}"
                     href="{{ route('menu-sekolah') }}">
                     <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center {{ Route::currentRouteName() == 'cctv.sekolah' ? 'bg-gradient-primary text-white' : '' }}">
-                        <i
-                            class="ni ni-camera-compact {{ Route::currentRouteName() == 'cctv.sekolah' ? 'text-white' : 'text-dark' }}"></i>
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center {{ Route::currentRouteName() == 'menu-sekolah' ? 'bg-gradient-primary text-white' : '' }}">
+                        <!-- CCTV Sekolah Icon (Sekolah) -->
+                        <i class="fas fa-school {{ Route::currentRouteName() == 'menu-sekolah' ? 'text-white' : 'text-dark' }}"
+                            style="font-size: 0.7rem;"></i>
                     </div>
                     <span class="nav-link-text ms-1">CCTV Sekolah</span>
                 </a>
             </li>
 
+
             <li class="nav-item pb-2 mt-3">
                 <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
                     @csrf
                 </form>
-                <button type="button" 
-                    class="nav-link border-0 bg-transparent d-flex align-items-center {{ Route::currentRouteName() == 'logout' ? 'active' : '' }}" 
+                <button type="button"
+                    class="nav-link border-0 bg-transparent d-flex align-items-center {{ Route::currentRouteName() == 'logout' ? 'active' : '' }}"
                     id="logoutButton">
-                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-button-power text-danger"></i>
                     </div>
                     <span class="nav-link-text ms-1 text-danger">Logout</span>
@@ -105,7 +110,7 @@
             </li>
 
             <script>
-                document.getElementById('logoutButton').addEventListener('click', function() {
+                document.getElementById('logoutButton').addEventListener('click', function () {
                     Swal.fire({
                         title: 'Apakah Anda Yakin?',
                         text: "Anda akan Logout dari sini.",
@@ -122,7 +127,7 @@
                     });
                 });
             </script>
-            
+
         </ul>
     </div>
 </aside>
