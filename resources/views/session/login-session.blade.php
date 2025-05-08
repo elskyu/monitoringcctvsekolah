@@ -1,6 +1,7 @@
 @extends('layouts.user_type.guest')
 
 @section('content')
+
     <main class="main-content mt-0">
         <section class="min-vh-100 d-flex align-items-center justify-content-center"
             style="background: url('{{ asset('assets/img/robt.jpg') }}') no-repeat center center; background-size: cover;">
@@ -21,7 +22,8 @@
                                 @if (session('success'))
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                                         {{ session('success') }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
                                     </div>
                                 @endif
 
@@ -29,7 +31,8 @@
                                 @if (session('error'))
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                         {{ session('error') }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
                                     </div>
                                 @endif
 
@@ -41,7 +44,8 @@
                                                 <li>{{ $error }}</li>
                                             @endforeach
                                         </ul>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
                                     </div>
                                 @endif
 
@@ -51,16 +55,22 @@
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
                                         <input type="email" id="email" name="email"
-                                            class="form-control @error('email') is-invalid @enderror"
-                                            placeholder="Email" value="{{ old('email') }}" required autofocus>
+                                            class="form-control @error('email') is-invalid @enderror" placeholder="Email"
+                                            value="{{ old('email') }}" required autofocus>
                                     </div>
 
-                                    <div class="mb-3">
+                                    <div class="mb-3 position-relative">
                                         <label for="password" class="form-label">Password</label>
                                         <input type="password" id="password" name="password"
                                             class="form-control @error('password') is-invalid @enderror"
                                             placeholder="Password" required>
+                                        <button type="button"
+                                            class="btn btn-icon position-absolute top-50 end-0 translate-middle-y"
+                                            style="right: 10px; margin-top: 15px;box-shadow: none;" id="togglePassword">
+                                            <i class="fas fa-eye" id="eyeIcon"></i>
+                                        </button>
                                     </div>
+
 
                                     <div class="text-center">
                                         <button type="submit" class="btn bg-gradient-info w-100">Sign In</button>
@@ -77,4 +87,21 @@
 
         </section>
     </main>
+
+    <script>
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        togglePassword.addEventListener('click', function () {
+            // Check if password is currently hidden or visible
+            const type = passwordField.type === 'password' ? 'text' : 'password';
+            passwordField.type = type;
+
+            // Change eye icon based on visibility
+            eyeIcon.classList.toggle('fa-eye');
+            eyeIcon.classList.toggle('fa-eye-slash');
+        });
+    </script>
 @endsection
