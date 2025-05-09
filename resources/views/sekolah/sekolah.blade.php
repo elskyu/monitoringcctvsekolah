@@ -279,14 +279,15 @@
                 schools.add(cctv.dataset.sekolah);
             });
 
-            // Hitung jumlah wilayah (daerah)
-            const regionCount = document.querySelectorAll('[onclick^="toggleDaerah"]').length;
+            // Set jumlah wilayah menjadi 5 secara statis
+            const regionCount = 5;
 
             // Update tampilan
             document.getElementById('cctvCount').textContent = cctvCount;
             document.getElementById('schoolCount').textContent = schools.size;
             document.getElementById('regionCount').textContent = regionCount;
         }
+
     </script>
 </head>
 
