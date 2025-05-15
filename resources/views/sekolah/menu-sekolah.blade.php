@@ -8,15 +8,18 @@
                 <div class="col-12 col-md-12 col-lg-12">
                     <div class="card mb-4">
                         {{-- Header --}}
-                        <div class="card-header pb-0 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
+                        <div
+                            class="card-header pb-0 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
                             <h6 class="mb-2 mb-sm-0">CCTV Sekolah</h6>
                             <div class="d-flex flex-column flex-sm-row">
-                                <input type="text" id="searchInput" class="form-control form-control-sm me-sm-2 mb-2 mb-sm-0"
-                                    placeholder="Search..." onkeyup="searchcctvsekolah()" style="height: 2.1rem; padding: 5px;">
-                                <a href="javascript:;" class="btn btn-secondary btn-sm w-100 w-sm-auto" data-bs-toggle="modal"
-                                    data-bs-target="#cctvsekolahModal" onclick="openAddModal()">Add</a>
+                                <input type="text" id="searchInput"
+                                    class="form-control form-control-sm me-sm-2 mb-2 mb-sm-0" placeholder="Search..."
+                                    onkeyup="searchcctvsekolah()" style="height: 2.1rem; padding: 5px;">
+                                <a href="javascript:;" class="btn btn-secondary btn-sm w-100 w-sm-auto"
+                                    data-bs-toggle="modal" data-bs-target="#cctvsekolahModal"
+                                    onclick="openAddModal()">Add</a>
                             </div>
-                        </div>                        
+                        </div>
                         <!-- Table & Pagination -->
                         <div class="card-body px-0 pt-0 pb-2">
                             <div class="table-responsive-sm">
@@ -40,6 +43,7 @@
 @endsection
 
 @push('scriptsku')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- SweetAlert2 (opsional) -->
@@ -53,5 +57,3 @@
     <!-- Custom Script -->
     <script src="{{ asset('js/sekolah.js') }}"></script>
 @endpush
-
-

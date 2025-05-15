@@ -12,8 +12,7 @@
                             <h6>Data Users</h6>
                             <div class="d-flex">
                                 <input type="text" id="searchInput" class="form-control form-control-sm me-2"
-                                    placeholder="Search..." onkeyup="searchUsers()"
-                                    style="height: 2.1rem; padding: 5px;">
+                                    placeholder="Search..." onkeyup="searchUsers()" style="height: 2.1rem; padding: 5px;">
                                 <a href="javascript:;" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#UsersModal" onclick="openAddModal()">Add</a>
                             </div>
@@ -42,6 +41,7 @@
 @endsection
 
 @push('scriptsku')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- SweetAlert2 (opsional) -->
@@ -55,5 +55,3 @@
     <!-- Custom Script -->
     <script src="{{ asset('js/users.js') }}"></script>
 @endpush
-
-

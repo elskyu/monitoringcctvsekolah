@@ -1,6 +1,8 @@
 @extends('layouts.user_type.guest')
 
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
@@ -117,8 +119,7 @@
                                                             <!-- Form Edit -->
                                                             <button class="btn btn-sm btn-primary"
                                                                 onclick="editPanorama({{ $item->id }}, '{{ $item->namaWilayah }}', '{{ $item->namaTitik }}', '{{ $item->link }}')"
-                                                                data-bs-toggle="modal"
-                                                                data-bs-target="#addEditPanoramaModal">
+                                                                data-bs-toggle="modal" data-bs-target="#addEditPanoramaModal">
                                                                 Edit
                                                             </button>
 
@@ -228,12 +229,12 @@
     </script>
 
     <script>
-        // Reset Form saat menambah data baru
-        function resetForm() {
-            document.getElementById('addEditPanoramaForm').reset();
-            document.getElementById('addEditPanoramaForm').action = "{{ route('panorama.store') }}";
-            document.getElementById('addEditPanoramaModalLabel').textContent = "Tambah CCTV Panorama";
-        }
+            // Reset Form saat menambah data baru
+            function resetForm() {
+                document.getElementById('addEditPanoramaForm').reset();
+                document.getElementById('addEditPanoramaForm').action = "{{ route('panorama.store') }}";
+                document.getElementById('addEditPanoramaModalLabel').textContent = "Tambah CCTV Panorama";
+            }
 
         // Mengisi form untuk Edit
         function editPanorama(id, namaWilayah, namaTitik, link) {

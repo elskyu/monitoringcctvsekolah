@@ -52,7 +52,7 @@
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center {{ Route::currentRouteName() == 'menu-panorama' ? 'bg-gradient-primary text-white' : '' }}">
                         <!-- CCTV Panorama Icon (Gunung) -->
-                        <i class="fas fa-mountain {{ Route::currentRouteName() == 'menu-panorama' ? 'text-white' : 'text-dark' }}"
+                        <i class="fas fa-earth-americas {{ Route::currentRouteName() == 'menu-panorama' ? 'text-white' : 'text-dark' }}"
                             style="font-size: 0.7rem;"></i>
                     </div>
                     <span class="nav-link-text ms-1">CCTV Panorama</span>
@@ -66,7 +66,7 @@
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center {{ Route::currentRouteName() == 'menu-sekolah' ? 'bg-gradient-primary text-white' : '' }}">
                         <!-- CCTV Sekolah Icon (Sekolah) -->
-                        <i class="fas fa-school {{ Route::currentRouteName() == 'menu-sekolah' ? 'text-white' : 'text-dark' }}"
+                        <i class="fas fa-book-open {{ Route::currentRouteName() == 'menu-sekolah' ? 'text-white' : 'text-dark' }}"
                             style="font-size: 0.7rem;"></i>
                     </div>
                     <span class="nav-link-text ms-1">CCTV Sekolah</span>
