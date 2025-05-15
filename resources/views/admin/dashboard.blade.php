@@ -43,7 +43,7 @@
                     <!-- Top row for Users and CCTV Panorama -->
                     <div class="card-row">
 
-                        <div class="card" style="background-color:rgb(223, 94, 55);">
+                        <div class="card" style="background-color:#7da0fa">
                             <div class="card-content">
                                 <div class="left-column">
                                     <h3 style="color: white;">Users</h3>
@@ -55,7 +55,7 @@
                             </div>
                         </div>
 
-                        <div class="card" style="background-color:rgb(36, 222, 114);">
+                        <div class="card" style="background-color: rgba(71,71,161,255);">
                             <div class="card-content">
                                 <div class="left-column">
                                     <h3 style="color: white;">Panorama</h3>
@@ -70,7 +70,7 @@
 
                     <!-- Bottom row for CCTV Sekolah and Belum Digunakan -->
                     <div class="card-row">
-                        <div class="card" style="background-color:rgb(58, 160, 228);">
+                        <div class="card" style="background-color:#7978e9">
                             <div class="card-content">
                                 <div class="left-column">
                                     <h3 style="color: white;">Sekolah</h3>
@@ -82,9 +82,9 @@
                             </div>
                         </div>
 
-                        <div class="card">
-                            <h3>Belum Digunakan</h3>
-                            <p>0</p>
+                        <div class="card" style="background-color: #f3797e;">
+                            <h3 style="color: white;">Empty Card</h3>
+                            <p style="color: white;">0</p>
                         </div>
                     </div>
                 </div>

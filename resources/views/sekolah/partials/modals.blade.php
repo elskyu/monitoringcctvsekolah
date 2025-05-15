@@ -17,11 +17,11 @@
                             <option value="KOTA JOGJA">KOTA JOGJA</option>
                             <option value="KABUPATEN SLEMAN">KABUPATEN SLEMAN</option>
                             <option value="KABUPATEN BANTUL">KABUPATEN BANTUL</option>
-                            <option value="KABUPATEN KP">KABUPATEN KP</option>
-                            <option value="KABUPATEN GK">KABUPATEN GK</option>
+                            <option value="KABUPATEN KP">KABUPATEN KULONPROGO</option>
+                            <option value="KABUPATEN GK">KABUPATEN GUNUNG KIDUL</option>
                         </select>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="namaSekolah" class="form-label">Nama Sekolah</label>
                         <input type="text" class="form-control" id="namaSekolah" name="namaSekolah" required>

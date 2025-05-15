@@ -54,10 +54,14 @@ function renderTable() {
 
   pageData.forEach(group => {
     const rowspan = group.titik.length;
+
+    const wilayahNama = group.namaWilayah === 'KABUPATEN GK' ? 'KABUPATEN GUNUNG KIDUL' :
+                            (group.namaWilayah === 'KABUPATEN KP' ? 'KABUPATEN KULONPROGO' : group.namaWilayah);
+
     group.titik.forEach((item, index) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        ${index === 0 ? `<td class="text-center" rowspan="${rowspan}">${group.namaWilayah}</td>` : ''}
+        ${index === 0 ? `<td class="text-center" rowspan="${rowspan}">${wilayahNama}</td>` : ''}
         <td class="text-center">${item.namaTitik}</td>
         <td class="text-center">
           <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(item)})'>Edit</button>

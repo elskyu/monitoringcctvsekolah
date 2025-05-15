@@ -288,6 +288,36 @@
             document.getElementById('regionCount').textContent = regionCount;
         }
 
+        document.getElementById('cctvSearch').addEventListener('input', function () {
+            let searchQuery = this.value.toLowerCase();
+            filterCCTV(searchQuery);
+        });
+
+        function filterCCTV(query) {
+            const cctvCards = document.querySelectorAll('.cctv-view');
+
+            cctvCards.forEach(cctv => {
+                const namaTitik = cctv.dataset.titik.toLowerCase();
+                const namaSekolah = cctv.dataset.sekolahName.toLowerCase();
+                const wilayah = cctv.dataset.wilayah.toLowerCase();
+
+                if (namaTitik.includes(query) ||
+                    namaSekolah.includes(query) ||
+                    wilayah.includes(query)) {
+                    cctv.style.display = 'block';
+                    const iframe = cctv.querySelector('iframe');
+                    if (iframe && !iframe.src) {
+                        iframe.src = iframe.getAttribute('data-src');
+                    }
+                } else {
+                    cctv.style.display = 'none';
+                    const iframe = cctv.querySelector('iframe');
+                    if (iframe) {
+                        iframe.src = '';
+                    }
+                }
+            });
+        }
     </script>
 </head>
 
@@ -344,7 +374,7 @@
                             <div class="item" style="font-size: 12px">
                                 <a href="javascript:void(0);" class="sub-btn"
                                     onclick="toggleDaerah('{{ Str::slug($wilayah) }}')">
-                                    <i></i> {{ $wilayah }}
+                                    {{ $wilayah == 'KABUPATEN GK' ? 'KABUPATEN GUNUNG KIDUL' : ($wilayah == 'KABUPATEN KP' ? 'KABUPATEN KULONPROGO' : $wilayah) }}
                                     <i id="icon-{{ Str::slug($wilayah) }}" class="fas fa-angle-right dropdown"
                                         style="margin-top: 4px;"></i>
                                 </a>
@@ -417,6 +447,14 @@
                             <p class="fw-bold mb-0">Jumlah Wilayah : <span id="regionCount"></span></p>
                         </div>
                     </div>
+                    <!-- <div class="col-md-3">
+                        <div class="">
+                            <form class="d-flex w-100" style="margin-bottom: -26px;  justify-content: center;">
+                                <input type="text" class="form-control" id="cctvSearch" placeholder="Cari CCTV..."
+                                    style="border-radius: 7px; padding: 10px; height: 47px;">
+                            </form>
+                        </div>
+                    </div> -->
                 </div>
 
                 <div class="row g-3">
@@ -441,7 +479,8 @@
                                 @endphp
                                 <div class="col-md-3 col-sm-6 col-xs-12 cctv-view"
                                     id="{{ Str::slug($namaSekolah . '-' . $cctv->namaTitik) }}"
-                                    data-sekolah="{{ Str::slug($namaSekolah) }}" style="display: none;">
+                                    data-sekolah="{{ Str::slug($namaSekolah) }}" data-sekolah-name="{{ $namaSekolah }}"
+                                    data-wilayah="{{ $wilayah }}" data-titik="{{ $cctv->namaTitik }}" style="display: none;">
 
                                     <div class="card" style="margin-bottom: 5px; padding: 10px; width: 100%; max-height: 285px;">
                                         <a style="font-size: 12pt; font-weight: bold;" class="card-title text-center mb-1">
