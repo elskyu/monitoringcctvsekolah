@@ -43,34 +43,40 @@ function groupSekolahData(data) {
 }
 
 // 2. Render tabel berdasarkan filteredData & paging
+
 function renderTable() {
-  const tbody = document.getElementById('sekolah-tbody');
-  tbody.innerHTML = '';
+    const tbody = document.getElementById('sekolah-tbody');
+    tbody.innerHTML = '';
 
-  const groupedData = groupSekolahData(filteredData);
+    const groupedData = groupSekolahData(filteredData);
 
-  // paging (berdasarkan group, bukan item per titik)
-  const start = (currentPage - 1) * itemsPerPage;
-  const pageData = groupedData.slice(start, start + itemsPerPage);
+    // Paging (berdasarkan group, bukan item per titik)
+    const start = (currentPage - 1) * itemsPerPage;
+    const pageData = groupedData.slice(start, start + itemsPerPage);
 
-  pageData.forEach(group => {
-    const rowspan = group.titik.length;
-    group.titik.forEach((item, index) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        ${index === 0 ? `<td class="text-center" rowspan="${rowspan}">${group.namaWilayah}</td>` : ''}
-        ${index === 0 ? `<td class="text-center" rowspan="${rowspan}">${group.namaSekolah}</td>` : ''}
-        <td class="text-center">${item.namaTitik}</td>
-        <td class="text-center">
-          <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(item)})'>Edit</button>
-          <button class="btn btn-sm btn-danger" onclick="deleteSekolah(${item.id})">Delete</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
+    pageData.forEach(group => {
+        const rowspan = group.titik.length;
+
+        // Ganti nama wilayah "KABUPATEN GK" dengan "KABUPATEN GUNUNG KIDUL" dan "KABUPATEN KP" dengan "KABUPATEN KULONPROGO"
+        const wilayahNama = group.namaWilayah === 'KABUPATEN GK' ? 'KABUPATEN GUNUNG KIDUL' :
+                            (group.namaWilayah === 'KABUPATEN KP' ? 'KABUPATEN KULONPROGO' : group.namaWilayah);
+
+        group.titik.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                ${index === 0 ? `<td class="text-center" rowspan="${rowspan}">${wilayahNama}</td>` : ''}
+                ${index === 0 ? `<td class="text-center" rowspan="${rowspan}">${group.namaSekolah}</td>` : ''}
+                <td class="text-center">${item.namaTitik}</td>
+                <td class="text-center">
+                <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(item)})'>Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteSekolah(${item.id})">Delete</button>
+            </td>
+            `;
+            tbody.appendChild(tr);
+        });
     });
-  });
 
-  renderPagination(groupedData.length);
+    renderPagination(groupedData.length);
 }
 
 
@@ -144,7 +150,7 @@ function deleteSekolah(id) {
       }
     });
   }
-  
+
 
 // 7. Open modal edit/ add (contoh)
 function openAddModal() {
@@ -175,18 +181,18 @@ document.addEventListener('DOMContentLoaded', loadSekolahData);
 // Add dan Edit
 document.getElementById('cctvForm').addEventListener('submit', function (e) {
     e.preventDefault();
-  
+
     const id = document.getElementById('idSekolah').value;
     const method = id ? 'PUT' : 'POST';
     const url = id ? `/api/cctvsekolah/${id}` : '/api/cctvsekolah';
-  
+
     const data = {
       namaWilayah: document.getElementById('namaWilayah').value,
       namaSekolah: document.getElementById('namaSekolah').value,
       namaTitik: document.getElementById('namaTitik').value,
       link: document.getElementById('link').value,
     };
-  
+
     fetch(url, {
       method: method,
       headers: {
@@ -205,7 +211,7 @@ document.getElementById('cctvForm').addEventListener('submit', function (e) {
 
           const modalElement = document.getElementById('cctvsekolahModal');
           const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-          
+
           // Fix overlay modal backdrop
           document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
           document.body.classList.remove('modal-open');
@@ -231,4 +237,3 @@ document.getElementById('cctvForm').addEventListener('submit', function (e) {
         Swal.fire('Error', 'Terjadi kesalahan saat menyimpan data.', 'error');
       });
   });
-  

@@ -330,7 +330,7 @@
                             <div class="item" style="font-size: 12px">
                                 <a href="javascript:void(0);" class="sub-btn"
                                     onclick="toggleDaerah('{{ Str::slug($wilayah) }}')">
-                                    {{ $wilayah }}
+                                    {{ $wilayah == 'KABUPATEN GK' ? 'KABUPATEN GUNUNG KIDUL' : ($wilayah == 'KABUPATEN KP' ? 'KABUPATEN KULONPROGO' : $wilayah) }}
                                     <i id="icon-{{ Str::slug($wilayah) }}" class="fas fa-angle-right dropdown"
                                         style="margin-top: 4px;"></i>
                                 </a>

@@ -4090,7 +4090,7 @@ fieldset:disabled .btn {
 }
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
-    background-color: #fff;
+    background-color: black;
     border-color: #dee2e6 #dee2e6 #fff;
     color: #495057;
 }
@@ -4106,7 +4106,7 @@ fieldset:disabled .btn {
 }
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-    background-color: #fff;
+    background-color: red;
     color: #344767;
 }
 .nav-fill .nav-item,
@@ -17385,26 +17385,17 @@ hr.horizontal.gray-light {
         transform: translateX(0);
     }
 }
-.navbar-vertical.bg-white {
-    box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
-}
-.navbar-vertical.bg-white .navbar-nav .nav-link.active {
-    box-shadow: none;
-}
-.navbar-vertical.bg-white .navbar-nav .nav-link .icon {
-    background-image: linear-gradient(310deg, #e9ecef, #e9ecef);
-}
 .navbar-vertical .navbar-nav .nav-link.active {
     border-radius: 0.5rem;
-    box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
     font-weight: 600;
 }
 .navbar-vertical .navbar-nav > .nav-item .nav-link.active {
     background-color: #fff;
-    color: #344767;
+    color: white;
+    background: #eb6449;
 }
 .navbar-vertical .navbar-nav > .nav-item .nav-link.active .icon {
-    background-image: linear-gradient(310deg, #cb0c9f, #cb0c9f);
+    color: white;
 }
 .navbar-vertical
     .navbar-nav
@@ -17420,7 +17411,7 @@ hr.horizontal.gray-light {
     .icon
     svg
     .color-foreground {
-    fill: #fff;
+    fill: white;
 }
 .navbar-main {
     transition: box-shadow 0.25s ease-in, background-color 0.25s ease-in;
@@ -17511,7 +17502,7 @@ hr.horizontal.gray-light {
     .nav
     .nav-item
     .nav-link.active {
-    color: #3a416f;
+    color: white;
 }
 .navbar-vertical
     .navbar-nav
