@@ -294,34 +294,3 @@ function toggleDaerah(id) {
             document.getElementById('schoolCount').textContent = schools.size;
             document.getElementById('regionCount').textContent = regionCount;
         }
-
-        document.getElementById('cctvSearch').addEventListener('input', function () {
-            let searchQuery = this.value.toLowerCase();
-            filterCCTV(searchQuery);
-        });
-
-        function filterCCTV(query) {
-            const cctvCards = document.querySelectorAll('.cctv-view');
-
-            cctvCards.forEach(cctv => {
-                const namaTitik = cctv.dataset.titik.toLowerCase();
-                const namaSekolah = cctv.dataset.sekolahName.toLowerCase();
-                const wilayah = cctv.dataset.wilayah.toLowerCase();
-
-                if (namaTitik.includes(query) ||
-                    namaSekolah.includes(query) ||
-                    wilayah.includes(query)) {
-                    cctv.style.display = 'block';
-                    const iframe = cctv.querySelector('iframe');
-                    if (iframe && !iframe.src) {
-                        iframe.src = iframe.getAttribute('data-src');
-                    }
-                } else {
-                    cctv.style.display = 'none';
-                    const iframe = cctv.querySelector('iframe');
-                    if (iframe) {
-                        iframe.src = '';
-                    }
-                }
-            });
-        }
