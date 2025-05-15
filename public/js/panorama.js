@@ -55,8 +55,11 @@ function renderTable() {
   pageData.forEach(group => {
     const rowspan = group.titik.length;
 
-    const wilayahNama = group.namaWilayah === 'KABUPATEN GK' ? 'KABUPATEN GUNUNG KIDUL' :
-                            (group.namaWilayah === 'KABUPATEN KP' ? 'KABUPATEN KULONPROGO' : group.namaWilayah);
+    const wilayahNama = group.namaWilayah === 'KABUPATEN GK' ? 'KAB GUNUNG KIDUL' :
+                    group.namaWilayah === 'KABUPATEN KP' ? 'KAB KULONPROGO' :
+                    group.namaWilayah === 'KABUPATEN BANTUL' ? 'KAB BANTUL' :
+                    group.namaWilayah === 'KABUPATEN SLEMAN' ? 'KAB SLEMAN' :
+                    group.namaWilayah;
 
     group.titik.forEach((item, index) => {
       const tr = document.createElement('tr');
