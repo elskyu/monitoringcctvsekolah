@@ -66,7 +66,7 @@
 
     @stack('rtl')
     @stack('dashboard')
-
+    
 
 
     <script>
