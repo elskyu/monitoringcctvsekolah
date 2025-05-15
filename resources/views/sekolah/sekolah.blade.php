@@ -58,29 +58,43 @@
             <div id="sidebar" class="col-md-3">
                 <div class="side-bar">
 
-                    <button class="btn-sidebar2" onclick="toggleSidebar()"
-                        style="position: fixed; top: 10px; left: 10px; z-index: 1001;" aria-label="Toggle Sidebar">
-                        <i class="fas fa-bars"></i>
-                    </button>
+                    <div class="row g-3 align-items-center">
 
-                    <!-- Tombol hide semua cctv yang tampil -->
-                    <button id="hide-all-cctv" class="btn-sidebar2" title="Sembunyikan Semua CCTV"
-                        onclick="hideAllCCTV()" style="position: fixed; top: 10px; right: 15px; z-index: 1001;">
-                        <i class="fas fa-eye-slash"></i>
-                    </button>
+                        <!-- Tombol Toggle Sidebar Kiri -->
+                        <div class="col-auto">
+                            <button class="btn-sidebar2" onclick="toggleSidebar()" aria-label="Toggle Sidebar"
+                                style="min-width: 40px; margin-top: 10px; left: 10px;">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                        </div>
+
+                        <!-- Search Sekolah Tengah -->
+                        <div class="col">
+                            <input type="text" class="form-control" id="searchSekolahSidebar"
+                                placeholder="Cari sekolah..." onkeyup="filterSidebar()"
+                                style="width: 73%; margin-left: 45px;">
+                        </div>
+
+                        <!-- Tombol Hide All CCTV Kanan -->
+                        <div class="col-auto">
+                            <button id="hide-all-cctv" class="btn-sidebar2" title="Sembunyikan Semua CCTV"
+                                onclick="hideAllCCTV()" style="min-width: 40px; margin-top: 10px; right: 10px;">
+                                <i class="fas fa-eye-slash"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
                     <!-- Spacer untuk menghindari overlap tombol dengan konten -->
-                    <div style="height: 40px;"></div>
+                    <div style="height: 10px;"></div>
 
                     <!-- Pembatas -->
                     <div style="border-top: 1px solid #ccc; margin: 5px 10px;"></div>
 
                     <!-- Menu navigasi -->
                     <div class="menu">
-                        <!-- Search Sekolah -->
-                        <div class="p-2">
-                            <input type="text" class="form-control" id="searchSekolahSidebar"
-                                placeholder="Cari sekolah..." onkeyup="filterSidebar()">
-                        </div>
+
+
                         @foreach ($groupedCctvs as $wilayah => $sekolahGroup)
                             <div class="item " style="font-size: 12px">
                                 <a href="javascript:void(0);" class="sub-btn"
@@ -94,8 +108,7 @@
                                         <div class="item item-sekolah">
                                             <a href="javascript:void(0);" class="sub-btn"
                                                 onclick="toggleDaerah('{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}')">
-                                                <i class="fas fa-eye icon-toggle"
-                                                    style="margin-right: 8px; margin-top: 4px;"
+                                                <i class="fas fa-eye icon-toggle" style="margin-right: 8px; margin-top: 4px;"
                                                     onclick="event.stopPropagation(); toggleIcon(event, '{{ Str::slug($namaSekolah) }}')"></i>
                                                 {{ $namaSekolah }}
                                                 <i id="icon-{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}"
@@ -191,18 +204,14 @@
                                 @endphp
                                 <div class="col-md-3 col-sm-6 col-xs-12 cctv-view"
                                     id="{{ Str::slug($namaSekolah . '-' . $cctv->namaTitik) }}"
-                                    data-sekolah="{{ Str::slug($namaSekolah) }}"
-                                    data-sekolah-name="{{ $namaSekolah }}" data-wilayah="{{ $wilayah }}"
-                                    data-titik="{{ $cctv->namaTitik }}" style="display: none;">
+                                    data-sekolah="{{ Str::slug($namaSekolah) }}" data-sekolah-name="{{ $namaSekolah }}"
+                                    data-wilayah="{{ $wilayah }}" data-titik="{{ $cctv->namaTitik }}" style="display: none;">
 
-                                    <div class="card"
-                                        style="margin-bottom: 5px; padding: 10px; width: 100%; max-height: 285px;">
-                                        <a style="font-size: 12pt; font-weight: bold;"
-                                            class="card-title text-center mb-1">
+                                    <div class="card" style="margin-bottom: 5px; padding: 10px; width: 100%; max-height: 285px;">
+                                        <a style="font-size: 12pt; font-weight: bold;" class="card-title text-center mb-1">
                                             {{ $cctv->namaSekolah }}
                                         </a>
-                                        <a style="font-size: 10pt; margin-top: -4px;"
-                                            class="card-title text-center mb-3">
+                                        <a style="font-size: 10pt; margin-top: -4px;" class="card-title text-center mb-3">
                                             {{ $singkatan }}
                                         </a>
                                         <div class="iframe-container" style="margin: -10px 10px 10px 10px;">
