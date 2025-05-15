@@ -42,12 +42,14 @@
 @endsection
 
 @push('scriptsku')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- SweetAlert2 (opsional) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- js-cookie jika butuh token -->
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
     <script>
         const csrfToken = "{{ csrf_token() }}";
         const token = Cookies.get('token') || ''; // kalau pakai auth header
