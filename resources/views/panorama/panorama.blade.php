@@ -43,35 +43,45 @@
                 <button class="btn-mobile" onclick="toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </button>
+                <h1 style="text-align: center; color: white;">DASHBOARD CCTV PANORAMA</h1>
             </div>
 
             {{-- Sidebar --}}
             <div id="sidebar" class="col-md-3">
                 <div class="side-bar">
 
-                    <button class="btn-sidebar2" onclick="toggleSidebar()"
-                        style="position: fixed; top: 10px; left: 10px; z-index: 1001;">
-                        <i class="fas fa-bars"></i>
-                    </button>
+                    <div class="row g-3 align-items-center">
+                        <!-- Tombol Toggle Sidebar Kiri -->
+                        <div class="col-auto">
+                            <button class="btn-sidebar2" onclick="toggleSidebar()" aria-label="Toggle Sidebar"
+                                style="min-width: 40px; margin-top: 10px; left: 10px;">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                        </div>
 
-                    <!-- Tombol hide semua cctv yang tampil -->
-                    <button id="hide-all-cctv" class="btn-sidebar2" title="Sembunyikan Semua CCTV"
-                        onclick="hideAllCCTV()" style="position: fixed; top: 10px; right: 15px; z-index: 1001;">
-                        <i class="fas fa-eye-slash"></i>
-                    </button>
+                        <!-- Search Sekolah Tengah -->
+                        <div class="col">
+                            <input type="text" class="form-control" id="searchSekolahSidebar"
+                                placeholder="Cari panorama..." onkeyup="filterSidebar()"
+                                style="width: 73%; margin-left: 45px;">
+                        </div>
+
+                        <!-- Tombol Hide All CCTV Kanan -->
+                        <div class="col-auto">
+                            <button id="hide-all-cctv" class="btn-sidebar2" title="Sembunyikan Semua CCTV"
+                                onclick="hideAllCCTV()" style="min-width: 40px; margin-top: 10px; right: 10px;">
+                                <i class="fas fa-eye-slash"></i>
+                            </button>
+                        </div>
+                    </div>
 
                     <!-- Spacer untuk menghindari overlap tombol dengan konten -->
-                    <div style="height: 40px;"></div>
+                    <div style="height: 10px;"></div>
 
                     <!-- Pembatas -->
                     <div style="border-top: 1px solid #ccc; margin: 5px 10px;"></div>
 
                     <div class="menu">
-                        <!-- Search Nama Titik -->
-                        <div class="p-2">
-                            <input type="text" class="form-control" id="searchPanoramaSidebar"
-                                placeholder="Cari Titik..." onkeyup="filterSidebar()">
-                        </div>
                         @foreach ($groupedCctvs as $wilayah => $panoramaGroup)
                             <div class="item" style="font-size: 12px">
                                 <a href="javascript:void(0);" class="sub-btn"
@@ -82,10 +92,8 @@
                                 </a>
                                 <div id="{{ Str::slug($wilayah) }}" class="sub-menu">
                                     @foreach ($panoramaGroup as $panorama)
-                                        <label class="form-check d-flex align-items-center gap-2"
-                                            style="cursor: pointer;">
-                                            <input
-                                                style="margin-left: -5px; width: 10px; height: 10px; cursor: pointer;"
+                                        <label class="form-check d-flex align-items-center gap-2" style="cursor: pointer;">
+                                            <input style="margin-left: -5px; width: 10px; height: 10px; cursor: pointer;"
                                                 type="checkbox" id="checkbox-{{ Str::slug($panorama->namaTitik) }}"
                                                 data-panorama="{{ Str::slug($panorama->namaTitik) }}"
                                                 onclick="event.stopPropagation(); toggleCCTV('{{ Str::slug($panorama->namaTitik) }}', this)">
@@ -150,8 +158,7 @@
                                     $singkatan = $panorama->namaTitik;
                                 }
                             @endphp
-                            <div class="col-md-3 col-sm-6 col-xs-12 cctv-view"
-                                id="{{ Str::slug($panorama->namaTitik) }}"
+                            <div class="col-md-3 col-sm-6 col-xs-12 cctv-view" id="{{ Str::slug($panorama->namaTitik) }}"
                                 data-panorama="{{ Str::slug($panorama->namaTitik) }}" style="display: none;">
                                 <div class="card">
                                     <a style="font-size: 12pt; font-weight: bold;" class="card-title text-center mb-1">
@@ -161,8 +168,7 @@
                                         {{ $singkatan }}
                                     </a>
                                     <div class="iframe-container" style="margin: -10px 10px 10px 10px;">
-                                        <iframe data-src="{{ $panorama->link }}" frameborder="0"
-                                            allowfullscreen></iframe>
+                                        <iframe data-src="{{ $panorama->link }}" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                 </div>
                             </div>
