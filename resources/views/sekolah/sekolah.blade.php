@@ -6,7 +6,6 @@
 
     <!-- Menambahkan meta description -->
     <meta name="description" content="Website cctv sekolah yogyakarta">
-
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -17,8 +16,10 @@
 
     <title>Dashboard CCTV</title>
     @push('scriptsku')
+
         <!-- Custom Script -->
         <script src="{{ asset('js/dashboard_sekolah.js') }}"></script>
+
     @endpush
 </head>
 
@@ -59,7 +60,6 @@
                 <div class="side-bar">
 
                     <div class="row g-3 align-items-center">
-
                         <!-- Tombol Toggle Sidebar Kiri -->
                         <div class="col-auto">
                             <button class="btn-sidebar2" onclick="toggleSidebar()" aria-label="Toggle Sidebar"
@@ -72,7 +72,7 @@
                         <div class="col">
                             <input type="text" class="form-control" id="searchSekolahSidebar"
                                 placeholder="Cari sekolah..." onkeyup="filterSidebar()"
-                                style="width: 73%; margin-left: 45px;">
+                                style="max-width: 73%; margin-left: 45px;">
                         </div>
 
                         <!-- Tombol Hide All CCTV Kanan -->
@@ -82,7 +82,6 @@
                                 <i class="fas fa-eye-slash"></i>
                             </button>
                         </div>
-
                     </div>
 
                     <!-- Spacer untuk menghindari overlap tombol dengan konten -->
@@ -172,14 +171,6 @@
                             <p class="fw-bold mb-0">Jumlah Wilayah : <span id="regionCount"></span></p>
                         </div>
                     </div>
-                    <!-- <div class="col-md-3">
-                        <div class="">
-                            <form class="d-flex w-100" style="margin-bottom: -26px;  justify-content: center;">
-                                <input type="text" class="form-control" id="cctvSearch" placeholder="Cari CCTV..."
-                                    style="border-radius: 7px; padding: 10px; height: 47px;">
-                            </form>
-                        </div>
-                    </div> -->
                 </div>
 
                 <div class="row g-3">
