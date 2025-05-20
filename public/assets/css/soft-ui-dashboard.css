@@ -2965,6 +2965,9 @@ fieldset:disabled .btn {
     background-color: #cb0c9f;
     border-color: #cb0c9f;
     color: #fff;
+    padding: clamp(6px, 1vw, 12px) clamp(12px, 2vw, 24px);
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
 }
 .btn-check:focus + .btn-primary,
 .btn-primary:focus,

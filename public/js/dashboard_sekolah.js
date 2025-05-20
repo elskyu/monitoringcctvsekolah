@@ -303,8 +303,12 @@ function updateStatistics() {
         schools.add(cctv.dataset.sekolah);
     });
 
+
     // Set jumlah wilayah menjadi 5 secara statis
-    const regionCount = 5;
+        const regionCount = document
+        .getElementById("regionCountData")
+        .getAttribute("data-region-count");
+    // const regionCount = 5;
 
     // Update tampilan
     document.getElementById("cctvCount").textContent = cctvCount;

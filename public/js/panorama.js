@@ -93,7 +93,7 @@ function renderTable() {
         }
         <td class="text-center">${item.namaTitik}</td>
         <td class="text-center">
-          <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(
+          <button class="btn btn-sm btn-secondary" onclick='openEditModal(${JSON.stringify(
               item
           )})'>Edit</button>
           <button class="btn btn-sm btn-danger" onclick="deleteSekolah(${

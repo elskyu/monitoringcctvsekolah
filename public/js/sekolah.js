@@ -72,15 +72,12 @@ function renderTable() {
     tbody.innerHTML = "";
 
     const groupedData = groupSekolahData(filteredData);
-
-    // Paging (berdasarkan group, bukan item per titik)
     const start = (currentPage - 1) * itemsPerPage;
     const pageData = groupedData.slice(start, start + itemsPerPage);
 
     pageData.forEach((group) => {
         const rowspan = group.titik.length;
 
-        // Ganti nama wilayah "KABUPATEN GK" dengan "KABUPATEN GUNUNG KIDUL" dan "KABUPATEN KP" dengan "KABUPATEN KULONPROGO"
         const wilayahNama =
             group.namaWilayah === "KABUPATEN GK"
                 ? "KAB GUNUNG KIDUL"
@@ -97,23 +94,25 @@ function renderTable() {
             tr.innerHTML = `
                 ${
                     index === 0
-                        ? `<td class="text-center" rowspan="${rowspan}">${wilayahNama}</td>`
+                        ? `<td class="text-center align-middle" rowspan="${rowspan}">${wilayahNama}</td>`
                         : ""
                 }
                 ${
                     index === 0
-                        ? `<td class="text-center" rowspan="${rowspan}">${group.namaSekolah}</td>`
+                        ? `<td class="text-center align-middle" rowspan="${rowspan}">${group.namaSekolah}</td>`
                         : ""
                 }
-                <td class="text-center">${item.namaTitik}</td>
-                <td class="text-center">
-                <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(
-                    item
-                )})'>Edit</button>
-                <button class="btn btn-sm btn-danger" onclick="deleteSekolah(${
-                    item.id
-                })">Delete</button>
-            </td>
+                <td class="text-center align-middle">${item.namaTitik}</td>
+                <td class="text-center align-middle">
+                    <div class="d-flex justify-content-center gap-2">
+                        <button class="btn btn-sm btn-secondary" onclick='openEditModal(${JSON.stringify(item)})'>
+                            Edit
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteSekolah(${item.id})">
+                            Delete
+                        </button>
+                    </div>
+                </td>
             `;
             tbody.appendChild(tr);
         });
@@ -121,6 +120,7 @@ function renderTable() {
 
     renderPagination(groupedData.length);
 }
+
 
 // 3. Render tombol pagination
 function renderPagination(totalItems = null) {

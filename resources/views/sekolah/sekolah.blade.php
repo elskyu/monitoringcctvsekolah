@@ -155,6 +155,8 @@
                     </div>
                 </div>
 
+                <div id="regionCountData" data-region-count="{{ $groupedCctvs->count() }}"></div>
+
                 <div class="row g-3" style="margin-bottom: 20px;">
                     <div class="col-md-4">
                         <div class="card2 d-flex align-items-center justify-content-center">

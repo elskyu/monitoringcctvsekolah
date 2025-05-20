@@ -13,7 +13,7 @@
                             <div class="d-flex">
                                 <input type="text" id="searchInput" class="form-control form-control-sm me-2"
                                     placeholder="Search..." onkeyup="searchUsers()" style="height: 2.1rem; padding: 5px;">
-                                <a href="javascript:;" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                                <a href="javascript:;" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#UsersModal" onclick="openAddModal()">Add</a>
                             </div>
                         </div>
