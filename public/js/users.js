@@ -59,7 +59,7 @@ function renderTable() {
       <td class="text-center">${item.email}</td>
       <td class="text-center">${formattedDate}</td>
       <td class="text-center">
-        <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(
+        <button class="btn btn-sm btn-secondary" onclick='openEditModal(${JSON.stringify(
             item
         )})'>Edit</button>
         <button class="btn btn-sm btn-danger" onclick="deleteUsers(${

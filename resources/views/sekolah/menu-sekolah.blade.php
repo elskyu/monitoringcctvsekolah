@@ -15,7 +15,7 @@
                                 <input type="text" id="searchInput"
                                     class="form-control form-control-sm me-sm-2 mb-2 mb-sm-0" placeholder="Search..."
                                     onkeyup="searchcctvsekolah()" style="height: 2.1rem; padding: 5px;">
-                                <a href="javascript:;" class="btn btn-secondary btn-sm w-100 w-sm-auto"
+                                <a href="javascript:;" class="btn btn-primary btn-sm w-100 w-sm-auto"
                                     data-bs-toggle="modal" data-bs-target="#cctvsekolahModal"
                                     onclick="openAddModal()">Add</a>
                             </div>
