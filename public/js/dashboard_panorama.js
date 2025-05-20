@@ -1,3 +1,63 @@
+//fungsi tampilkan semua cctv dalam wilayah yang dipilih
+function toggleIcon(event, wilayah) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const icon = event.target;
+    const cctvToShow = document.querySelectorAll(
+        `.cctv-view[data-wilayah="${wilayah}"]`
+    );
+    const checkboxes = document.querySelectorAll(
+        `input[data-wilayah="${wilayah}"]`
+    );
+
+    let activeWilayah = JSON.parse(localStorage.getItem("activeWilayah")) || [];
+
+    if (icon.classList.contains("fa-eye")) {
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+
+        cctvToShow.forEach((cctv) => {
+            cctv.style.display = "block";
+            const iframe = cctv.querySelector("iframe");
+            if (iframe) {
+                iframe.src = iframe.getAttribute("data-src");
+            }
+        });
+
+        if (!activeWilayah.includes(wilayah)) {
+            activeWilayah.push(wilayah);
+        }
+
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = true;
+            const cctvId = checkbox.id.replace("checkbox-", "");
+            toggleCCTV(cctvId, checkbox);
+        });
+    } else {
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+
+        cctvToShow.forEach((cctv) => {
+            cctv.style.display = "none";
+        });
+
+        activeWilayah = activeWilayah.filter((w) => w !== wilayah);
+
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = false;
+            const cctvId = checkbox.id.replace("checkbox-", "");
+            toggleCCTV(cctvId, checkbox);
+        });
+    }
+
+    if (activeWilayah.length === 0) {
+        localStorage.removeItem("activeWilayah");
+    } else {
+        localStorage.setItem("activeWilayah", JSON.stringify(activeWilayah));
+    }
+}
+
 function filterSidebar() {
     const input = document.getElementById("searchSekolahSidebar"); // Sesuaikan dengan id input di HTML
     const filter = input.value.toLowerCase();
@@ -53,72 +113,6 @@ function toggleCCTV(id, checkbox) {
 
     // Simpan status ke localStorage
     localStorage.setItem(checkbox.id, checkbox.checked);
-}
-
-function toggleIcon(event, namaSekolah) {
-    event.stopPropagation();
-    event.preventDefault();
-
-    const icon = event.target;
-    const cctvToShow = document.querySelectorAll(
-        `.cctv-view[data-sekolah="${namaSekolah}"]`
-    );
-    const checkboxes = document.querySelectorAll(
-        `input[data-sekolah="${namaSekolah}"]`
-    ); // Pilih semua checkbox
-
-    let activeSchools = JSON.parse(localStorage.getItem("activeSchools")) || [];
-
-    if (icon.classList.contains("fa-eye")) {
-        // Tampilkan CCTV
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
-
-        cctvToShow.forEach((cctv) => {
-            cctv.style.display = "block";
-            const iframe = cctv.querySelector("iframe");
-            if (iframe) {
-                iframe.src = iframe.getAttribute("data-src");
-            }
-        });
-
-        // Tambahkan sekolah ke daftar aktif jika belum ada
-        if (!activeSchools.includes(namaSekolah)) {
-            activeSchools.push(namaSekolah);
-        }
-
-        // Centang semua checkbox yang terkait
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = true;
-            toggleCCTV(checkbox.id.replace("checkbox-", ""), checkbox);
-        });
-    } else {
-        // Sembunyikan CCTV
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
-
-        cctvToShow.forEach((cctv) => {
-            cctv.style.display = "none";
-        });
-
-        // Hapus sekolah dari daftar aktif
-        activeSchools = activeSchools.filter(
-            (school) => school !== namaSekolah
-        );
-
-        // Hapus centang checkbox yang sesuai
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = false;
-            toggleCCTV(checkbox.id.replace("checkbox-", ""), checkbox);
-        });
-    }
-
-    // Simpan atau hapus daftar sekolah aktif dari localStorage
-    if (activeSchools.length === 0) {
-        localStorage.removeItem("activeSchools");
-    } else {
-        localStorage.setItem("activeSchools", JSON.stringify(activeSchools));
-    }
 }
 
 window.onload = function () {
@@ -215,7 +209,7 @@ function hideAllCCTV() {
     if (dropdown) dropdown.value = "";
 
     // Hapus SEMUA data terkait CCTV dari localStorage
-    localStorage.removeItem("activeSchools");
+    localStorage.removeItem("activeWilayah");
     localStorage.removeItem("activeCCTVs");
     localStorage.removeItem("selectedSchool");
 
@@ -247,17 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-    // 2. Ambil daftar CCTV dari hash (prioritas lebih tinggi dari localStorage)
-    const activeCCTVs = getActiveCCTVsFromHash();
-    activeCCTVs.forEach((id) => {
-        const checkbox = document.getElementById(`checkbox-${id}`);
-        if (checkbox) {
-            checkbox.checked = true;
-            toggleCCTV(id, checkbox);
-        }
-    });
-
-    // 3. Restore dropdown sekolah
+    // 2. Restore dropdown sekolah
     const selectedSchool = localStorage.getItem("selectedSchool");
     if (selectedSchool) {
         document.getElementById("school-dropdown").value = selectedSchool;
@@ -266,12 +250,12 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function loadActiveSchoolsFromLocalStorage() {
-    const activeSchools =
-        JSON.parse(localStorage.getItem("activeSchools")) || [];
+    const activeWilayah =
+        JSON.parse(localStorage.getItem("activeWilayah")) || [];
     setTimeout(() => {
-        activeSchools.forEach((namaSekolah) => {
+        activeWilayah.forEach((wilayah) => {
             const cctvToShow = document.querySelectorAll(
-                `.cctv-view[data-sekolah="${namaSekolah}"]`
+                `.cctv-view[data-wilayah="${wilayah}"]`
             );
 
             cctvToShow.forEach((cctv) => {
@@ -283,22 +267,23 @@ function loadActiveSchoolsFromLocalStorage() {
             });
 
             const icon = document.querySelector(
-                `.icon-toggle[onclick*="${namaSekolah}"]`
+                `.icon-toggle[onclick*="${wilayah}"]`
             );
+
             if (icon) {
                 icon.classList.remove("fa-eye");
                 icon.classList.add("fa-eye-slash");
             }
 
             const checkboxes = document.querySelectorAll(
-                `input[data-sekolah="${namaSekolah}"]`
+                `input[data-wilayah="${wilayah}"]`
             );
             checkboxes.forEach((checkbox) => {
                 checkbox.checked = true;
                 toggleCCTV(checkbox.id.replace("checkbox-", ""), checkbox);
             });
         });
-    }, 300); // Delay 300ms untuk memastikan semua checkbox udah ada
+    }, 300); // delay kecil supaya DOM siap
 }
 
 // Fungsi untuk menghitung dan menampilkan statistik

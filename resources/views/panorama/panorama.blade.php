@@ -86,7 +86,14 @@
                             <div class="item" style="font-size: 12px">
                                 <a href="javascript:void(0);" class="sub-btn"
                                     onclick="toggleDaerah('{{ Str::slug($wilayah) }}')">
+
+                                    <!-- Icon eye untuk toggle semua CCTV dalam wilayah -->
+                                    <i class="fas fa-eye icon-toggle" data-wilayah="{{ Str::slug($wilayah) }}"
+                                        style="margin-right: 8px; margin-top: 4px;"
+                                        onclick="event.stopPropagation(); toggleIcon(event, '{{ Str::slug($wilayah) }}')"></i>
+
                                     {{ $wilayah == 'KABUPATEN GK' ? 'KAB GUNUNG KIDUL' : ($wilayah == 'KABUPATEN KP' ? 'KAB KULONPROGO' : ($wilayah == 'KABUPATEN BANTUL' ? 'KAB BANTUL' : ($wilayah == 'KABUPATEN SLEMAN' ? 'KAB SLEMAN' : $wilayah))) }}
+
                                     <i id="icon-{{ Str::slug($wilayah) }}" class="fas fa-angle-right dropdown"
                                         style="margin-top: 4px;"></i>
                                 </a>
@@ -96,6 +103,7 @@
                                             <input style="margin-left: -5px; width: 10px; height: 10px; cursor: pointer;"
                                                 type="checkbox" id="checkbox-{{ Str::slug($panorama->namaTitik) }}"
                                                 data-panorama="{{ Str::slug($panorama->namaTitik) }}"
+                                                data-wilayah="{{ Str::slug($wilayah) }}"
                                                 onclick="event.stopPropagation(); toggleCCTV('{{ Str::slug($panorama->namaTitik) }}', this)">
                                             <span style="font-size: 12px;" class="form-check-label mb-0">
                                                 {{ $panorama->namaTitik }}
@@ -162,7 +170,7 @@
                                 data-panorama="{{ Str::slug($panorama->namaTitik) }}" style="display: none;">
                                 <div class="card">
                                     <a style="font-size: 12pt; font-weight: bold;" class="card-title text-center mb-1">
-                                        {{ $panorama->namaWilayah }}
+                                        {{ $wilayah == 'KABUPATEN GK' ? 'KAB GUNUNG KIDUL' : ($wilayah == 'KABUPATEN KP' ? 'KAB KULONPROGO' : ($wilayah == 'KABUPATEN BANTUL' ? 'KAB BANTUL' : ($wilayah == 'KABUPATEN SLEMAN' ? 'KAB SLEMAN' : $wilayah))) }}
                                     </a>
                                     <a style="font-size: 10pt; margin-top: -4px;" class="card-title text-center mb-3">
                                         {{ $singkatan }}

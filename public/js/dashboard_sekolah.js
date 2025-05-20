@@ -275,6 +275,7 @@ function loadActiveSchoolsFromLocalStorage() {
             const icon = document.querySelector(
                 `.icon-toggle[onclick*="${namaSekolah}"]`
             );
+
             if (icon) {
                 icon.classList.remove("fa-eye");
                 icon.classList.add("fa-eye-slash");
