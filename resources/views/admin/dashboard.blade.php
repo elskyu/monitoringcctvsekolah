@@ -93,10 +93,118 @@
 
         </div>
 
+        <!-- Statistik Section -->
+        <div class="statistik-section" style="margin-top: 40px;">
+            <h4 style="margin-bottom: 20px;">Statistik CCTV</h4>
+            <div style="margin-top: 40px;">
+                <h4>Grafik Jumlah Sekolah dan CCTV per Wilayah</h4>
+                <canvas id="wilayahChart" height="100"></canvas>
+            </div>
 
+            <div style="margin-top: 40px;">
+                <h4>Grafik Jumlah CCTV per Sekolah</h4>
+                <canvas id="sekolahChart" height="120"></canvas>
+            </div>
+        </div>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            // Data dari Laravel (convert to JSON)
+            const sekolahPerWilayah = @json($jumlahSekolahPerWilayah);
+            const cctvPerWilayah = @json($jumlahCCTVPerWilayah);
+            const cctvPerSekolah = @json($jumlahCCTVPerSekolah);
+
+            // Gabungkan data wilayah berdasarkan nama
+            const wilayahLabels = [...new Set([
+                ...sekolahPerWilayah.map(d => d.namaWilayah),
+                ...cctvPerWilayah.map(d => d.namaWilayah)
+            ])];
+
+            const sekolahData = wilayahLabels.map(w => {
+                const match = sekolahPerWilayah.find(d => d.namaWilayah === w);
+                return match ? match.total_sekolah : 0;
+            });
+
+            const cctvWilayahData = wilayahLabels.map(w => {
+                const match = cctvPerWilayah.find(d => d.namaWilayah === w);
+                return match ? match.total_cctv : 0;
+            });
+
+            // Grafik Wilayah
+            new Chart(document.getElementById('wilayahChart'), {
+                type: 'bar',
+                data: {
+                    labels: wilayahLabels,
+                    datasets: [{
+                            label: 'Jumlah Sekolah',
+                            data: sekolahData,
+                            backgroundColor: 'rgba(54, 162, 235, 0.7)'
+                        },
+                        {
+                            label: 'Jumlah CCTV',
+                            data: cctvWilayahData,
+                            backgroundColor: 'rgba(255, 99, 132, 0.7)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Statistik Sekolah & CCTV per Wilayah'
+                        }
+                    }
+                }
+            });
+
+            // Grafik Sekolah (line chart)
+            const sekolahLabels = cctvPerSekolah.map(d => d.namaSekolah);
+            const cctvSekolahData = cctvPerSekolah.map(d => d.total_cctv);
+
+            new Chart(document.getElementById('sekolahChart'), {
+                type: 'line', // Ubah jadi line chart
+                data: {
+                    labels: sekolahLabels,
+                    datasets: [{
+                        label: 'Jumlah CCTV',
+                        data: cctvSekolahData,
+                        fill: false, // garis tidak diisi area di bawahnya
+                        borderColor: 'rgba(75, 192, 192, 1)', // warna garis
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // warna titik
+                        tension: 0.4, // kurva halus, nilai antara 0 (linear) sampai 1 (sangat melengkung)
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        borderWidth: 3,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Jumlah CCTV per Sekolah'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
                 const apiKey = '66db882578a46f03c27c30a952240556';
                 const lat = -7.797068;
                 const lon = 110.370529;
@@ -123,8 +231,8 @@
                 };
 
                 fetch(
-                    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-                )
+                        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+                    )
                     .then(response => response.json())
                     .then(data => {
                         const temperature = Math.round(data.main.temp);
@@ -142,4 +250,4 @@
                     });
             });
         </script>
-@endsection
+    @endsection

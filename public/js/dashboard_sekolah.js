@@ -1,3 +1,16 @@
+console.log('=== Slugified CCTV Data ===');
+cctvData.forEach(item => {
+    const slug = slugify(item.namaSekolah + '-' + item.namaTitik);
+    // generate checkbox dengan id "checkbox-" + slug
+    const checkbox = document.createElement('input');
+    checkbox.type = "checkbox";
+    checkbox.id = "checkbox-" + slug;
+    checkbox.dataset.slug = slug;
+    checkbox.dataset.sekolah = item.namaSekolah;
+    // append checkbox ke DOM dst
+});
+
+
 function filterSidebar() {
     const input = document.getElementById("searchSekolahSidebar");
     const filter = input.value.toLowerCase();
@@ -36,21 +49,63 @@ function toggleDaerah(id) {
     icon.classList.toggle("fa-angle-down");
 }
 
+
+function slugify(str) {
+    return str.toString().toLowerCase().trim()
+        .replace(/[\s\W-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+}
+
 function toggleCCTV(id, checkbox) {
-    const cctvContainer = document.getElementById(id);
-    const iframe = cctvContainer.querySelector("iframe");
+    console.log('toggleCCTV called for:', id, 'checked:', checkbox.checked);
+    const container = document.getElementById('cctv-container');
+    const existing = document.getElementById('cctv-' + id);
+    
 
     if (checkbox.checked) {
-        cctvContainer.style.display = "block";
-        iframe.src = iframe.getAttribute("data-src");
-    } else {
-        cctvContainer.style.display = "none";
-        iframe.src = "";
-    }
+        if (!existing) {
+            const item = cctvData.find(item =>
+                slugify(item.namaSekolah + '-' + item.namaTitik) === id
+            );
+            if (!item) {
+                console.warn("CCTV data tidak ditemukan untuk id:", id);
+                return; // Stop di sini jika tidak ditemukan
+            }
+            console.log('Found item:', item);
+            if (item) {
+                console.log('iframe src:', item.link);
+                const kata = item.namaTitik.split(' ');
+                const singkatan = kata.length > 3
+                    ? kata.map(k => k[0].toUpperCase()).join('')
+                    : item.namaTitik;
 
-    // Simpan status ke localStorage
-    localStorage.setItem(checkbox.id, checkbox.checked);
+                const col = document.createElement('div');
+                col.className = 'col-md-3 col-sm-6 col-xs-12 cctv-view';
+                col.id = 'cctv-' + id;
+                col.innerHTML = `
+                    <div class="card" style="margin-bottom: 5px; padding: 10px; width: 100%; max-height: 285px;">
+                        <a style="font-size: 12pt; font-weight: bold;" class="card-title text-center mb-1">
+                            ${item.namaSekolah}
+                        </a>
+                        <a style="font-size: 10pt; margin-top: -4px;" class="card-title text-center mb-3">
+                            ${singkatan}
+                        </a>
+                        <div class="iframe-container" style="margin: -10px 10px 10px 10px;">
+                            <iframe loading="lazy" src="${item.link}" data-src="${item.link}" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                    </div>
+                `;
+                container.appendChild(col);
+            }
+        } else {
+            existing.style.display = 'block';
+            console.warn('No matching CCTV data found for ID:', id);
+        }
+    } else {
+        if (existing) existing.style.display = 'none';
+    }
 }
+
 
 function toggleIcon(event, namaSekolah) {
     event.stopPropagation();
@@ -190,6 +245,9 @@ document.querySelectorAll(".form-check-label").forEach((label) => {
     });
 });
 
+function escapeSelector(sel) {
+    return CSS.escape ? CSS.escape(sel) : sel.replace(/[ !"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, '\\$&');
+}
 // Fungsi untuk menyembunyikan semua CCTV
 function hideAllCCTV() {
     // Hentikan semua streaming dan sembunyikan CCTV
@@ -233,7 +291,7 @@ function removeCCTVFromHash(id) {
 // Ambil pilihan terakhir dari localStorage saat halaman dimuat
 document.addEventListener("DOMContentLoaded", function () {
     loadActiveSchoolsFromLocalStorage();
-    updateStatistics();
+
 
     // 1. Pulihkan status checkbox dari localStorage
     document
@@ -273,7 +331,7 @@ function loadActiveSchoolsFromLocalStorage() {
             });
 
             const icon = document.querySelector(
-                `.icon-toggle[onclick*="${namaSekolah}"]`
+                `.icon-toggle[onclick*="${escapeSelector(namaSekolah)}"]`
             );
 
             if (icon) {
@@ -292,26 +350,3 @@ function loadActiveSchoolsFromLocalStorage() {
     }, 300); // Delay 300ms untuk memastikan semua checkbox udah ada
 }
 
-// Fungsi untuk menghitung dan menampilkan statistik
-function updateStatistics() {
-    // Hitung jumlah CCTV
-    const cctvCount = document.querySelectorAll(".cctv-view").length;
-
-    // Hitung jumlah sekolah unik
-    const schools = new Set();
-    document.querySelectorAll(".cctv-view").forEach((cctv) => {
-        schools.add(cctv.dataset.sekolah);
-    });
-
-
-    // Set jumlah wilayah menjadi 5 secara statis
-        const regionCount = document
-        .getElementById("regionCountData")
-        .getAttribute("data-region-count");
-    // const regionCount = 5;
-
-    // Update tampilan
-    document.getElementById("cctvCount").textContent = cctvCount;
-    document.getElementById("schoolCount").textContent = schools.size;
-    document.getElementById("regionCount").textContent = regionCount;
-}

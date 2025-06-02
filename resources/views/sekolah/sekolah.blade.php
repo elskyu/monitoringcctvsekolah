@@ -16,6 +16,10 @@
 
     <title>Dashboard CCTV</title>
     @push('scriptsku')
+    <script>
+        const cctvData = @json($sekolah);
+        console.log(cctvData);
+    </script>
 
         <!-- Custom Script -->
         <script src="{{ asset('js/dashboard_sekolah.js') }}"></script>
@@ -23,25 +27,27 @@
     @endpush
 </head>
 
-@extends('layouts.app')
 @php
     use App\Models\sekolah;
 
-    $sekolah = sekolah::select('id', 'namaWilayah', 'namaSekolah', 'namaTitik', 'link')->get();
-    $groupedCctvs = $sekolah->groupBy('namaWilayah')->map(function ($wilayahGroup) {
-        return $wilayahGroup->groupBy('namaSekolah');
-    });
-
+    // Ambil data terurut hanya sekali
     $sekolah = sekolah::select('id', 'namaWilayah', 'namaSekolah', 'namaTitik', 'link')
-        ->orderBy('namaWilayah', 'asc')
-        ->orderBy('namaSekolah', 'asc')
-        ->orderBy('namaTitik', 'asc')
+        ->orderBy('namaWilayah')
+        ->orderBy('namaSekolah')
+        ->orderBy('namaTitik')
         ->get();
 
+    // Grouping berdasarkan namaWilayah → namaSekolah
     $groupedCctvs = $sekolah->groupBy('namaWilayah')->map(function ($wilayahGroup) {
         return $wilayahGroup->groupBy('namaSekolah');
     });
+
+    // Hitung total untuk statistik
+    $jumlahCCTV = $sekolah->count();
+    $jumlahSekolah = $sekolah->groupBy('namaSekolah')->count();
+    $jumlahWilayah = $sekolah->groupBy('namaWilayah')->count();
 @endphp
+
 
 <body>
     <div class="container-fluid">
@@ -160,23 +166,23 @@
                 <div class="row g-3" style="margin-bottom: 20px;">
                     <div class="col-md-4">
                         <div class="card2 d-flex align-items-center justify-content-center">
-                            <p class="fw-bold mb-0">Jumlah CCTV : <span id="cctvCount"></span></p>
+                            <p class="fw-bold mb-0">Jumlah CCTV : <span id="cctvCount">{{ $jumlahCCTV }}</span></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="card2 d-flex align-items-center justify-content-center">
-                            <p class="fw-bold mb-0">Jumlah Sekolah : <span id="schoolCount"></span></p>
+                            <p class="fw-bold mb-0">Jumlah Sekolah : <span id="schoolCount">{{ $jumlahSekolah }}</span></p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="card2 d-flex align-items-center justify-content-center">
-                            <p class="fw-bold mb-0">Jumlah Wilayah : <span id="regionCount"></span></p>
+                            <p class="fw-bold mb-0">Jumlah Wilayah : <span id="regionCount">{{ $jumlahWilayah }}</span></p>
                         </div>
                     </div>
                 </div>
 
                 <div class="row g-3">
-                    @foreach ($groupedCctvs as $wilayah => $sekolahGroup)
+                    {{-- @foreach ($groupedCctvs as $wilayah => $sekolahGroup)
                         @foreach ($sekolahGroup as $namaSekolah => $cctvGroup)
                             @foreach ($cctvGroup as $cctv)
                                 @php
@@ -215,7 +221,8 @@
                                 </div>
                             @endforeach
                         @endforeach
-                    @endforeach
+                    @endforeach --}}
+                    <div id="cctv-container" class="row g-3"></div>
                 </div>
             </div>
         </div>

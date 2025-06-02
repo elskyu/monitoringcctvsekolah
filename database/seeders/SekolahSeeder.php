@@ -13,7 +13,7 @@ class SekolahSeeder extends Seeder
     {
         $data = [];
 
-        for ($i = 1; $i <= 1000; $i++) {
+        for ($i = 1; $i <= 700; $i++) {
             $data[] = [
                 'namaWilayah' => 'Wilayah ' . rand(1, 10),
                 'namaSekolah' => 'Sekolah ' . $i,
