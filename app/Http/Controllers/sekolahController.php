@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\sekolah;
 use App\Models\Panorama;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class SekolahController extends Controller
 {
@@ -23,7 +24,18 @@ class SekolahController extends Controller
     public function cctvsekolah()
     {
         $sekolah = sekolah::all();
-        return view('sekolah.sekolah', compact('sekolah'));
+        
+        $jumlahwilayah = sekolah::select('namaWilayah', DB::raw('count(*) as total'))
+        ->groupBy('namaWilayah')
+        ->get();
+        $jumlahsekolah = sekolah::select('namaSekolah', DB::raw('count(*) as total'))
+        ->groupBy('namaSekolah')
+        ->get();
+        $jumlahcctv = sekolah::select('link', DB::raw('count(*) as total'))
+        ->groupBy('link')
+        ->get();
+
+        return view('sekolah.sekolah', compact('jumlahwilayah','jumlahsekolah', 'jumlahcctv'));
     }
 
     public function index()

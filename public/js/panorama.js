@@ -1,5 +1,4 @@
 // public/js/sekolah.js
-
 let panoramaData = [];
 let filteredData = [];
 let currentPage = 1;
