@@ -12,13 +12,32 @@ class SekolahController extends Controller
 {
     public function dashboard()
     {
-        $sekolah = sekolah::all();
-
-        $sekolahCount = sekolah::count();
+        // Jumlah total
+        $sekolahCount = Sekolah::count();
         $panoramaCount = Panorama::count();
         $userCount = User::count();
 
-        return view('admin.dashboard', compact('sekolahCount', 'panoramaCount', 'userCount'));
+        // Statistik jumlah sekolah per wilayah
+        $jumlahSekolahPerWilayah = Sekolah::select('namaWilayah', DB::raw('COUNT(DISTINCT namaSekolah) as total_sekolah'))
+            ->groupBy('namaWilayah')
+            ->get();
+
+        // Statistik jumlah CCTV per wilayah
+        $jumlahCCTVPerWilayah = Sekolah::select('namaWilayah', DB::raw('COUNT(link) as total_cctv'))
+            ->whereNotNull('link')
+            ->groupBy('namaWilayah')
+            ->get();
+
+        // Statistik jumlah CCTV per sekolah
+        $jumlahCCTVPerSekolah = Sekolah::select('namaSekolah', DB::raw('COUNT(link) as total_cctv'))
+            ->whereNotNull('link')
+            ->groupBy('namaSekolah')
+            ->get();
+
+        return view('admin.dashboard', compact(
+            'sekolahCount', 'panoramaCount', 'userCount',
+            'jumlahSekolahPerWilayah', 'jumlahCCTVPerWilayah', 'jumlahCCTVPerSekolah'
+        ));
     }
 
     public function cctvsekolah()
@@ -35,7 +54,7 @@ class SekolahController extends Controller
         ->groupBy('link')
         ->get();
 
-        return view('sekolah.sekolah', compact('jumlahwilayah','jumlahsekolah', 'jumlahcctv'));
+        return view('sekolah.sekolah', compact('sekolah','jumlahwilayah','jumlahsekolah', 'jumlahcctv'));
     }
 
     public function index()
