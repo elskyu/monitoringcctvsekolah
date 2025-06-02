@@ -1,152 +1,135 @@
-@extends('layouts.user_type.guest')
-
-<script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</script>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: #f8f9fa;
-            color: #343a40;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-
-        body::-webkit-scrollbar {
-            display: none;
-            /* Sembunyikan scrollbar di WebKit browsers (Chrome, Safari) */
-        }
-
-        .floating-button {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 1000;
-            /* Warna tombol */
-            padding: 12px 20px;
-            font-weight: bold;
-            text-align: center;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .container-fluid {
-            width: 100%;
-            height: 100vh;
-            overflow-y: auto;
-            scrollbar-width: none;
-        }
-
-
-        .floating-button:hover {
-            background-color: rgba(77, 255, 0, 0.63);
-            /* Warna saat hover */
-            transform: scale(1.05);
-            color: white;
-        }
-
-        button {
-            height: 35px;
-            /* Samakan tinggi semua tombol */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        .background-image {
-            position: absolute;
-            /* Menghilangkan elemen dari flow dokumen */
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-size: cover;
-            background-position: center;
-            z-index: -1;
-            /* Pastikan gambar berada di belakang konten lain */
-        }
-
-        .background-image::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 110%;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-            transform: rotate(180deg);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Dashboard CCTV Sekolah</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9f7;
+    }
+    .header {
+      background-color: #9BB47C;
+      padding: 15px;
+      text-align: center;
+      color: white;
+    }
+    .header h1 {
+      margin: 5px 0;
+    }
+    .header small {
+      font-size: 14px;
+      display: block;
+      margin-top: -5px;
+    }
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px;
+    }
+    .stats div {
+      background-color: #A6BF7B;
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .cctv-card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+    .cctv-card:hover {
+      background-color: #eef5e9;
+    }
+    .cctv-card h3 {
+      margin: 0;
+      font-size: 16px;
+      color: #2c3e50;
+    }
+    .cctv-card p {
+      margin: 5px 0 0;
+      font-weight: bold;
+      font-size: 14px;
+      color: #34495e;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
 </head>
-
 <body>
-    @section('content')
-        <div class="pb-0 d-flex justify-content-end">
-            <a href="{{ route('sekolah.create') }}" class="floating-button btn"
-                style="background-color: rgba(255, 0, 183, 0.63); color: white;">
-                Tambah CCTV
-            </a>
-        </div>
-        <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card mb-4">
-                            <div class="card-header pb-0">
-                                <h6 class="text-center">CCTV SEKOLAH</h6>
-                            </div>
-                            <div class="card-body px-0 pt-0 pb-2">
-                                <div class="table-responsive p-0">
-                                    <table class="table align-items-center">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center">Nama Wilayah</th>
-                                                <th class="text-center">Nama Sekolah</th>
-                                                <th class="text-center">Titik Wilayah</th>
-                                                <th class="text-center">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($sekolah as $item)
-                                                <tr>
-                                                    <td class="text-center align-middle">{{ $item->namaWilayah }}</td>
-                                                    <td class="text-center align-middle">{{ $item->namaSekolah }}</td>
-                                                    <td class="text-center align-middle">{{ $item->namaTitik }}</td>
-                                                    <td class="text-center align-middle">
-                                                        <div class="d-flex justify-content-center gap-2">
-                                                            <!-- Form Edit -->
-                                                            <form action="{{ route('sekolah.edit', $item->id) }}" method="GET">
-                                                                <button type="submit"
-                                                                    class="btn btn-sm btn-primary">Edit</button>
-                                                            </form>
 
-                                                            <!-- Form Delete -->
-                                                            <form action="{{ route('sekolah.delete', $item->id) }}"
-                                                                method="POST"
-                                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus CCTV ini?');">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit"
-                                                                    class="btn btn-sm btn-danger">Delete</button>
-                                                            </form>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    @endsection
-    <div class="background-image" style="background-image: url('{{ asset('images/pattern.jpg') }}');"></div>
+  <div class="header">
+    <h1>DASHBOARD CCTV SEKOLAH</h1>
+    <small>----- Memantau Kondisi Sekolah DIY -----</small>
+  </div>
+
+  <div class="stats">
+    <div id="totalCctv">Jumlah CCTV : -</div>
+    <div id="totalSekolah">Jumlah Sekolah : -</div>
+    <div id="totalWilayah">Jumlah Wilayah : -</div>
+  </div>
+
+  <div class="grid-container" id="cctvGrid"></div>
+
+  <iframe id="cctvViewer"></iframe>
+
+  <script>
+    fetch("http://127.0.0.1:8000/api/cctvsekolah")
+      .then(response => response.json())
+      .then(data => {
+        if (!data.success || !Array.isArray(data.data)) throw new Error("Data tidak valid");
+
+        const grid = document.getElementById("cctvGrid");
+        const wilayahSet = new Set();
+        const sekolahSet = new Set();
+
+        data.data.forEach(item => {
+          wilayahSet.add(item.namaWilayah);
+          sekolahSet.add(item.namaSekolah);
+
+          const card = document.createElement("div");
+          card.className = "cctv-card";
+          card.innerHTML = `
+            <h3>${item.namaSekolah}</h3>
+            <p>${item.namaTitik}</p>
+          `;
+          card.addEventListener("click", () => {
+            const viewer = document.getElementById("cctvViewer");
+            viewer.src = item.link.replace(/^ttp/, 'http');
+            viewer.style.display = "block";
+            viewer.scrollIntoView({ behavior: "smooth" });
+          });
+          grid.appendChild(card);
+        });
+
+        // Statistik
+        document.getElementById("totalCctv").textContent = `Jumlah CCTV : ${data.data.length}`;
+        document.getElementById("totalSekolah").textContent = `Jumlah Sekolah : ${sekolahSet.size}`;
+        document.getElementById("totalWilayah").textContent = `Jumlah Wilayah : ${wilayahSet.size}`;
+      })
+      .catch(error => {
+        console.error("Gagal memuat data:", error);
+        document.getElementById("cctvGrid").innerHTML = "<p>Gagal memuat CCTV.</p>";
+      });
+  </script>
+
 </body>
+</html>

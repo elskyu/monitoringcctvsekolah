@@ -100,7 +100,6 @@ Route::get('/sekolah/check-duplicate', [SekolahController::class, 'checkDuplicat
 Route::get('/sekolah/getWilayah', [SekolahController::class, 'getWilayah'])->name('sekolah.getWilayah');
 Route::get('/sekolah/search', [SekolahController::class, 'search'])->name('sekolah.search');
 
-
 //Route Panorama
 Route::get('/cctvpanorama', [PanoramaController::class, 'dashboard'])->name('panorama.panorama');
 Route::get('/index2', [PanoramaController::class, 'index'])->name('panorama.index');
