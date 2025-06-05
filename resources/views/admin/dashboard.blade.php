@@ -102,7 +102,7 @@
             </div>
             <div style="margin-top: 40px;">
                 <h5>Grafik Jumlah CCTV per Sekolah</h5>
-                <canvas id="sekolahChart" style="max-width: 100%; height: 400px;"></canvas>
+                <canvas id="sekolahChart" style="max-width: 100%; height: 300px;"></canvas>
             </div>
         </div>
     </div>
@@ -160,15 +160,34 @@
             }
         });
 
-        // Create Sekolah Chart (Pie Chart)
-        const sekolahLabels = cctvPerSekolah.map(d => d.namaSekolah);
-        const cctvSekolahData = cctvPerSekolah.map(d => d.total_cctv);
+        // Group sekolah by wilayah
+        const sekolahByWilayah = {};
+        cctvPerSekolah.forEach(item => {
+            if (!sekolahByWilayah[item.namaWilayah]) {
+                sekolahByWilayah[item.namaWilayah] = [];
+            }
+            sekolahByWilayah[item.namaWilayah].push(item);
+        });
 
-        // Generate random colors for each sekolah
-        const backgroundColors = sekolahLabels.map(() =>
-            `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`
-        );
+        // Flatten sekolah list + generate label & data
+        const sekolahLabels = [];
+        const cctvSekolahData = [];
+        const backgroundColors = [];
 
+        Object.entries(sekolahByWilayah).forEach(([wilayah, sekolahList], wilayahIndex) => {
+            sekolahList.forEach((item, sekolahIndex) => {
+                sekolahLabels.push(item.namaSekolah);
+                cctvSekolahData.push(item.total_cctv);
+
+                // Base hue untuk wilayah (misal: 0, 60, 120, dst)
+                const hue = (wilayahIndex * 60) % 360;
+                const lightness = 50 + (sekolahIndex * 10) % 30; // antara 50% - 80%
+                const color = `hsl(${hue}, 70%, ${lightness}%)`;
+                backgroundColors.push(color);
+            });
+        });
+
+        // Render pie chart
         new Chart(document.getElementById('sekolahChart'), {
             type: 'pie',
             data: {
@@ -176,13 +195,14 @@
                 datasets: [{
                     label: 'Jumlah CCTV',
                     data: cctvSekolahData,
-                    backgroundColor: backgroundColors,
-                    borderColor: '#fff',
-                    borderWidth: 1
+                    backgroundColor: backgroundColors
                 }]
             },
             options: {
                 responsive: true,
+                layout: {
+                    padding: 10
+                },
                 plugins: {
                     legend: {
                         position: 'right'
@@ -192,7 +212,14 @@
                         text: 'Jumlah CCTV per Sekolah',
                         padding: {
                             top: 10,
-                            bottom: 20 // menambah jarak antara title dan chart
+                            bottom: 10
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.parsed} CCTV`;
+                            }
                         }
                     }
                 }
@@ -229,7 +256,7 @@
 
             fetch(
                     `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
-                    )
+                )
                 .then(response => response.json())
                 .then(data => {
                     const temperature = Math.round(data.main.temp);
