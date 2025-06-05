@@ -52,7 +52,7 @@
                     <div class="card" style="background-color: rgba(71,71,161,255);">
                         <div class="card-content">
                             <div class="left-column">
-                                <h3 style="color: white;">Panorama</h3>
+                                <h6 style="color: white; font-size: 13pt;"> CCTV Panorama</h6>
                                 <p style="color: white; font-size: 24pt;" class="fs-30 mb-2">{{ $panoramaCount }}</p>
                             </div>
                             <div class="right-column">
@@ -66,7 +66,7 @@
                     <div class="card" style="background-color:#7978e9">
                         <div class="card-content">
                             <div class="left-column">
-                                <h3 style="color: white;">Sekolah</h3>
+                                <h5 style="color: white; font-size: 13pt;">CCTV Sekolah</h5>
                                 <p style="color: white; font-size: 24pt;" class="fs-30 mb-2">{{ $sekolahCount }}</p>
                             </div>
                             <div class="right-column">
@@ -76,8 +76,16 @@
                     </div>
 
                     <div class="card" style="background-color: #f3797e;">
-                        <h3 style="color: white;">Empty Card</h3>
-                        <p style="color: white;">0</p>
+                        <div class="card-content">
+                            <div class="left-column">
+                                <h3 style="color: white;">Sekolah</h3>
+                                <p style="color: white; font-size: 24pt;" class="fs-30 mb-2">
+                                    {{ $jumlahCCTVPerSekolah->count() }}</p>
+                            </div>
+                            <div class="right-column">
+                                <i class="fas fa-book-open icon-card"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,6 +99,10 @@
             <div style="margin-top: 20px;">
                 <h5>Grafik Jumlah Sekolah dan CCTV per Wilayah</h5>
                 <canvas id="wilayahChart" style="max-width: 100%; height: 400px;"></canvas>
+            </div>
+            <div style="margin-top: 40px;">
+                <h5>Grafik Jumlah CCTV per Sekolah</h5>
+                <canvas id="sekolahChart" style="max-width: 100%; height: 400px;"></canvas>
             </div>
         </div>
     </div>
@@ -122,8 +134,7 @@
             type: 'bar',
             data: {
                 labels: wilayahLabels,
-                datasets: [
-                    {
+                datasets: [{
                         label: 'Jumlah Sekolah',
                         data: sekolahData,
                         backgroundColor: 'rgba(54, 162, 235, 0.7)'
@@ -149,42 +160,39 @@
             }
         });
 
-        // Create Sekolah Chart (Line Chart)
+        // Create Sekolah Chart (Pie Chart)
         const sekolahLabels = cctvPerSekolah.map(d => d.namaSekolah);
         const cctvSekolahData = cctvPerSekolah.map(d => d.total_cctv);
 
+        // Generate random colors for each sekolah
+        const backgroundColors = sekolahLabels.map(() =>
+            `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`
+        );
+
         new Chart(document.getElementById('sekolahChart'), {
-            type: 'line', // Line chart
+            type: 'pie',
             data: {
                 labels: sekolahLabels,
                 datasets: [{
                     label: 'Jumlah CCTV',
                     data: cctvSekolahData,
-                    fill: false,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    tension: 0.4,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    borderWidth: 3
+                    backgroundColor: backgroundColors,
+                    borderColor: '#fff',
+                    borderWidth: 1
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: 'top'
+                        position: 'right'
                     },
                     title: {
                         display: true,
-                        text: 'Jumlah CCTV per Sekolah'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
+                        text: 'Jumlah CCTV per Sekolah',
+                        padding: {
+                            top: 10,
+                            bottom: 20 // menambah jarak antara title dan chart
                         }
                     }
                 }
@@ -193,7 +201,7 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const apiKey = '66db882578a46f03c27c30a952240556';
             const lat = -7.797068;
             const lon = 110.370529;
@@ -219,7 +227,9 @@
                 '50n': 'mdi-weather-fog',
             };
 
-            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`)
+            fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+                    )
                 .then(response => response.json())
                 .then(data => {
                     const temperature = Math.round(data.main.temp);
@@ -237,5 +247,4 @@
                 });
         });
     </script>
-
 @endsection
