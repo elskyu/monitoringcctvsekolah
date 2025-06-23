@@ -488,7 +488,7 @@ input[type="checkbox"]:checked::before {
 }
 
 /* Hanya aktif di mobile L ke bawah (max-width 425px) */
-@media (max-width: 425px) {
+@media (max-width: 767px) {
     .stats-section {
         padding-top: 70px;
     }
