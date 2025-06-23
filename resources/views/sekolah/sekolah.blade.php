@@ -16,14 +16,13 @@
 
     <title>Dashboard CCTV</title>
     @push('scriptsku')
-    <script>
-        const cctvData = @json($sekolah);
-        console.log(cctvData);
-    </script>
+        <script>
+            const cctvData = @json($sekolah);
+            console.log(cctvData);
+        </script>
 
         <!-- Custom Script -->
         <script src="{{ asset('js/dashboard_sekolah.js') }}"></script>
-
     @endpush
 </head>
 
@@ -113,7 +112,8 @@
                                         <div class="item item-sekolah">
                                             <a href="javascript:void(0);" class="sub-btn"
                                                 onclick="toggleDaerah('{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}')">
-                                                <i class="fas fa-eye icon-toggle" style="margin-right: 8px; margin-top: 4px;"
+                                                <i class="fas fa-eye icon-toggle"
+                                                    style="margin-right: 8px; margin-top: 4px;"
                                                     onclick="event.stopPropagation(); toggleIcon(event, '{{ Str::slug($namaSekolah) }}')"></i>
                                                 {{ $namaSekolah }}
                                                 <i id="icon-{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}"
@@ -163,24 +163,25 @@
 
                 <div id="regionCountData" data-region-count="{{ $groupedCctvs->count() }}"></div>
 
-                <div class="row g-3" style="margin-bottom: 20px;">
-                    <div class="col-md-4">
-                        <div class="card2 d-flex align-items-center justify-content-center">
+                <div class="row g-3 text-center stats-section" style="margin-bottom: 20px;">
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="card2 d-flex align-items-center justify-content-center p-2">
                             <p class="fw-bold mb-0">Jumlah CCTV : <span id="cctvCount">{{ $jumlahCCTV }}</span></p>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card2 d-flex align-items-center justify-content-center">
-                            <p class="fw-bold mb-0">Jumlah Sekolah : <span id="schoolCount">{{ $jumlahSekolah }}</span></p>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="card2 d-flex align-items-center justify-content-center p-2">
+                            <p class="fw-bold mb-0">Jumlah Sekolah : <span
+                                    id="schoolCount">{{ $jumlahSekolah }}</span></p>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card2 d-flex align-items-center justify-content-center">
-                            <p class="fw-bold mb-0">Jumlah Wilayah : <span id="regionCount">{{ $jumlahWilayah }}</span></p>
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="card2 d-flex align-items-center justify-content-center p-2">
+                            <p class="fw-bold mb-0">Jumlah Wilayah : <span
+                                    id="regionCount">{{ $jumlahWilayah }}</span></p>
                         </div>
                     </div>
                 </div>
-
                 <div class="row g-3">
                     {{-- @foreach ($groupedCctvs as $wilayah => $sekolahGroup)
                         @foreach ($sekolahGroup as $namaSekolah => $cctvGroup)

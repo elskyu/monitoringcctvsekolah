@@ -486,3 +486,11 @@ input[type="checkbox"]:checked::before {
 .side-bar.active+.btn-sidebar {
     display: none !important;
 }
+
+/* Hanya aktif di mobile L ke bawah (max-width 425px) */
+@media (max-width: 425px) {
+    .stats-section {
+        padding-top: 70px;
+    }
+}
+
