@@ -18,7 +18,7 @@ class SekolahSeeder extends Seeder
                 'namaWilayah' => 'Wilayah ' . rand(1, 10),
                 'namaSekolah' => 'Sekolah ' . $i,
                 'namaTitik' => 'Titik ' . rand(1, 5),
-                'link' => 'http://cctv.sekolah' . $i . '.id',
+                'link' => 'http://cctv.sekolahku' . $i . '.id',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
