@@ -80,10 +80,10 @@
                             <div class="left-column">
                                 <h3 style="color: white;">Sekolah</h3>
                                 <p style="color: white; font-size: 24pt;" class="fs-30 mb-2">
-                                    {{ $jumlahCCTVPerSekolah->count() }}</p>
+                                    {{ $jumlahCCTVPerSekolah->count() }}</p> <!-- terserah -->
                             </div>
                             <div class="right-column">
-                                <i class="fas fa-book-open icon-card"></i>
+                                <i class="fas fa-book-open icon-card"></i> 
                             </div>
                         </div>
                     </div>
