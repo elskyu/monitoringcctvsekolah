@@ -1,3 +1,5 @@
+<!-- ketika user mengakses halaman /login -->
+
 @extends('layouts.user_type.guest')
 
 @section('content')

@@ -2,12 +2,23 @@
 
 @section('content')
 
+<!-- 
+admin@gmail.com
+Password admin123
+
+test@gmail.com
+Password hitamlegam
+
+-->
+
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
         <title>Dashboard CCTV</title>
         <link rel="stylesheet" href="{{ asset('assets/css/weather-card.css') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
 
     <header class="header">
@@ -25,7 +36,7 @@
                         <h4 class="location font-weight-normal" id="location">Loading...</h4>
                         <h5 class="country font-weight-normal" id="country">Indonesia</h5>
                     </div>
-                    <div class="temperature-info d-flex justify-content-end" style="margin-left: 125px;">
+                    <div class="temperature-info d-flex justify-content-end ms-md-5 ms-0 mt-2 mt-md-0">
                         <h2 class="mb-0 font-weight-normal" id="temperature">
                             <i id="weatherIcon" class="mdi" style="font-size: 30px;"></i>
                             <span id="tempValue"></span>

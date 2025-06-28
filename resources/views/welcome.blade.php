@@ -1,9 +1,11 @@
+<!-- ini belum tau -->
+
 @extends('layouts.user_type.auth')
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard CCTV</title> <!--  ini judul -->
+    <title>Dashboard CCTV</title> <!--  ini judul dashboard-->
 
     <script>
         function toggleDaerah(id) {

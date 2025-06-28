@@ -1,3 +1,5 @@
+<!-- ini adalah route '/' atau halaman utama dari http://103.255.15.227/ -->
+
 @extends('layouts.app')
 
 <head>

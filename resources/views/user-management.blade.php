@@ -1,3 +1,5 @@
+<!-- ini belum tau -->
+
 @extends('layouts.user_type.auth')
 
 @section('content')

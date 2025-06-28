@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.app') 
+
+<!-- ini mengambil layout dasar dari file app.blade.php -->
 
 @section('auth')
 

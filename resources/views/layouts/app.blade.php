@@ -1,3 +1,8 @@
+
+<!-- /* File: resources/views/layouts/app.blade.php -->
+   <!-- Struktur file ini adalah untuk menampilkan layout dasar dari aplikasi. -->
+   <!-- ini adalah layout paling tinggi dalam struktur Blade. -->
+
 <!DOCTYPE html>
 @if (\Request::is('rtl'))
     <html dir="rtl" lang="ar">

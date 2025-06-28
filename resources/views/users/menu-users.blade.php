@@ -1,3 +1,5 @@
+<!-- ini untuk route http://103.255.15.227/user-management -->
+
 @extends('layouts.user_type.auth')
 
 @section('content')

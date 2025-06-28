@@ -25,42 +25,63 @@ use App\Http\Controllers\VideoController;
 |
 */
 
+// Route untuk halaman utama setelah login
+// aku hapus dulu karena gak bisa masuk 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/dashboard', [sekolahController::class, 'dashboard'])->name('dashboard');
 
+    // jika datang permintaan ke /dashboard, maka akan diarahkan ke method dashboard pada SekolahController
+    // direktorinya adalah app/Http/Controllers/SekolahController.php
+    Route::get('/dashboard', [sekolahController::class, 'dashboard'])->name('dashboard');
+              //ini permintaan            //ini fungsi dashboard di         //alias untuk route ini
+                                      //controller SekolahController
+
+    // jika datang permintaan ke /user-management, maka akan diarahkan ke
+    // view resources/views/users/menu-users.blade.php
     Route::get('user-management', function () {
         return view('users.menu-users');
-    })->name('user-management');
+    })->name('user-management'); //alias untuk route ini
 
-    Route::get('cctv-sekolah', [SekolahController::class, 'index'])->name('menu-sekolah');
+    //jika datang permintaan ke /cctv-sekolah, maka akan diarahkan ke method index pada sekolahController
+    // direktorinya adalah app/Http/Controllers/sekolahController.php
+    Route::get('cctv-sekolah', [sekolahController::class, 'index'])->name('menu-sekolah');
+                //ini permintaan            //ini fungsi index di         //alias untuk route ini
+                                      //controller SekolahController
 
+    //jika datang permintaan ke /menu-cctv-panorama, maka akan diarahkan ke method index pada PanoramaController
+    // direktorinya adalah app/Http/Controllers/PanoramaController.php
     Route::get('menu-cctv-panorama', [PanoramaController::class, 'index'])->name('menu-panorama');
-
-
+                                                                               //alias untuk route ini
+    //ini masih dalam pengembangan
     Route::get('billing', function () {
         return view('billing');
     })->name('billing');
 
+    // ini belum selesai
     Route::get('profile', function () {
         return view('profile');
     })->name('profile');
 
+    // ini belum selesai
     Route::get('rtl', function () {
         return view('rtl');
     })->name('rtl');
 
+    // ini belum selesai
     Route::get('tables', function () {
         return view('tables');
     })->name('tables');
 
+    // ini belum selesai
     Route::get('virtual-reality', function () {
         return view('virtual-reality');
     })->name('virtual-reality');
 
+    // ini belum selesai
     Route::get('static-sign-in', function () {
         return view('static-sign-in');
     })->name('sign-in');
 
+    // ini belum selesai
     Route::get('static-sign-up', function () {
         return view('static-sign-up');
     })->name('sign-up');
@@ -89,31 +110,37 @@ Route::post('/cctv/{cctv}', [cctvController::class, 'update'])->name('cctv.updat
 Route::delete('/cctv/{cctv}', [cctvController::class, 'delete'])->name('cctv.delete');
 
 // Route sekolah
-Route::get('/', [SekolahController::class, 'cctvsekolah'])->name('sekolah.sekolah');
-Route::get('/index', [SekolahController::class, 'index'])->name('sekolah.index');
-Route::get('/create', [SekolahController::class, 'create'])->name('sekolah.create');
-Route::post('/sekolah', [SekolahController::class, 'store'])->name('sekolah.store');
+Route::get('/', [SekolahController::class, 'cctvsekolah'])->name('sekolah.sekolah'); //aman halaman dashboard utama atau '/'
+Route::get('/index', [SekolahController::class, 'index'])->name('sekolah.index'); //ini sama dengan /cctv-sekolah
+Route::get('/create', [SekolahController::class, 'create'])->name('sekolah.create'); //aman buat nambah cctv sekolah
+Route::post('/sekolah', [SekolahController::class, 'store'])->name('sekolah.store'); //aman aja
 Route::get('editSekolah/{sekolah}', [SekolahController::class, 'edit'])->name('sekolah.edit');
 Route::post('/sekolah/{sekolah}', [SekolahController::class, 'update'])->name('sekolah.update');
 Route::delete('/sekolah/{sekolah}', [SekolahController::class, 'delete'])->name('sekolah.delete');
-Route::get('/sekolah/check-duplicate', [SekolahController::class, 'checkDuplicate'])->name('sekolah.checkDuplicate');
-Route::get('/sekolah/getWilayah', [SekolahController::class, 'getWilayah'])->name('sekolah.getWilayah');
-Route::get('/sekolah/search', [SekolahController::class, 'search'])->name('sekolah.search');
+Route::get('/sekolah/check-duplicate', [SekolahController::class, 'checkDuplicate'])->name('sekolah.checkDuplicate'); //aman
+Route::get('/sekolah/getWilayah', [SekolahController::class, 'getWilayah'])->name('sekolah.getWilayah'); //aman
+Route::get('/sekolah/search', [SekolahController::class, 'search'])->name('sekolah.search'); //sedang proses
 
 //Route Panorama
-Route::get('/cctvpanorama', [PanoramaController::class, 'dashboard'])->name('panorama.panorama');
-Route::get('/index2', [PanoramaController::class, 'index'])->name('panorama.index');
+Route::get('/cctvpanorama', [PanoramaController::class, 'dashboard'])->name('panorama.panorama'); //aman, buat halaman /cctvpanorama
+Route::get('/index2', [PanoramaController::class, 'index'])->name('panorama.index'); // sama kayak /menu-cctv-panorama
 Route::post('/store-panorama', [PanoramaController::class, 'store'])->name('panorama.store');
 Route::post('/panorama/{id}', [PanoramaController::class, 'update'])->name('panorama.update');
 Route::delete('/panorama/{id}', [PanoramaController::class, 'delete'])->name('panorama.delete');
 
-
+// Route untuk registrasi dan login
 Route::group(['middleware' => 'guest'], function () {
-    Route::get('/login', [SessionsController::class, 'create'])->name('view-login');
-    Route::post('/session', [SessionsController::class, 'store'])->name('login');
-    Route::get('/login/forgot-password', [ResetController::class, 'create']);
-    Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
-    Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
-    Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
+    Route::get('/login', [SessionsController::class, 'create'])->name('view-login'); //aman, ini buat /login
+    Route::post('/session', [SessionsController::class, 'store'])->name('login'); //aman, ini buat kalo sudah berhasil login, maka redirect ke /dashboard
+    Route::get('/login/forgot-password', [ResetController::class, 'create']); //aman, yg penting logout dulu, baru masuk ke /login/forgot-password
+    Route::post('/forgot-password', [ResetController::class, 'sendEmail']); //aman, ini buat ngirim email reset password
+    Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset'); //aman, ini halaman buat ganti password, tambahkan /reset-password/1 atau apapun
+    Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update'); //aman, ini buat reset password, kalo berhasil akan redirect ke /login
 });
+
+// Route::get(...)	Menampilkan halaman / mengambil data
+// Route::post(...)	Mengirim data ke server (form, input, simpan, dst)
+// middleware => 'auth'	Hanya bisa diakses jika user sudah login
+// middleware => 'guest'	Hanya bisa diakses jika user belum login
+
 

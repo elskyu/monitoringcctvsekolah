@@ -63,6 +63,20 @@ class SekolahController extends Controller
         return view('sekolah.menu-sekolah', compact('sekolah'));
     }
 
+    /*
+    public function search(Request $request)
+    {
+    $keyword = $request->input('keyword');
+
+    $sekolah = sekolah::where('namaWilayah', 'LIKE', "%{$keyword}%")
+                ->orWhere('namaSekolah', 'LIKE', "%{$keyword}%")
+                ->orWhere('namaTitik', 'LIKE', "%{$keyword}%")
+                ->paginate(10);
+
+    return view('sekolah.menu-sekolah', compact('sekolah', 'keyword'));
+    }
+    */
+
     public function create()
     {
         return view('sekolah.create');

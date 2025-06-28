@@ -160,3 +160,52 @@ body {
 .mdi {
     align-items: right;
 }
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .weather-card {
+        height: auto;
+    }
+
+    .card-container {
+        flex-direction: column;
+    }
+
+    .card-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .card {
+        height: auto;
+    }
+
+    .icon-card {
+        width: 60px;
+        font-size: 28pt;
+        margin-left: 5px;
+    }
+
+    .weather-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .temperature-info {
+        margin-left: 0 !important;
+        margin-top: 10px;
+    }
+
+    .left-column, .right-column {
+        align-items: flex-start;
+    }
+
+    canvas {
+        height: auto !important;
+    }
+}
+

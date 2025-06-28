@@ -1,3 +1,5 @@
+<!-- ini belum ada route nya -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

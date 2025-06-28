@@ -1,3 +1,5 @@
+<!-- ini adalah route 'http://103.255.15.227/tables' -->
+
 @extends('layouts.user_type.auth')
 
 @section('content')
