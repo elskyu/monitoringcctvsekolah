@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-// ini buat data cctv
+// ini buat data cctv ya
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
