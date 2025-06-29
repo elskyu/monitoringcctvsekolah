@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'id' => 1,
             'name' => 'admin',
             'email' => 'admin@gmail.com',
-            'password' => Hash::make("1"),
+            'password' => Hash::make("1"), //aku ubah nya biasanya di phpmyadmin bukan disini sih
             'created_at' => now(),
             'updated_at' => now()
         ]);

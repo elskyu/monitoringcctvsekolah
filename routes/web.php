@@ -144,3 +144,20 @@ Route::group(['middleware' => 'guest'], function () {
 // middleware => 'guest'	Hanya bisa diakses jika user belum login
 
 
+/* buat yang lupa password lokal
+
+gunakan php artisan tinker di terminal, lalu setelah terbuka shellnya, ketikkan:
+echo Hash::make('admin123');
+
+    - "admin123" adalah password yang ingin di-hash
+
+Kemudian copy hasilnya, lalu ganti di phpmyadmin, di tabel users, 
+pada kolom password untuk user dengan email
+
+Route::get('/cek', function () {
+    $plain = 'admin123';
+    $hash = '$2y$10$QnYgFpiCpgSOoCko270cqO/y1X0V4SudTCitwHrA1hdStKGZ.yoD2';
+    return Hash::check($plain, $hash) ? 'Cocok' : 'Tidak cocok';
+});
+
+*/
