@@ -2,39 +2,39 @@
 
 namespace App\Exports;
 
-use App\Models\Sekolah;
+use App\Models\Panorama;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class RekapCCTVExport implements FromCollection, WithHeadings, WithMapping
+class CCTVPanoramaExport implements FromCollection, WithHeadings, WithMapping
 {
     public function collection()
     {
-        return Sekolah::whereNotNull('link')->get();
+        return Panorama::whereNotNull('link')->get();
     }
 
     public function headings(): array
     {
         return [
             'Nama Wilayah',
-            'Nama Sekolah',
             'Nama Titik',
             'Link CCTV',
+            'Status',
             'Tanggal Dibuat',
             'Tanggal Diupdate',
         ];
     }
 
-    public function map($sekolah): array
+    public function map($panorama): array
     {
         return [
-            $sekolah->namaWilayah,
-            $sekolah->namaSekolah,
-            $sekolah->namaTitik,
-            $sekolah->link,
-            $sekolah->created_at->format('Y-m-d H:i:s'),
-            $sekolah->updated_at->format('Y-m-d H:i:s'),
+            $panorama->namaWilayah,
+            $panorama->namaTitik,
+            $panorama->link,
+            $panorama->status,
+            $panorama->created_at->format('Y-m-d H:i:s'),
+            $panorama->updated_at->format('Y-m-d H:i:s'),
         ];
     }
 }
