@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VideoController;
+use App\Exports\CCTVPanoramaExport;
+use App\Exports\CCTVSekolahExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\ExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +67,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('static-sign-up', function () {
         return view('static-sign-up');
-    })->name('sign-up');
+    })->name('sign-up'); //tes
 
     Route::get('/user-profile', [InfoUserController::class, 'create']);
     Route::post('/user-profile', [InfoUserController::class, 'store']);
@@ -73,6 +77,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
     Route::get('/videos/create', [VideoController::class, 'create'])->name('videos.create');
     Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
+
+    Route::get('/export-rekap-cctv', [ExportController::class, 'form'])->name('export.rekap.cctv');
+    Route::post('/export-rekap-cctv', [ExportController::class, 'export'])->name('export.rekap.cctv.post');
 
     Route::post('/logout', [SessionsController::class, 'destroy'])->name('logout');
 });
