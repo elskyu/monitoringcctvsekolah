@@ -73,6 +73,21 @@
                 </a>
             </li>
 
+            <!-- Export Rekap Data CCTV -->
+            <li class="nav-item pb-2">
+                <a class="nav-link {{ Route::currentRouteName() == 'export.rekap.cctv' ? 'active' : '' }}"
+                    href="{{ route('export.rekap.cctv') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center {{ Route::currentRouteName() == 'export.rekap.cctv' ? 'bg-gradient-success text-white' : '' }}">
+                        <!-- Ikon untuk Export (Excel) -->
+                        <i class="fas fa-file-excel {{ Route::currentRouteName() == 'export.rekap.cctv' ? 'text-white' : 'text-dark' }}"
+                            style="font-size: 0.7rem;"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Export Rekap Data CCTV</span>
+                </a>
+            </li>
+
+
 
             <li class="nav-item pb-2 mt-3">
                 <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">

@@ -34,9 +34,15 @@ class SekolahController extends Controller
             ->groupBy('namaSekolah')
             ->get();
 
+        // Daftar lengkap sekolah dengan link CCTV
+        $rekapCCTV = Sekolah::select('namaSekolah', 'namaWilayah', 'link')
+        ->whereNotNull('link')
+        ->orderBy('namaWilayah')
+        ->get();
+            
         return view('admin.dashboard', compact(
             'sekolahCount', 'panoramaCount', 'userCount',
-            'jumlahSekolahPerWilayah', 'jumlahCCTVPerWilayah', 'jumlahCCTVPerSekolah'
+            'jumlahSekolahPerWilayah', 'jumlahCCTVPerWilayah', 'jumlahCCTVPerSekolah', 'rekapCCTV'
         ));
     }
 

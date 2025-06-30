@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VideoController;
+use App\Exports\RekapCCTVExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -94,6 +97,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
     Route::get('/videos/create', [VideoController::class, 'create'])->name('videos.create');
     Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
+
+    Route::get('/export-rekap-cctv', function () {
+    return Excel::download(new RekapCCTVExport, 'rekap_cctv.xlsx');
+    })->name('export.rekap.cctv');
+
+    //Route::get('/export-rekap-cctv', [ExportController::class, 'form'])->name('export.rekap.cctv');
+    //Route::post('/export-rekap-cctv', [ExportController::class, 'export'])->name('export.rekap.cctv.post');
 
     Route::post('/logout', [SessionsController::class, 'destroy'])->name('logout');
 });
