@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
-class CCTVPanoramaExport implements FromCollection, WithHeadings, WithMapping
+class PanoramaExport implements FromCollection, WithHeadings, WithMapping
 {
     public function collection()
     {

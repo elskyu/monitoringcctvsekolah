@@ -7,6 +7,9 @@ use App\Models\sekolah;
 use App\Models\Panorama;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SekolahExport;
+
 
 class SekolahController extends Controller
 {
@@ -115,5 +118,11 @@ class SekolahController extends Controller
     {
         $sekolah = sekolah::select('namaWilayah')->distinct()->get(); // Ambil hanya kolom namaWilayah
         return response()->json($sekolah);
+    }
+
+    public function export()
+    {
+
+        return Excel::download(new SekolahExport, 'data-cctv-sekolah.xlsx');
     }
 }

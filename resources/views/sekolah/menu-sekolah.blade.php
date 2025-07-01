@@ -11,7 +11,8 @@
                         <div
                             class="card-header pb-0 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center">
                             <h6 class="mb-2 mb-sm-0">CCTV Sekolah</h6>
-                            <div class="d-flex flex-column flex-sm-row">
+                            <div class="d-flex flex-column flex-sm-row gap-2"> 
+                                <a href="{{ route('sekolah.export') }}" class="btn btn-success btn-sm w-100 w-sm-auto">Export</a>
                                 <input type="text" id="searchInput"
                                     class="form-control form-control-sm me-sm-2 mb-2 mb-sm-0" placeholder="Search..."
                                     onkeyup="searchcctvsekolah()" style="height: 2.1rem; padding: 5px;">

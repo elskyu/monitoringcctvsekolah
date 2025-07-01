@@ -6,6 +6,8 @@ use App\Models\Panorama;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PanoramaExport;
 
 class PanoramaController extends Controller
 {
@@ -63,6 +65,12 @@ class PanoramaController extends Controller
     {
         $panorama = Panorama::select('namaWilayah')->distinct()->get(); // Ambil hanya kolom namaWilayah
         return response()->json($panorama);
+    }
+
+    public function export()
+    {
+
+        return Excel::download(new PanoramaExport, 'data-cctv-panorama.xlsx');
     }
 }
 

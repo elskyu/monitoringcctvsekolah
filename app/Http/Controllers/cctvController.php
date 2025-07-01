@@ -50,4 +50,5 @@ class cctvController extends Controller
         $cctv->delete();
         return redirect()->route('cctv.index');
     }
+
 }

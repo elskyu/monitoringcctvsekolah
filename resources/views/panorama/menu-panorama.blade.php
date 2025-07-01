@@ -10,7 +10,8 @@
                         {{-- Header --}}
                         <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                             <h6>CCTV Panorama</h6>
-                            <div class="d-flex">
+                            <div class="d-flex flex-column flex-sm-row gap-2">
+                                <a href="{{ route('panorama.export') }}" class="btn btn-success btn-sm w-100 w-sm-auto">Export</a>
                                 <input type="text" id="searchInput" class="form-control form-control-sm me-2"
                                     placeholder="Search..." onkeyup="searchCctvPanorama()"
                                     style="height: 2.1rem; padding: 5px;">
